@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Hasil eksperimen ROUGE-L</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+Javanese:wght@700&amp;family=Schibsted+Grotesk:wght@500;700;800&amp;display=swap" rel="stylesheet">
+<style>
+.th{--bg:#F8FAFC;--surface:#FFFFFF;--surface-2:#F1F5F9;--sel:#E9EEF5;--ink:#0F172A;--ink-2:#334155;--muted:#475569;--border:#CBD5E1;--border-soft:#E2E8F0;--primary:#1E3A5F;--hl-bg:#FFE4E6;--hl-line:#E11D48;--good:#166534;background:var(--bg);color:var(--ink)}
+.th[data-theme="dark"]{--bg:#0B1220;--surface:#111A2E;--surface-2:#0E1628;--sel:#1E2A44;--ink:#E2E8F0;--ink-2:#CBD5E1;--muted:#94A3B8;--border:#2A3650;--border-soft:#1E293B;--primary:#93C5FD;--hl-bg:rgba(244,63,94,.28);--hl-line:#FB7185;--good:#4ADE80}
+@media (prefers-color-scheme: dark){.th:not([data-theme="light"]){--bg:#0B1220;--surface:#111A2E;--surface-2:#0E1628;--sel:#1E2A44;--ink:#E2E8F0;--ink-2:#CBD5E1;--muted:#94A3B8;--border:#2A3650;--border-soft:#1E293B;--primary:#93C5FD;--hl-bg:rgba(244,63,94,.28);--hl-line:#FB7185;--good:#4ADE80}}
+ins{text-decoration:none}
+@keyframes upSoft{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
+body{margin:0}
+a{color:var(--primary)}a:hover{color:var(--muted)}
+a:focus-visible,button:focus-visible{outline:2px solid #F59E0B;outline-offset:2px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+.rv{animation:up 300ms cubic-bezier(.16,1,.3,1) both}
+.line{stroke-dasharray:900;animation:draw 900ms cubic-bezier(.16,1,.3,1) both;animation-delay:300ms}
+.pt{animation:fade 200ms ease-out both}
+.lift{transition:transform 150ms ease-out,box-shadow 150ms ease-out}.lift:hover{transform:translateY(-3px)}
+tbody tr{transition:background-color 150ms ease-out}tbody tr:hover{background:#EEF2F7}
+.kawung{background-image:radial-gradient(ellipse 7px 12px at 50% 0,rgba(255,255,255,.09) 96%,transparent 100%),radial-gradient(ellipse 7px 12px at 50% 100%,rgba(255,255,255,.09) 96%,transparent 100%),radial-gradient(ellipse 12px 7px at 0 50%,rgba(255,255,255,.09) 96%,transparent 100%),radial-gradient(ellipse 12px 7px at 100% 50%,rgba(255,255,255,.09) 96%,transparent 100%),radial-gradient(circle 2px at 50% 50%,rgba(251,191,36,.35) 96%,transparent 100%);background-size:32px 32px;-webkit-mask-image:linear-gradient(to left,#000 10%,transparent 70%);mask-image:linear-gradient(to left,#000 10%,transparent 70%)}
+@supports (animation-timeline: view()){.sr{animation:upSoft linear both;animation-timeline:view();animation-range:entry 0% entry 30%}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="th" data-theme="{{theme}}" style="min-height: 100%; background: var(--bg); color: var(--ink); font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; font-size: 16px; line-height: 1.55">
+  <div style="position: relative; background: #13294B; color: #FFFFFF; overflow: hidden">
+    <div class="kawung" aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none"></div>
+    <header style="position: relative">
+      <nav style="max-width: 1200px; margin: 0 auto; padding: 0 24px; min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.12)">
+        <a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF; font-family: 'Schibsted Grotesk', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em">
+          <span style="width: 34px; height: 34px; border-radius: 8px; background: #F59E0B; color: #13294B; display: grid; place-items: center; font-family: 'Noto Sans Javanese', sans-serif; font-size: 18px; font-weight: 700">ꦫ</span>
+          Ringkas Jawa
+        </a>
+        <div style="display: flex; gap: 4px; flex-wrap: wrap">
+          <a href="Main.dc.html" style="padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #CBD5E1">Demo</a>
+          <a href="#" style="padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #FFFFFF; background: rgba(255,255,255,0.12); font-weight: 700">Detail eksperimen</a>
+          <a href="Main.dc.html" style="padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #CBD5E1">Cara kerja</a>
+          <button type="button" class="press" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 40px; height: 40px; margin-left: 4px; border: 1px solid rgba(255,255,255,0.24); border-radius: 999px; background: transparent; color: #FFFFFF; display: grid; place-items: center; cursor: pointer"><sc-if value="{{isDark}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if><sc-if value="{{isLight}}" hint-placeholder-val="{{true}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if></button>
+        </div>
+      </nav>
+    </header>
+    <section style="position: relative; max-width: 1200px; margin: 0 auto; padding: 48px 24px 112px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; justify-content: space-between">
+      <div style="flex: 1 1 520px; min-width: 0">
+        <h1 class="rv" style="margin: 0; font-family: 'Schibsted Grotesk', sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05; letter-spacing: -0.03em">Detail eksperimen</h1>
+        <p class="rv" style="animation-delay: 100ms; margin: 16px 0 0; max-width: 60ch; color: #CBD5E1; font-size: 18px">Lampiran untuk halaman utama: skor tiap skenario dibanding baseline, kurva pelatihan, tingkat abstraktif, dan konfigurasi lengkap.</p>
+      </div>
+    </section>
+  </div>
+
+  <main style="position: relative; max-width: 1200px; margin: -64px auto 0; padding: 0 24px 72px; display: flex; flex-direction: column; gap: 32px">
+    <section aria-label="Ringkasan skor" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+      <div class="rv lift" style="animation-delay: 350ms; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; box-shadow: 0 10px 28px -14px rgba(19,41,75,0.3)">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 700">Murni</span><span style="font-size: 13px; color: var(--muted)">633 pasangan</span></div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 40px; color: var(--ink); margin-top: 10px">0.3978</div>
+        <div style="font-size: 13px; color: var(--muted)">ROUGE-L, titik awal</div>
+      </div>
+      <div class="rv lift" style="animation-delay: 420ms; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; box-shadow: 0 10px 28px -14px rgba(19,41,75,0.3)">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 700">GTrans</span><span style="font-size: 13px; color: var(--muted)">1.000 pasangan</span></div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 40px; color: var(--ink); margin-top: 10px">0.6437</div>
+        <div style="font-size: 13px; color: var(--good); font-weight: 700">+61.8% dari murni</div>
+      </div>
+      <div class="rv lift" style="animation-delay: 490ms; background: #1E3A5F; color: #FFFFFF; border-radius: 14px; padding: 22px; box-shadow: 0 10px 28px -14px rgba(19,41,75,0.5)">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 700">Hybrid</span><span style="font-size: 13px; color: #CBD5E1">1.633 pasangan</span></div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 40px; color: #FBBF24; margin-top: 10px">0.7976</div>
+        <div style="font-size: 13px; color: #E2E8F0; font-weight: 700">+100.5% dari murni, terbaik di antara model</div>
+      </div>
+      <div class="rv lift" style="animation-delay: 560ms; background: var(--surface-2); border: 1px dashed var(--muted); border-radius: 14px; padding: 22px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-weight: 700; color: var(--ink-2)">Baseline lead-2</span><span style="font-size: 13px; color: var(--ink-2)">tanpa model</span></div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 40px; color: var(--ink-2); margin-top: 10px">0.867</div>
+        <div style="font-size: 13px; color: var(--ink-2); font-weight: 700">Dua kalimat pertama, tanpa filter</div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+      <figure class="sr" style="flex: 999 1 600px; min-width: 0; margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+        <figcaption>
+          <h2 style="margin: 0; font-family: 'Schibsted Grotesk', sans-serif; font-size: 22px">Makin banyak data latih, makin tinggi ROUGE-L</h2>
+          <p style="margin: 4px 0 0; font-size: 14px; color: var(--muted)">Sumbu X: jumlah pasangan latih. Sumbu Y: ROUGE-L pada 70 dokumen uji.</p>
+        </figcaption>
+        <svg viewBox="0 0 640 330" role="img" aria-label="Grafik ROUGE-L terhadap jumlah data latih: murni 633 pasangan 0.3978; gtrans 1.000 pasangan 0.6437; hybrid 1.633 pasangan 0.7976" style="width: 100%; height: auto; font-family: 'IBM Plex Mono', monospace">
+          <g stroke-width="1" style="stroke: var(--border-soft)">
+            <line x1="60" y1="20" x2="620" y2="20"></line>
+            <line x1="60" y1="85" x2="620" y2="85"></line>
+            <line x1="60" y1="150" x2="620" y2="150"></line>
+            <line x1="60" y1="215" x2="620" y2="215"></line>
+          </g>
+          <line x1="60" y1="280" x2="620" y2="280" stroke="#94A3B8" stroke-width="1"></line>
+          <g font-size="12" text-anchor="end" style="fill: var(--muted)">
+            <text x="50" y="24">1.00</text><text x="50" y="89">0.75</text><text x="50" y="154">0.50</text><text x="50" y="219">0.25</text><text x="50" y="284">0</text>
+          </g>
+          <g font-size="12" text-anchor="middle" style="fill: var(--muted)">
+            <text x="60" y="302">0</text><text x="210" y="302">500</text><text x="360" y="302">1.000</text><text x="510" y="302">1.500</text>
+          </g>
+          <text x="340" y="324" font-size="12" text-anchor="middle" font-family="Atkinson Hyperlegible, sans-serif" style="fill: var(--muted)">pasangan data latih</text>
+          <line x1="60" y1="54.6" x2="620" y2="54.6" stroke-width="1.5" stroke-dasharray="6 5" style="stroke: var(--muted)"></line>
+          <text x="62" y="46" font-size="12" font-family="Atkinson Hyperlegible, sans-serif" style="fill: var(--ink-2)">Baseline lead-2, tanpa model: 0.867</text>
+          <polyline class="line" points="250,177 360,113 550,73" fill="none" stroke-width="2" stroke-linejoin="round" style="stroke: var(--primary)"></polyline>
+          <g stroke-width="2" style="stroke: var(--surface)">
+            <circle class="pt" style="animation-delay: 500ms" cx="250" cy="177" r="7" fill="#94A3B8"><title>Murni: 633 pasangan, ROUGE-L 0.3978</title></circle>
+            <circle class="pt" style="animation-delay: 750ms" cx="360" cy="113" r="7" fill="#64748B"><title>GTrans: 1.000 pasangan, ROUGE-L 0.6437</title></circle>
+            <circle class="pt" style="fill: var(--primary); animation-delay: 1000ms" cx="550" cy="73" r="9"><title>Hybrid: 1.633 pasangan, ROUGE-L 0.7976</title></circle>
+          </g>
+          <g class="pt" style="fill: var(--ink); animation-delay: 1100ms" font-size="13">
+            <text x="262" y="196">Murni 0.3978</text>
+            <text x="372" y="132">GTrans 0.6437</text>
+            <text x="550" y="101" text-anchor="middle" font-weight="500">Hybrid 0.7976</text>
+          </g>
+        </svg>
+      </figure>
+
+      <aside class="sr" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px">
+          <h2 style="margin: 0 0 14px; font-family: 'Schibsted Grotesk', sans-serif; font-size: 18px">Pengaturan eksperimen</h2>
+          <dl style="margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; font-size: 15px">
+            <dt style="color: var(--muted)">Model</dt><dd style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px">google/mt5-small</dd>
+            <dt style="color: var(--muted)">Epoch</dt><dd style="margin: 0">8, early stopping (patience 2) tidak terpicu</dd>
+            <dt style="color: var(--muted)">Pembagian</dt><dd style="margin: 0">90% latih, 10% validasi</dd>
+            <dt style="color: var(--muted)">Data uji</dt><dd style="margin: 0">70 cerita Jawa murni</dd>
+            <dt style="color: var(--muted)">Referensi</dt><dd style="margin: 0">Lead-2 (dua kalimat awal)</dd>
+            <dt style="color: var(--muted)">Input / output</dt><dd style="margin: 0">384 / 128 token, prefix "ringkas: "</dd>
+            <dt style="color: var(--muted)">Optimasi</dt><dd style="margin: 0">LR 1e-4, batch efektif 16 (1 × 16 akumulasi)</dd>
+            <dt style="color: var(--muted)">Dekode</dt><dd style="margin: 0">beam 4, no_repeat_ngram 3</dd>
+            <dt style="color: var(--muted)">Perangkat</dt><dd style="margin: 0">Google Colab, GPU T4, fp32</dd>
+            <dt style="color: var(--muted)">Metrik</dt><dd style="margin: 0">ROUGE-1, ROUGE-2, ROUGE-L</dd>
+          </dl>
+        </div>
+        <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 24px">
+          <h2 style="margin: 0 0 8px; font-family: 'Schibsted Grotesk', sans-serif; font-size: 18px; color: var(--ink-2)">Catatan keterbatasan</h2>
+          <p style="margin: 0; font-size: 15px; color: var(--ink-2)">Referensi berupa lead-2, dan baseline lead-2 tanpa model (0.867) mengalahkan semua model. Skor ROUGE di sini mengukur kemiripan dengan lead-2, bukan kualitas ringkasan. Evaluasi manusia dan referensi buatan manusia dibutuhkan.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="sr" aria-labelledby="kurva" style="background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+        <div>
+          <h2 id="kurva" style="margin: 0; font-family: 'Schibsted Grotesk', sans-serif; font-size: 22px">Kurva pelatihan per epoch</h2>
+          <p style="margin: 4px 0 0; font-size: 14px; color: var(--muted)">Diukur pada data validasi tiap akhir epoch. Murni 64, GTrans 100, Hybrid 164 dokumen validasi.</p>
+        </div>
+        <div role="tablist" aria-label="Metrik kurva" style="position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: var(--sel); border-radius: 10px; min-width: 260px">
+          <div aria-hidden="true" style="{{thumbStyle}}"></div>
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+            <button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="position: relative; min-height: 40px; border: 0; border-radius: 7px; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); cursor: pointer">{{t.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <sc-if value="{{isRouge}}" hint-placeholder-val="{{true}}">
+<svg viewBox="0 0 680 330" role="img" aria-label="ROUGE-L validasi per epoch untuk tiga skenario" style="width: 100%; height: auto; font-family: 'IBM Plex Mono', monospace">
+<g stroke-width="1" style="stroke: var(--border-soft)">
+<line x1="60" y1="20" x2="600" y2="20"></line>
+<line x1="60" y1="85" x2="600" y2="85"></line>
+<line x1="60" y1="150" x2="600" y2="150"></line>
+<line x1="60" y1="215" x2="600" y2="215"></line>
+</g><line x1="60" y1="280" x2="600" y2="280" stroke="#94A3B8"></line><g font-size="12" text-anchor="end" style="fill: var(--muted)">
+<text x="50" y="24">1.00</text>
+<text x="50" y="89">0.75</text>
+<text x="50" y="154">0.50</text>
+<text x="50" y="219">0.25</text>
+<text x="50" y="284">0</text>
+</g><g font-size="12" text-anchor="middle" style="fill: var(--muted)">
+<text x="60" y="302">1</text>
+<text x="137" y="302">2</text>
+<text x="214" y="302">3</text>
+<text x="291" y="302">4</text>
+<text x="369" y="302">5</text>
+<text x="446" y="302">6</text>
+<text x="523" y="302">7</text>
+<text x="600" y="302">8</text>
+</g><text x="330" y="324" font-size="12" text-anchor="middle" font-family="Atkinson Hyperlegible, sans-serif" style="fill: var(--muted)">epoch</text>
+<polyline class="pt" style="animation-delay: 0ms" points="60,272.8 137,267.7 214,251.5 291,229.7 369,212.0 446,177.8 523,174.5 600,168.7" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 5" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="animation-delay: 600ms" cx="60" cy="272.8" r="5" fill="#94A3B8"><title>Murni, epoch 1: 0.0278</title></circle>
+<circle class="pt" style="animation-delay: 660ms" cx="137" cy="267.7" r="5" fill="#94A3B8"><title>Murni, epoch 2: 0.0472</title></circle>
+<circle class="pt" style="animation-delay: 720ms" cx="214" cy="251.5" r="5" fill="#94A3B8"><title>Murni, epoch 3: 0.1097</title></circle>
+<circle class="pt" style="animation-delay: 780ms" cx="291" cy="229.7" r="5" fill="#94A3B8"><title>Murni, epoch 4: 0.1936</title></circle>
+<circle class="pt" style="animation-delay: 840ms" cx="369" cy="212.0" r="5" fill="#94A3B8"><title>Murni, epoch 5: 0.2617</title></circle>
+<circle class="pt" style="animation-delay: 900ms" cx="446" cy="177.8" r="5" fill="#94A3B8"><title>Murni, epoch 6: 0.3930</title></circle>
+<circle class="pt" style="animation-delay: 960ms" cx="523" cy="174.5" r="5" fill="#94A3B8"><title>Murni, epoch 7: 0.4058</title></circle>
+<circle class="pt" style="animation-delay: 1020ms" cx="600" cy="168.7" r="5" fill="#94A3B8"><title>Murni, epoch 8: 0.4280</title></circle>
+</g>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="173" font-size="13">Murni</text>
+<polyline class="line" style="animation-delay: 150ms" points="60,269.2 137,209.9 214,133.6 291,123.2 369,115.9 446,108.3 523,109.6 600,104.7" fill="none" stroke="#64748B" stroke-width="2" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="animation-delay: 600ms" cx="60" cy="269.2" r="5" fill="#64748B"><title>GTrans, epoch 1: 0.0414</title></circle>
+<circle class="pt" style="animation-delay: 660ms" cx="137" cy="209.9" r="5" fill="#64748B"><title>GTrans, epoch 2: 0.2696</title></circle>
+<circle class="pt" style="animation-delay: 720ms" cx="214" cy="133.6" r="5" fill="#64748B"><title>GTrans, epoch 3: 0.5629</title></circle>
+<circle class="pt" style="animation-delay: 780ms" cx="291" cy="123.2" r="5" fill="#64748B"><title>GTrans, epoch 4: 0.6029</title></circle>
+<circle class="pt" style="animation-delay: 840ms" cx="369" cy="115.9" r="5" fill="#64748B"><title>GTrans, epoch 5: 0.6313</title></circle>
+<circle class="pt" style="animation-delay: 900ms" cx="446" cy="108.3" r="5" fill="#64748B"><title>GTrans, epoch 6: 0.6605</title></circle>
+<circle class="pt" style="animation-delay: 960ms" cx="523" cy="109.6" r="5" fill="#64748B"><title>GTrans, epoch 7: 0.6555</title></circle>
+<circle class="pt" style="animation-delay: 1020ms" cx="600" cy="104.7" r="5" fill="#64748B"><title>GTrans, epoch 8: 0.6744</title></circle>
+</g>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="109" font-size="13">GTrans</text>
+<polyline class="line" style="stroke: var(--primary); animation-delay: 300ms" points="60,226.0 137,118.5 214,96.0 291,87.6 369,77.6 446,65.3 523,59.8 600,58.5" fill="none" stroke-width="2" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="fill: var(--primary); animation-delay: 600ms" cx="60" cy="226.0" r="5"><title>Hybrid, epoch 1: 0.2078</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 660ms" cx="137" cy="118.5" r="5"><title>Hybrid, epoch 2: 0.6210</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 720ms" cx="214" cy="96.0" r="5"><title>Hybrid, epoch 3: 0.7077</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 780ms" cx="291" cy="87.6" r="5"><title>Hybrid, epoch 4: 0.7400</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 840ms" cx="369" cy="77.6" r="5"><title>Hybrid, epoch 5: 0.7784</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 900ms" cx="446" cy="65.3" r="5"><title>Hybrid, epoch 6: 0.8257</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 960ms" cx="523" cy="59.8" r="5"><title>Hybrid, epoch 7: 0.8470</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 1020ms" cx="600" cy="58.5" r="5"><title>Hybrid, epoch 8: 0.8521</title></circle>
+</g>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="62" font-size="13">Hybrid</text>
+</svg>
+      </sc-if>
+      <sc-if value="{{isLoss}}" hint-placeholder-val="{{false}}">
+<svg viewBox="0 0 680 330" role="img" aria-label="Loss validasi per epoch untuk tiga skenario" style="width: 100%; height: auto; font-family: 'IBM Plex Mono', monospace">
+<g stroke-width="1" style="stroke: var(--border-soft)">
+<line x1="60" y1="20" x2="600" y2="20"></line>
+<line x1="60" y1="85" x2="600" y2="85"></line>
+<line x1="60" y1="150" x2="600" y2="150"></line>
+<line x1="60" y1="215" x2="600" y2="215"></line>
+</g><line x1="60" y1="280" x2="600" y2="280" stroke="#94A3B8"></line><g font-size="12" text-anchor="end" style="fill: var(--muted)">
+<text x="50" y="24">1.00</text>
+<text x="50" y="89">0.75</text>
+<text x="50" y="154">0.50</text>
+<text x="50" y="219">0.25</text>
+<text x="50" y="284">0</text>
+</g><g font-size="12" text-anchor="middle" style="fill: var(--muted)">
+<text x="60" y="302">1</text>
+<text x="137" y="302">2</text>
+<text x="214" y="302">3</text>
+<text x="291" y="302">4</text>
+<text x="369" y="302">5</text>
+<text x="446" y="302">6</text>
+<text x="523" y="302">7</text>
+<text x="600" y="302">8</text>
+</g><text x="330" y="324" font-size="12" text-anchor="middle" font-family="Atkinson Hyperlegible, sans-serif" style="fill: var(--muted)">epoch</text>
+<polyline class="pt" style="animation-delay: 0ms" points="60,20.0 137,20.0 214,34.6 291,112.0 369,133.4 446,153.4 523,161.4 600,164.3" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 5" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="animation-delay: 600ms" cx="60" cy="20.0" r="5" fill="#94A3B8"><title>Murni, epoch 1: 6.881</title></circle>
+<circle class="pt" style="animation-delay: 660ms" cx="137" cy="20.0" r="5" fill="#94A3B8"><title>Murni, epoch 2: 2.811</title></circle>
+<circle class="pt" style="animation-delay: 720ms" cx="214" cy="34.6" r="5" fill="#94A3B8"><title>Murni, epoch 3: 0.944</title></circle>
+<circle class="pt" style="animation-delay: 780ms" cx="291" cy="112.0" r="5" fill="#94A3B8"><title>Murni, epoch 4: 0.646</title></circle>
+<circle class="pt" style="animation-delay: 840ms" cx="369" cy="133.4" r="5" fill="#94A3B8"><title>Murni, epoch 5: 0.564</title></circle>
+<circle class="pt" style="animation-delay: 900ms" cx="446" cy="153.4" r="5" fill="#94A3B8"><title>Murni, epoch 6: 0.487</title></circle>
+<circle class="pt" style="animation-delay: 960ms" cx="523" cy="161.4" r="5" fill="#94A3B8"><title>Murni, epoch 7: 0.456</title></circle>
+<circle class="pt" style="animation-delay: 1020ms" cx="600" cy="164.3" r="5" fill="#94A3B8"><title>Murni, epoch 8: 0.445</title></circle>
+</g>
+<text class="pt" style="fill: var(--muted); animation-delay: 900ms" x="68" y="24" font-size="11">Murni 6.88 ↑</text>
+<text class="pt" style="fill: var(--muted); animation-delay: 900ms" x="145" y="24" font-size="11">Murni 2.81 ↑</text>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="158" font-size="13">Murni</text>
+<polyline class="line" style="animation-delay: 150ms" points="60,20.0 137,81.4 214,140.6 291,162.0 369,175.7 446,184.1 523,188.7 600,190.8" fill="none" stroke="#64748B" stroke-width="2" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="animation-delay: 600ms" cx="60" cy="20.0" r="5" fill="#64748B"><title>GTrans, epoch 1: 2.918</title></circle>
+<circle class="pt" style="animation-delay: 660ms" cx="137" cy="81.4" r="5" fill="#64748B"><title>GTrans, epoch 2: 0.764</title></circle>
+<circle class="pt" style="animation-delay: 720ms" cx="214" cy="140.6" r="5" fill="#64748B"><title>GTrans, epoch 3: 0.536</title></circle>
+<circle class="pt" style="animation-delay: 780ms" cx="291" cy="162.0" r="5" fill="#64748B"><title>GTrans, epoch 4: 0.454</title></circle>
+<circle class="pt" style="animation-delay: 840ms" cx="369" cy="175.7" r="5" fill="#64748B"><title>GTrans, epoch 5: 0.401</title></circle>
+<circle class="pt" style="animation-delay: 900ms" cx="446" cy="184.1" r="5" fill="#64748B"><title>GTrans, epoch 6: 0.369</title></circle>
+<circle class="pt" style="animation-delay: 960ms" cx="523" cy="188.7" r="5" fill="#64748B"><title>GTrans, epoch 7: 0.351</title></circle>
+<circle class="pt" style="animation-delay: 1020ms" cx="600" cy="190.8" r="5" fill="#64748B"><title>GTrans, epoch 8: 0.343</title></circle>
+</g>
+<text class="pt" style="fill: var(--muted); animation-delay: 900ms" x="68" y="36" font-size="11">GTrans 2.92 ↑</text>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="195" font-size="13">GTrans</text>
+<polyline class="line" style="stroke: var(--primary); animation-delay: 300ms" points="60,75.1 137,171.1 214,202.8 291,215.3 369,222.8 446,225.7 523,227.0 600,228.5" fill="none" stroke-width="2" stroke-linejoin="round"></polyline>
+<g stroke-width="2" style="stroke: var(--surface)">
+<circle class="pt" style="fill: var(--primary); animation-delay: 600ms" cx="60" cy="75.1" r="5"><title>Hybrid, epoch 1: 0.788</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 660ms" cx="137" cy="171.1" r="5"><title>Hybrid, epoch 2: 0.419</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 720ms" cx="214" cy="202.8" r="5"><title>Hybrid, epoch 3: 0.297</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 780ms" cx="291" cy="215.3" r="5"><title>Hybrid, epoch 4: 0.249</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 840ms" cx="369" cy="222.8" r="5"><title>Hybrid, epoch 5: 0.220</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 900ms" cx="446" cy="225.7" r="5"><title>Hybrid, epoch 6: 0.209</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 960ms" cx="523" cy="227.0" r="5"><title>Hybrid, epoch 7: 0.204</title></circle>
+<circle class="pt" style="fill: var(--primary); animation-delay: 1020ms" cx="600" cy="228.5" r="5"><title>Hybrid, epoch 8: 0.198</title></circle>
+</g>
+<text class="pt" style="fill: var(--ink); animation-delay: 1100ms" x="612" y="243" font-size="13">Hybrid</text>
+</svg>
+        <p style="margin: 0; font-size: 13px; color: var(--muted)">Sumbu dipotong di 1,0. Nilai di atasnya ditandai panah: loss awal Murni dan GTrans masih tinggi di epoch 1 sampai 2.</p>
+      </sc-if>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted)">
+        <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 5"></line></svg>Murni</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="#64748B" stroke-width="2"></line></svg>GTrans</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px"><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke-width="2" style="stroke: var(--primary)"></line></svg>Hybrid</span>
+        <span>Waktu latih: Murni 36 menit, GTrans 51 menit, Hybrid 70 menit.</span>
+      </div>
+    </section>
+
+    <section class="sr" aria-labelledby="abstraktif" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+      <div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px; justify-content: center">
+        <h2 id="abstraktif" style="margin: 0; font-family: 'Schibsted Grotesk', sans-serif; font-size: 26px; letter-spacing: -0.02em">Seberapa abstraktif ringkasannya?</h2>
+        <p style="margin: 0; color: var(--muted)">Persentase n-gram di ringkasan yang tidak ada di cerita asli. Makin kecil, makin mirip salinan. Referensi lead-2 sendiri 0% untuk 1-gram.</p>
+        <p style="margin: 0; color: var(--muted); font-size: 14px">Kata baru Hybrid sebagian besar adalah artefak "Aku" di awal kalimat (50 dari 70 keluaran).</p>
+      </div>
+      <div style="flex: 2 1 520px; min-width: 0; overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--surface)">
+        <table style="width: 100%; border-collapse: collapse; font-size: 15px; min-width: 440px">
+          <caption style="text-align: left; padding: 20px 24px 8px; font-family: 'Schibsted Grotesk', sans-serif; font-weight: 700; font-size: 18px">N-gram baru di keluaran (rata-rata 70 dokumen)</caption>
+          <thead><tr style="text-align: left; color: var(--muted); font-size: 13px"><th scope="col" style="padding: 10px 24px">Skenario</th><th scope="col" style="padding: 10px 12px; text-align: right">1-gram</th><th scope="col" style="padding: 10px 12px; text-align: right">2-gram</th><th scope="col" style="padding: 10px 24px; text-align: right">3-gram</th></tr></thead>
+          <tbody style="font-family: 'IBM Plex Mono', monospace">
+            <tr style="border-top: 1px solid var(--border-soft)"><td style="padding: 12px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">Murni</td><td style="padding: 12px; text-align: right">0.9%</td><td style="padding: 12px; text-align: right">2.3%</td><td style="padding: 12px 24px; text-align: right">5.7%</td></tr>
+            <tr style="border-top: 1px solid var(--border-soft)"><td style="padding: 12px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">GTrans</td><td style="padding: 12px; text-align: right">1.5%</td><td style="padding: 12px; text-align: right">2.7%</td><td style="padding: 12px 24px; text-align: right">4.1%</td></tr>
+            <tr style="border-top: 1px solid var(--border-soft)"><td style="padding: 12px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">Hybrid</td><td style="padding: 12px; text-align: right">3.0%</td><td style="padding: 12px; text-align: right">6.0%</td><td style="padding: 12px 24px; text-align: right">7.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sr" style="overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--surface)">
+      <table style="width: 100%; border-collapse: collapse; font-size: 15px; min-width: 760px">
+        <caption style="text-align: left; padding: 22px 24px 8px; font-family: 'Schibsted Grotesk', sans-serif; font-weight: 700; font-size: 18px">Rincian skenario</caption>
+        <thead>
+          <tr style="text-align: left; color: var(--muted); font-size: 13px">
+            <th scope="col" style="padding: 10px 24px; font-weight: 700">Skenario</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 700">Sumber data</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 700; text-align: right">Pasangan</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 700; text-align: right">ROUGE-1</th>
+              <th scope="col" style="padding: 10px 12px; font-weight: 700; text-align: right">ROUGE-2</th>
+              <th scope="col" style="padding: 10px 12px; font-weight: 700; text-align: right">Selisih dari murni</th>
+            <th scope="col" style="padding: 10px 24px; font-weight: 700; text-align: right">ROUGE-L</th>
+          </tr>
+        </thead>
+        <tbody style="font-family: 'IBM Plex Mono', monospace">
+          <tr style="border-top: 1px solid var(--border-soft)"><td style="padding: 14px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">Murni</td><td style="padding: 14px 12px; font-family: 'Atkinson Hyperlegible', sans-serif">Cerita Jawa asli</td><td style="padding: 14px 12px; text-align: right">633</td><td style="padding: 14px 12px; text-align: right">0.4035</td><td style="padding: 14px 12px; text-align: right">0.3662</td><td style="padding: 14px 12px; text-align: right; color: var(--muted)">0</td><td style="padding: 14px 24px; text-align: right">0.3978</td></tr>
+          <tr style="border-top: 1px solid var(--border-soft)"><td style="padding: 14px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">GTrans</td><td style="padding: 14px 12px; font-family: 'Atkinson Hyperlegible', sans-serif">Terjemahan Google</td><td style="padding: 14px 12px; text-align: right">1.000</td><td style="padding: 14px 12px; text-align: right">0.6457</td><td style="padding: 14px 12px; text-align: right">0.6188</td><td style="padding: 14px 12px; text-align: right">+0.2459</td><td style="padding: 14px 24px; text-align: right">0.6437</td></tr>
+          <tr style="border-top: 1px solid var(--border-soft); background: var(--bg)"><td style="padding: 14px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700">Hybrid</td><td style="padding: 14px 12px; font-family: 'Atkinson Hyperlegible', sans-serif">Gabungan keduanya</td><td style="padding: 14px 12px; text-align: right">1.633</td><td style="padding: 14px 12px; text-align: right">0.8029</td><td style="padding: 14px 12px; text-align: right">0.7745</td><td style="padding: 14px 12px; text-align: right">+0.3998</td><td style="padding: 14px 24px; text-align: right; color: var(--primary); font-weight: 500">0.7976</td></tr>
+        <tr style="border-top: 2px dashed var(--border); background: var(--surface-2)"><td style="padding: 14px 24px; font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700; color: var(--ink-2)">Baseline lead-2</td><td style="padding: 14px 12px; font-family: 'Atkinson Hyperlegible', sans-serif; color: var(--ink-2)">Dua kalimat pertama, tanpa model</td><td style="padding: 14px 12px; text-align: right">0</td><td style="padding: 14px 12px; text-align: right">-</td><td style="padding: 14px 12px; text-align: right">-</td><td style="padding: 14px 12px; text-align: right">+0.4692</td><td style="padding: 14px 24px; text-align: right; color: var(--ink-2); font-weight: 500">0.867</td></tr>
+          </tbody>
+      </table>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { theme: (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light', metric: 'rouge' }; }
+  renderVals() {
+    const tabs = [{ id: 'rouge', label: 'ROUGE-L' }, { id: 'loss', label: 'Loss' }];
+    const idx = tabs.findIndex((t) => t.id === this.state.metric);
+    return {
+      theme: this.state.theme,
+      isDark: this.state.theme === 'dark',
+      isLight: this.state.theme !== 'dark',
+      themeLabel: this.state.theme === 'dark' ? 'Mode terang / Light mode' : 'Mode gelap / Dark mode',
+      toggleTheme: () => this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' }),
+      tabs: tabs.map((t) => ({ ...t, selected: t.id === this.state.metric ? 'true' : 'false', pick: () => this.setState({ metric: t.id }) })),
+      thumbStyle: 'position: absolute; top: 4px; left: 4px; width: calc((100% - 8px) / 2); height: calc(100% - 8px); border-radius: 7px; background: var(--surface); box-shadow: 0 1px 3px rgba(19,41,75,0.2); transition: transform 300ms cubic-bezier(.16,1,.3,1); transform: translateX(' + (idx * 100) + '%)',
+      isRouge: this.state.metric === 'rouge',
+      isLoss: this.state.metric === 'loss'
+    };
+  }
+}
+</script>
+</body>
+</html>
