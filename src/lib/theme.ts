@@ -21,7 +21,10 @@ export function systemPrefersDark(): boolean {
 
 // ponytail: the system preference is read once at load; a system theme change mid-session is not tracked
 export function useTheme(): { theme: Theme; toggle: () => void } {
-  const [theme, setTheme] = useState<Theme>(() => resolveTheme(readStored(STORAGE_KEY), systemPrefersDark()))
+  // the attribute covers a remount (page change) when storage is unavailable
+  const [theme, setTheme] = useState<Theme>(() =>
+    resolveTheme(readStored(STORAGE_KEY) ?? document.documentElement.dataset.theme ?? null, systemPrefersDark()),
+  )
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme

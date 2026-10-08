@@ -24,7 +24,7 @@ src/
   data/                     docs.json, types.ts, results.ts (sumber angka)
   i18n/                     id.ts (sumber tipe Dict), en.ts, index.ts (useLang)
   lib/                      fungsi murni + hook kecil: lang, route, theme, chart, shuffle, words
-  components/               Header, Footer, KawungBand, Hero, Summarizer, Findings, CaseSteps,
+  components/               Header, Masthead, Footer, Hero, Summarizer, Findings, CaseSteps,
                             ScoreCards, TrainingChart, CurveChart, NgramTable, ScenarioTable, ConfigList
   pages/                    DemoPage, ResultsPage
 docs/                       dokumen proyek; docs/design = salinan desain kanvas
