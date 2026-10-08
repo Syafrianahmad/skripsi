@@ -86,6 +86,88 @@ export const id = {
       },
     ],
   },
+  results: {
+    title: 'Detail eksperimen',
+    intro:
+      'Lampiran untuk halaman utama: skor tiap skenario dibanding baseline, kurva pelatihan, tingkat abstraktif, dan konfigurasi lengkap.',
+    scoresLabel: 'Ringkasan skor',
+    pairsCount: (n: string) => `${n} pasangan`,
+    pairsUnit: 'pasangan',
+    startingPoint: 'ROUGE-L, titik awal',
+    gainFromMurni: (pct: string) => `+${pct}% dari murni`,
+    bestGain: (pct: string) => `+${pct}% dari murni, terbaik di antara model`,
+    baselineName: 'Baseline lead-2',
+    noModel: 'tanpa model',
+    baselineNote: 'Dua kalimat pertama, tanpa filter',
+    training: {
+      title: 'Makin banyak data latih, makin tinggi ROUGE-L',
+      subtitle: 'Sumbu X: jumlah pasangan latih. Sumbu Y: ROUGE-L pada 70 dokumen uji.',
+      xAxis: 'pasangan data latih',
+      baselineLabel: (score: string) => `Baseline lead-2, tanpa model: ${score}`,
+      alt: (points: string) => `Grafik ROUGE-L terhadap jumlah data latih: ${points}`,
+    },
+    config: {
+      title: 'Pengaturan eksperimen',
+      model: 'Model',
+      epochs: 'Epoch',
+      split: 'Pembagian',
+      test: 'Data uji',
+      reference: 'Referensi',
+      io: 'Input / output',
+      optimizer: 'Optimasi',
+      decoding: 'Dekode',
+      hardware: 'Perangkat',
+      metrics: 'Metrik',
+      epochsValue: (n: number, patience: number) => `${n}, early stopping (patience ${patience}) tidak terpicu`,
+      splitValue: (train: number) => `${train}% latih, ${100 - train}% validasi`,
+      testValue: (n: number) => `${n} cerita Jawa murni`,
+      referenceValue: 'Lead-2 (dua kalimat awal)',
+      ioValue: (inTokens: number, outTokens: number, prefix: string) =>
+        `${inTokens} / ${outTokens} token, prefix "${prefix}"`,
+      optimizerValue: (lr: string, batch: number, accum: number) =>
+        `LR ${lr}, batch efektif ${batch * accum} (${batch} × ${accum} akumulasi)`,
+      decodingValue: (beams: number, noRepeat: number) => `beam ${beams}, no_repeat_ngram ${noRepeat}`,
+    },
+    limitations: {
+      title: 'Catatan keterbatasan',
+      body: (baseline: string) =>
+        `Referensi berupa lead-2, dan baseline lead-2 tanpa model (${baseline}) mengalahkan semua model. Skor ROUGE di sini mengukur kemiripan dengan lead-2, bukan kualitas ringkasan. Evaluasi manusia dan referensi buatan manusia dibutuhkan.`,
+    },
+    curve: {
+      title: 'Kurva pelatihan per epoch',
+      subtitle: (murni: number, gtrans: number, hybrid: number) =>
+        `Diukur pada data validasi tiap akhir epoch. Murni ${murni}, GTrans ${gtrans}, Hybrid ${hybrid} dokumen validasi.`,
+      tabsLabel: 'Metrik kurva',
+      xAxis: 'epoch',
+      rougeAlt: 'ROUGE-L validasi per epoch untuk tiga skenario',
+      lossAlt: 'Loss validasi per epoch untuk tiga skenario',
+      clipNote:
+        'Sumbu dipotong di 1,0. Nilai di atasnya ditandai panah: loss awal Murni dan GTrans masih tinggi di epoch 1 sampai 2.',
+      trainTime: (murni: number, gtrans: number, hybrid: number) =>
+        `Waktu latih: Murni ${murni} menit, GTrans ${gtrans} menit, Hybrid ${hybrid} menit.`,
+      pointTitle: (model: string, epoch: number, value: string) => `${model}, epoch ${epoch}: ${value}`,
+    },
+    abstractive: {
+      title: 'Seberapa abstraktif ringkasannya?',
+      body: 'Persentase n-gram di ringkasan yang tidak ada di cerita asli. Makin kecil, makin mirip salinan. Referensi lead-2 sendiri 0% untuk 1-gram.',
+      note: (aku: number, total: number) =>
+        `Kata baru Hybrid sebagian besar adalah artefak "Aku" di awal kalimat (${aku} dari ${total} keluaran).`,
+      caption: 'N-gram baru di keluaran (rata-rata 70 dokumen)',
+    },
+    scenarios: {
+      caption: 'Rincian skenario',
+      scenario: 'Skenario',
+      source: 'Sumber data',
+      pairs: 'Pasangan',
+      delta: 'Selisih dari murni',
+      sources: {
+        murni: 'Cerita Jawa asli',
+        gtrans: 'Terjemahan Google',
+        hybrid: 'Gabungan keduanya',
+        baseline: 'Dua kalimat pertama, tanpa model',
+      },
+    },
+  },
   footer: {
     affil: 'Teknik Informatika, UIN Maulana Malik Ibrahim Malang',
     journal: 'Artikel jurnal dalam proses (MATICS)',

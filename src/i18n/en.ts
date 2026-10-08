@@ -85,6 +85,87 @@ export const en: Dict = {
       },
     ],
   },
+  results: {
+    title: 'Experiment details',
+    intro:
+      'Appendix to the main page: each scenario’s score against the baseline, training curves, abstractiveness, and the full configuration.',
+    scoresLabel: 'Score summary',
+    pairsCount: (n) => `${n} pairs`,
+    pairsUnit: 'pairs',
+    startingPoint: 'ROUGE-L, starting point',
+    gainFromMurni: (pct) => `+${pct}% over Murni`,
+    bestGain: (pct) => `+${pct}% over Murni, best of the models`,
+    baselineName: 'Lead-2 baseline',
+    noModel: 'no model',
+    baselineNote: 'First two sentences, no filter',
+    training: {
+      title: 'More training data, higher ROUGE-L',
+      subtitle: 'X axis: number of training pairs. Y axis: ROUGE-L on the 70 test documents.',
+      xAxis: 'training pairs',
+      baselineLabel: (score) => `Lead-2 baseline, no model: ${score}`,
+      alt: (points) => `ROUGE-L against training data size: ${points}`,
+    },
+    config: {
+      title: 'Experiment setup',
+      model: 'Model',
+      epochs: 'Epochs',
+      split: 'Split',
+      test: 'Test data',
+      reference: 'Reference',
+      io: 'Input / output',
+      optimizer: 'Optimization',
+      decoding: 'Decoding',
+      hardware: 'Hardware',
+      metrics: 'Metrics',
+      epochsValue: (n, patience) => `${n}, early stopping (patience ${patience}) never triggered`,
+      splitValue: (train) => `${train}% train, ${100 - train}% validation`,
+      testValue: (n) => `${n} pure Javanese stories`,
+      referenceValue: 'Lead-2 (first two sentences)',
+      ioValue: (inTokens, outTokens, prefix) => `${inTokens} / ${outTokens} tokens, prefix "${prefix}"`,
+      optimizerValue: (lr, batch, accum) =>
+        `LR ${lr}, effective batch ${batch * accum} (${batch} × ${accum} accumulation)`,
+      decodingValue: (beams, noRepeat) => `beam ${beams}, no_repeat_ngram ${noRepeat}`,
+    },
+    limitations: {
+      title: 'Limitations',
+      body: (baseline) =>
+        `The reference is lead-2, and the no-model lead-2 baseline (${baseline}) beats every model. ROUGE here measures similarity to lead-2, not summary quality. Human evaluation and human-written references are needed.`,
+    },
+    curve: {
+      title: 'Training curve per epoch',
+      subtitle: (murni, gtrans, hybrid) =>
+        `Measured on validation data at the end of each epoch. Murni ${murni}, GTrans ${gtrans}, Hybrid ${hybrid} validation documents.`,
+      tabsLabel: 'Curve metric',
+      xAxis: 'epoch',
+      rougeAlt: 'Validation ROUGE-L per epoch for the three scenarios',
+      lossAlt: 'Validation loss per epoch for the three scenarios',
+      clipNote:
+        'The axis is cut at 1.0. Values above it are marked with an arrow: Murni and GTrans start with high loss in epochs 1 and 2.',
+      trainTime: (murni, gtrans, hybrid) =>
+        `Training time: Murni ${murni} min, GTrans ${gtrans} min, Hybrid ${hybrid} min.`,
+      pointTitle: (model, epoch, value) => `${model}, epoch ${epoch}: ${value}`,
+    },
+    abstractive: {
+      title: 'How abstractive are the summaries?',
+      body: 'Share of summary n-grams that do not appear in the original story. Lower means closer to a copy. The lead-2 reference itself scores 0% for 1-grams.',
+      note: (aku, total) =>
+        `Most of Hybrid’s new words are the "Aku" artifact at the start of a sentence (${aku} of ${total} outputs).`,
+      caption: 'New n-grams in the output (average of 70 documents)',
+    },
+    scenarios: {
+      caption: 'Scenario breakdown',
+      scenario: 'Scenario',
+      source: 'Data source',
+      pairs: 'Pairs',
+      delta: 'Gain over Murni',
+      sources: {
+        murni: 'Original Javanese stories',
+        gtrans: 'Google translation',
+        hybrid: 'Both combined',
+        baseline: 'First two sentences, no model',
+      },
+    },
+  },
   footer: {
     affil: 'Informatics Engineering, UIN Maulana Malik Ibrahim Malang',
     journal: 'Journal article in progress (MATICS)',
