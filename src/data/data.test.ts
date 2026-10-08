@@ -5,6 +5,7 @@ import {
   EPOCH_LOSS,
   EPOCH_ROUGE,
   FEATURED_IDS,
+  FINDINGS,
   NGRAM_NEW,
   SCENARIOS,
 } from './results.ts'
@@ -38,6 +39,23 @@ describe('docs', () => {
         expect(d.out[m].parts.length).toBeGreaterThan(0)
       }
     }
+  })
+})
+
+// The "Temuan" cards quote these counts; they must match what is actually in the outputs.
+describe('findings match the stored outputs', () => {
+  const text = (d: (typeof DOCS)[number], m: (typeof MODELS)[number]) => d.out[m].parts.map((p) => p.t).join('')
+  const count = (pred: (d: (typeof DOCS)[number]) => boolean) => DOCS.filter(pred).length
+
+  it('counts sentinel tokens, "Aku" openings, and quoted openings', () => {
+    expect(count((d) => text(d, 'murni').includes('<extra_id_'))).toBe(FINDINGS.extraIdToken.murni)
+    expect(count((d) => text(d, 'gtrans').includes('<extra_id_'))).toBe(FINDINGS.extraIdToken.gtrans)
+    expect(count((d) => /^\s*Aku/i.test(text(d, 'hybrid')))).toBe(FINDINGS.akuOpening.hybrid)
+    expect(count((d) => /^\s*["“]/.test(text(d, 'hybrid')))).toBe(FINDINGS.akuOpening.quoted)
+  })
+
+  it('counts documents scoring below 0.5 per scenario', () => {
+    for (const m of MODELS) expect(count((d) => d.out[m].rl < 0.5)).toBe(FINDINGS.shortLead2[m])
   })
 })
 

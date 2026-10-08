@@ -1,18 +1,20 @@
+import { CaseSteps } from '../components/CaseSteps.tsx'
+import { Findings } from '../components/Findings.tsx'
+import { Hero } from '../components/Hero.tsx'
 import { Masthead } from '../components/Masthead.tsx'
-import { useLang } from '../i18n/useLang.ts'
+import { Summarizer } from '../components/Summarizer.tsx'
 
-// Hero, summarizer, findings, and case steps arrive in the next task.
 export function DemoPage() {
-  const { t } = useLang()
-
   return (
     <>
       <Masthead page="demo">
-        <section className="masthead-body container">
-          <h1>{t.hero.h1}</h1>
-        </section>
+        <Hero />
       </Masthead>
-      <main className="container" />
+      <main className="demo-main container">
+        <Summarizer />
+        <Findings />
+        <CaseSteps />
+      </main>
     </>
   )
 }
