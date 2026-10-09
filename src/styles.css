@@ -16,6 +16,10 @@
   --hl-bg: light-dark(#ffe4e6, rgba(244, 63, 94, 0.28));
   --hl-line: light-dark(#e11d48, #fb7185);
   --good: light-dark(#166534, #4ade80);
+  /* focus ring and chart series meet 3:1 against light surfaces (amber #f59e0b is only 2.15:1 on white) */
+  --focus: light-dark(#b45309, #f59e0b);
+  --series-murni: light-dark(#7b8aa0, #94a3b8);
+  --series-gtrans: #64748b;
 
   /* fixed across themes */
   --hero: #13294b;
@@ -57,8 +61,12 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+
+.masthead :focus-visible {
+  outline-color: var(--accent);
 }
 
 .container {
@@ -549,7 +557,7 @@ a {
 }
 
 .chip:has(input:focus-visible) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -1338,6 +1346,27 @@ mark.diff {
   border-top: 2px dashed var(--border);
   background: var(--surface-2);
   color: var(--ink-2);
+}
+
+/* Narrow screens: charts keep a readable minimum width and scroll inside their card */
+.chart-scroll {
+  overflow-x: auto;
+}
+
+.chart-scroll .chart {
+  min-width: 560px;
+}
+
+@media (max-width: 560px) {
+  .chart-card,
+  .side-card,
+  .tool-col {
+    padding: 20px;
+  }
+
+  .picker {
+    padding: 16px 20px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

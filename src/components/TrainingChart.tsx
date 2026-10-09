@@ -22,6 +22,7 @@ export function TrainingChart() {
         <h2>{c.title}</h2>
         <p>{c.subtitle}</p>
       </figcaption>
+      <div className="chart-scroll">
       <svg className="chart" viewBox="0 0 640 330" role="img" aria-label={c.alt(alt)}>
         <YAxis right={620} />
         <g className="chart-ticks" textAnchor="middle">
@@ -53,9 +54,8 @@ export function TrainingChart() {
             cx={p.x}
             cy={p.y}
             r={p.id === 'hybrid' ? 9 : 7}
-            fill={MODEL_COLOR[p.id]}
             strokeWidth="2"
-            style={{ stroke: 'var(--surface)', animationDelay: `${500 + i * 250}ms` }}
+            style={{ fill: MODEL_COLOR[p.id], stroke: 'var(--surface)', animationDelay: `${500 + i * 250}ms` }}
           >
             <title>{`${MODEL_LABEL[p.id]}: ${formatInt(p.pairs, lang)} ${t.results.pairsUnit}, ROUGE-L ${p.rougeL.toFixed(4)}`}</title>
           </circle>
@@ -74,6 +74,7 @@ export function TrainingChart() {
           )}
         </g>
       </svg>
+      </div>
     </figure>
   )
 }

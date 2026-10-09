@@ -4,7 +4,7 @@ import type { ModelId } from '../data/types.ts'
 export const MODEL_LABEL: Record<ModelId, string> = { murni: 'Murni', gtrans: 'GTrans', hybrid: 'Hybrid' }
 
 export const MODEL_COLOR: Record<ModelId, string> = {
-  murni: '#94a3b8',
-  gtrans: '#64748b',
+  murni: 'var(--series-murni)',
+  gtrans: 'var(--series-gtrans)',
   hybrid: 'var(--primary)',
 }

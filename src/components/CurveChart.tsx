@@ -63,6 +63,7 @@ export function CurveChart() {
       </div>
 
       <div id="curve-panel" role="tabpanel" aria-labelledby={`curve-tab-${metric}`}>
+        <div className="chart-scroll">
         <svg
           className="chart"
           viewBox="0 0 680 330"
@@ -92,8 +93,7 @@ export function CurveChart() {
                   strokeWidth="2"
                   strokeLinejoin="round"
                   strokeDasharray={dashed ? '6 5' : undefined}
-                  stroke={MODEL_COLOR[m]}
-                  style={{ animationDelay: `${mi * 150}ms` }}
+                  style={{ stroke: MODEL_COLOR[m], animationDelay: `${mi * 150}ms` }}
                   points={polyline(values.map((v, i) => [xEpoch(i + 1), yScore(v)]))}
                 />
                 {values.map((v, i) => (
@@ -103,9 +103,8 @@ export function CurveChart() {
                     cx={xEpoch(i + 1)}
                     cy={yScore(v)}
                     r="5"
-                    fill={MODEL_COLOR[m]}
                     strokeWidth="2"
-                    style={{ stroke: 'var(--surface)', animationDelay: `${600 + i * 60}ms` }}
+                    style={{ fill: MODEL_COLOR[m], stroke: 'var(--surface)', animationDelay: `${600 + i * 60}ms` }}
                   >
                     <title>{c.pointTitle(MODEL_LABEL[m], i + 1, fmt(v))}</title>
                   </circle>
@@ -132,6 +131,7 @@ export function CurveChart() {
             )
           })}
         </svg>
+        </div>
         {metric === 'loss' && <p className="chart-note">{c.clipNote}</p>}
       </div>
 
@@ -145,7 +145,7 @@ export function CurveChart() {
                 x2="22"
                 y2="3"
                 strokeWidth="2"
-                stroke={MODEL_COLOR[m]}
+                style={{ stroke: MODEL_COLOR[m] }}
                 strokeDasharray={m === 'murni' ? '6 5' : undefined}
               />
             </svg>
