@@ -4,8 +4,7 @@
 
 Ringkas Jawa is a static portfolio site for my undergraduate thesis on automatic summarization of Javanese-language stories. I fine-tuned `google/mt5-small` on three training sets (original Javanese, Google-translated, and both combined) and evaluated them on 70 held-out stories. The site shows the real model outputs side by side, the scores, the training curves, and an honest reading of the results: the reference summaries are the first two sentences of each story (lead-2), so the models mostly learned to copy, and the plain lead-2 baseline (ROUGE-L 0.867) still outscores the best model (Hybrid, 0.7976).
 
-> **Screenshot placeholder.** Add a capture of the demo page as `docs/screenshot.png`, then replace this note with:
-> `![Ringkas Jawa demo page](docs/screenshot.png)`
+![Ringkas Jawa demo page: hero with the before/after summary of test story #68, and the summarizer comparing the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
 
 ## Key features
 

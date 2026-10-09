@@ -18,6 +18,7 @@ Prinsip: **tes yang gagal jika logikanya salah, tanpa kerangka berlebih.** Situs
 | `lib/words.ts` | hitung kata; hero 46 → 29 |
 | `lib/format.ts` | pemisah ribuan per bahasa; persen kenaikan 61.8 / 100.5 |
 | `csp.ts` | meta CSP pertama di `<head>`; skrip inline lewat hash, tanpa `unsafe-inline`; `object-src 'none'`, `base-uri`, `form-action` |
+| `security.test.ts` | pindai `src/` dan `index.html`: tanpa API HTML mentah/`eval`, tautan tab baru ber-`noopener`, tanpa aset pihak ketiga, sourcemap mati, tanpa string mirip token |
 | `data/*.test.ts` | 70 dokumen, id unik, 5 featured bertag benar dan bertranslasi, tiga model per dokumen, skor di [0,1], nilai kunci hasil (Hybrid 0.7976 / 1.633, baseline > Hybrid) |
 
 Pola: tulis tes gagal dulu → implement → hijau. Satu file tes per modul, tanpa fixture rumit.

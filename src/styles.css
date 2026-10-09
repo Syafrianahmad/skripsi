@@ -356,8 +356,8 @@ a {
 }
 
 @keyframes grow {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
 }
 
 .rv {
@@ -492,20 +492,16 @@ a {
   color: #f1f5f9;
 }
 
+/* background (not ::before) so a sentence that wraps gets one highlight per line */
 .keep {
-  position: relative;
-}
-
-.keep::before {
-  content: '';
-  position: absolute;
-  inset: -1px -3px;
-  z-index: -1;
+  margin: 0 -3px;
+  padding: 1px 3px;
   border-radius: 4px;
-  background: rgba(251, 191, 36, 0.28);
-  transform-origin: left;
+  background: linear-gradient(rgba(251, 191, 36, 0.28), rgba(251, 191, 36, 0.28)) no-repeat;
+  background-size: 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   animation: grow 300ms var(--ease-out) both;
-  animation-delay: inherit;
 }
 
 .cut {
