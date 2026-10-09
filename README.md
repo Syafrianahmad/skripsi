@@ -68,7 +68,7 @@ Note:
 * Demo page and Experiment Details page are complete, in Indonesian and English, light and dark
 * Accessibility, contrast, performance, and security audit done (self-hosted fonts, strict Content-Security-Policy, no third-party requests)
 * 54 unit tests passing
-* Not deployed yet
+* Deploys to GitHub Pages automatically on every push to `main` (lint and tests must pass first); not live yet
 * Journal article based on this thesis (MATICS) is in progress
 
 ## Running Locally

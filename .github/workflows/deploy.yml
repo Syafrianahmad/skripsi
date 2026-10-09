@@ -1,0 +1,55 @@
+# Builds the site and publishes it to GitHub Pages on every push to main.
+# One-time setup in the repo: Settings > Pages > Build and deployment > Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# one deployment at a time; a newer push replaces a queued one but never cancels a running deploy
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+
+      - name: Build
+        run: |
+          # https://<owner>.github.io/<repo>/ : the site lives under the repo name
+          export VITE_SITE_ORIGIN="https://${GITHUB_REPOSITORY_OWNER,,}.github.io"
+          export BASE_PATH="/${GITHUB_REPOSITORY#*/}/"
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

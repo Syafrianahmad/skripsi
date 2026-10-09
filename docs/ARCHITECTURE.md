@@ -63,9 +63,10 @@ notebook (Colab) --salin verbatim--> src/data/{docs.json,results.ts}
 
 ## Build dan deploy
 
-1. `npm ci` → `npm run test` → `BASE_PATH=/<repo>/ npm run build` → unggah `dist/` sebagai artifact Pages.
-2. Push ke `main` memicu workflow; `develop` dipakai untuk kerja harian.
-3. Verifikasi setelah live: buka subpath, ganti bahasa/tema, refresh di `#/hasil`.
+1. Workflow `.github/workflows/deploy.yml`: `npm ci` → `npm run lint` → `npm run test` → build → unggah `dist/` sebagai artifact → `deploy-pages`. Lint atau tes gagal berarti tidak ada deploy.
+2. Build memakai dua variabel dari konteks GitHub: `BASE_PATH=/<nama-repo>/` dan `VITE_SITE_ORIGIN=https://<pemilik-repo>.github.io` (untuk `og:url` dan `og:image`). Mengganti nama repo atau akun tidak butuh perubahan kode; build lokal memakai default di `.env`.
+3. Push ke `main` memicu workflow; `develop` dipakai untuk kerja harian. Prasyarat sekali saja: Settings > Pages > Source: GitHub Actions.
+4. Verifikasi setelah live: buka subpath, ganti bahasa/tema, refresh di `#/hasil`. Sudah disimulasikan lokal dengan `BASE_PATH=/skripsi/` (semua aset, font, dan route berfungsi).
 
 ## Batas yang diketahui
 
