@@ -1,0 +1,11 @@
+# Weekly npm update PRs, dev dependencies grouped into one PR to keep the noise down.
+# Security alerts themselves are switched on in GitHub: Settings > Code security.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-dependencies:
+        dependency-type: development
