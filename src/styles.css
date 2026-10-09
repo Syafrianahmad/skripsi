@@ -694,6 +694,12 @@ a {
   color: var(--ink-2);
 }
 
+.source-line {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .ref-box {
   padding: 16px 18px;
   border: 1px solid var(--border);

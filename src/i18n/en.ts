@@ -33,7 +33,7 @@ export const en: Dict = {
     randomLabel: (docId, title) => `Random #${docId}: ${title}…`,
     storyLabel: 'Story excerpt',
     storyMeta: (docId, words, sentences) => `#${docId} · ${words} words · ${sentences} sentences`,
-    datasetSource: '[DATASET SOURCE]',
+    sourceLabel: 'Story source:',
     refLabel: 'Lead-2 reference (first two sentences)',
     translationLabel: 'Meaning (AI translation, unverified):',
     noTranslation: 'Translations are only available for the 5 featured stories.',
@@ -174,6 +174,7 @@ export const en: Dict = {
   footer: {
     affil: 'Informatics Engineering, UIN Maulana Malik Ibrahim Malang',
     journal: 'Journal article in progress (MATICS)',
-    source: 'Stories are shown as excerpts for research purposes.',
+    storiesFrom: 'Stories from',
+    source: 'The uploader states no license; stories are shown as excerpts for research purposes.',
   },
 }

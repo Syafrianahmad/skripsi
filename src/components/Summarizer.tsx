@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DOCS, FEATURED_IDS } from '../data/results.ts'
+import { DATASET, DOCS, FEATURED_IDS } from '../data/results.ts'
 import type { ModelId } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
 import { pickRandomId } from '../lib/shuffle.ts'
@@ -70,11 +70,18 @@ export function Summarizer() {
             <div className="story-head">
               <h2>{t.demo.storyLabel}</h2>
               <span className="meta">
-                {t.demo.storyMeta(doc.id, doc.words, doc.sentences)} · {t.demo.datasetSource}
+                {t.demo.storyMeta(doc.id, doc.words, doc.sentences)}
               </span>
             </div>
             <p className="excerpt" lang="jv">
               {doc.excerpt}
+            </p>
+            <p className="source-line">
+              {t.demo.sourceLabel}{' '}
+              <a href={DATASET.url} target="_blank" rel="noopener noreferrer">
+                {DATASET.name}
+              </a>{' '}
+              ({DATASET.author}, Kaggle)
             </p>
           </div>
           <div className="ref-box">

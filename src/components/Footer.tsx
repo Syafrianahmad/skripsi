@@ -1,3 +1,4 @@
+import { DATASET } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
 
 export function Footer() {
@@ -25,7 +26,13 @@ export function Footer() {
               GitHub
             </a>
           </div>
-          <span>{t.footer.source}</span>
+          <span>
+            {t.footer.storiesFrom}{' '}
+            <a href={DATASET.url} target="_blank" rel="noopener noreferrer">
+              {DATASET.name}
+            </a>{' '}
+            ({DATASET.author}, Kaggle). {t.footer.source}
+          </span>
         </div>
       </div>
     </footer>

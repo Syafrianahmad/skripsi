@@ -25,7 +25,7 @@ Situs ini statis: tanpa backend, akun, form, atau database. Risikonya kecil teta
 
 ## Kontrol konten
 
-- Dataset: sumber cerita belum diketahui. Sebelum menambah cerita baru, pastikan lisensi/izin penggunaan; sementara cuplikan pendek tampil dengan `[SUMBER DATASET]`.
+- Dataset: [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle). Lisensinya "Unknown", jadi tidak ada izin eksplisit untuk menyebarkan ulang. Mitigasi: kredit dan tautan tampil di bawah cuplikan dan di footer, teks hanya cuplikan untuk penelitian. Kalau pengunggah atau penulis cerita keberatan, batasi demo ke 5 cerita pilihan. Sebelum menambah cerita baru, pastikan lisensinya.
 - Cerita bisa memuat nama orang atau tempat nyata; tampilkan cuplikan seperlunya, jangan seluruh teks.
 - Jurnal MATICS belum terbit: jangan unggah naskah.
 

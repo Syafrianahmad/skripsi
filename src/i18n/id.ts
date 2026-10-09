@@ -34,7 +34,7 @@ export const id = {
     storyLabel: 'Cuplikan cerita',
     storyMeta: (docId: number, words: number, sentences: number) =>
       `#${docId} · ${words} kata · ${sentences} kalimat`,
-    datasetSource: '[SUMBER DATASET]',
+    sourceLabel: 'Sumber cerita:',
     refLabel: 'Referensi lead-2 (dua kalimat pertama)',
     translationLabel: 'Artinya (terjemahan AI, belum diverifikasi):',
     noTranslation: 'Terjemahan hanya tersedia untuk 5 cerita pilihan.',
@@ -177,7 +177,8 @@ export const id = {
   footer: {
     affil: 'Teknik Informatika, UIN Maulana Malik Ibrahim Malang',
     journal: 'Artikel jurnal dalam proses (MATICS)',
-    source: 'Cerita ditampilkan sebagai cuplikan untuk keperluan penelitian.',
+    storiesFrom: 'Cerita dari',
+    source: 'Pengunggah tidak mencantumkan lisensi; cerita ditampilkan sebagai cuplikan untuk keperluan penelitian.',
   },
 }
 

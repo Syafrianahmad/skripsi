@@ -28,7 +28,7 @@ export function Hero() {
   const [round, setRound] = useState(0)
 
   const stats = [
-    { value: hybridScore.toFixed(3), label: t.hero.statBest },
+    { value: hybridScore.toFixed(4), label: t.hero.statBest },
     { value: BASELINE.rougeL.toFixed(3), label: t.hero.statBaseline, accent: true },
     { value: `${Math.floor(100 - NGRAM_NEW.hybrid.oneGram)}%+`, label: t.hero.statCopied },
     { value: String(CONFIG.testDocs), label: t.hero.statDocs },

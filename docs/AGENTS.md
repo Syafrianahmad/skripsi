@@ -32,7 +32,7 @@ npm run preview    # uji bundle produksi
 
 1. **Git:** jangan jalankan perintah git yang mengubah repo (commit, push, merge, rebase, reset, branch, tag, stash). Berikan perintahnya dalam blok `bash`; Suiryu yang menjalankan. `status`, `log`, `diff`, `show` boleh. Jangan tambahkan `Co-Authored-By` di commit/PR.
 2. **Jangan ubah angka.** Skor, kurva, dan n-gram di `src/data/` berasal dari notebook; salin verbatim. Bila tampak salah, laporkan, jangan "perbaiki".
-3. **Narasi jujur.** Jangan menutupi bahwa baseline lead-2 (0.867) > Hybrid (0.797). Jangan menambah klaim, statistik, atau testimoni tanpa sumber.
+3. **Narasi jujur.** Jangan menutupi bahwa baseline lead-2 (0.867) > Hybrid (0.7976, selalu empat desimal). Jangan menambah klaim, statistik, atau testimoni tanpa sumber.
 4. **Privasi:** tanpa NIM, tahun lulus, atau data pribadi lain. Jurnal MATICS hanya label, tanpa PDF.
 5. **Tanpa dependensi runtime baru.** Dev dependency hanya dengan persetujuan; saat ini tambahan yang disetujui: `vitest`.
 6. **Teks UI hanya di `src/i18n/`** (ID dan EN selalu berpasangan, tipe `Dict` memaksa kuncinya sama). Tanpa em dash di teks.
@@ -55,5 +55,5 @@ npm run preview    # uji bundle produksi
 
 - Menambah backend, database, analitik, atau form.
 - Membuat fitur "model live" tanpa persetujuan.
-- Mengisi `[SUMBER DATASET]` dengan tebakan.
+- Menghapus kredit dataset (GPT2 Javanese Dataset, Kaggle, lisensi "Unknown") atau menambah cerita dari sumber lain tanpa mengecek lisensinya.
 - Menyentuh `dist/` atau `node_modules/` (bukan sumber).

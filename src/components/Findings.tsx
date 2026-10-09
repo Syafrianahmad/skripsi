@@ -80,7 +80,7 @@ export function Findings() {
 
       <div className="baseline sr">
         <div className="baseline-score">
-          {BASELINE.rougeL.toFixed(3)} &gt; {hybridScore.toFixed(3)}
+          {BASELINE.rougeL.toFixed(3)} &gt; {hybridScore.toFixed(4)}
           <small>{t.findings.baselineCaption}</small>
         </div>
         <p>{t.findings.baselineBody}</p>

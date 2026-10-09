@@ -5,6 +5,13 @@ import type { Doc, ModelId } from './types.ts'
 
 export const DOCS = docs as Doc[]
 
+/** Where the stories come from. The uploader states no license ("Unknown" on Kaggle), so credit it and show excerpts only. */
+export const DATASET = {
+  name: 'GPT2 Javanese Dataset',
+  author: 'Lutfi Andriyanto',
+  url: 'https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset',
+}
+
 /** Test stories shown as chips: best, best, mid, mid, worst. */
 export const FEATURED_IDS = [68, 40, 69, 60, 50] as const
 

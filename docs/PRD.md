@@ -39,11 +39,11 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 
 Situs tidak boleh terlihat lebih baik dari hasilnya.
 
-- Baseline lead-2 (dua kalimat pertama, tanpa model) ROUGE-L **0.867** > Hybrid **0.797**.
+- Baseline lead-2 (dua kalimat pertama, tanpa model) ROUGE-L **0.867** > Hybrid **0.7976** (ditulis empat desimal di semua tempat, sama dengan notebook).
 - Referensi adalah proksi lead-2, bukan ringkasan buatan manusia; skor mengukur kemiripan dengan lead-2.
 - N-gram baru 1-gram: Murni 0.9%, GTrans 1.5%, Hybrid 3.0% (sangat ekstraktif).
 - Artefak: `<extra_id_0>` muncul 70/70 (Murni) dan 67/70 (GTrans); "Aku" mengawali 50/70 keluaran Hybrid.
-- Sumber dataset cerita belum diketahui: tampilkan `[SUMBER DATASET]`.
+- Sumber cerita: [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle). Lisensi di Kaggle "Unknown", jadi kredit wajib tampil (di bawah cuplikan dan di footer) dan cerita hanya tampil sebagai cuplikan untuk penelitian.
 
 ## 5. Alur pengguna
 
@@ -72,14 +72,14 @@ DEMO (desktop 1440)
 |  ꦫꦶꦁꦏꦼꦱꦤ꧀                                                |
 |  Judul H1                       +-------------------+     |
 |  subjudul                       | sebelum -> sesudah|     |
-|  0.797 | 0.867 | 97%+ | 70      | 46 -> 29 kata     |     |
+|  0.7976 | 0.867 | 97%+ | 70     | 46 -> 29 kata     |     |
 +----------------------------------------------------------+
 |  +----------------------------------------------------+  |  kartu mengambang
 |  | Pilih cerita: (68)(40)(69)(60)(50) [Cerita acak]   |  |
 |  | Cuplikan + referensi lead-2 | Hybrid / GTrans /    |  |
 |  | + terjemahan AI             | Murni (bar + skor)   |  |
 |  +----------------------------------------------------+  |
-|  TEMUAN: 4 kartu + strip "0.867 > 0.797"                 |
+|  TEMUAN: 4 kartu + strip "0.867 > 0.7976"                |
 |  DI BALIK LAYAR: 5 baris judul | isi   [Lihat hasil ->]  |
 +----------------------------------------------------------+
 | Footer: nama, prodi, kampus, jurnal | LinkedIn  GitHub   |
@@ -109,7 +109,7 @@ tabel scroll horizontal di dalam kartu; tap target >= 44px.
 
 ## 9. Pertanyaan terbuka
 
-1. Sumber dataset cerita Jawa (menunggu Suiryu).
+1. ~~Sumber dataset cerita Jawa~~: terjawab 2026-10-09, GPT2 Javanese Dataset (Kaggle), lisensi "Unknown", kredit dicantumkan.
 2. Ganti nama repo ke `ringkas-jawa`? (berpengaruh ke URL Pages).
 3. Kapan model live ditambahkan, dan di mana dihosting?
 4. Notebook ke `research/` setelah path Drive dibersihkan.
