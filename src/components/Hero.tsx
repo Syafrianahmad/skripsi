@@ -48,7 +48,9 @@ export function Hero() {
             </span>
           ))}
         </div>
-        <h1 className="rv">{t.hero.h1}</h1>
+        <h1 className="rv" tabIndex={-1}>
+          {t.hero.h1}
+        </h1>
         <p className="hero-sub rv" style={{ animationDelay: '100ms' }}>
           {t.hero.sub}
         </p>

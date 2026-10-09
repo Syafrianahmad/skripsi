@@ -20,7 +20,8 @@ Tidak dipilih: Next.js/Laravel (tidak ada server), React Router (dua halaman), T
 ```
 src/
   main.tsx, App.tsx         mount; pilih halaman dari route
-  styles.css                token + gaya komponen
+  styles.css                token + @font-face + gaya komponen
+  fonts/                    woff2 self-host + licenses/ (SIL OFL)
   data/                     docs.json, types.ts, results.ts (sumber angka)
   i18n/                     id.ts (sumber tipe Dict), en.ts, index.ts (useLang)
   lib/                      fungsi murni + hook kecil: lang, route, theme, chart, shuffle, words
@@ -56,7 +57,9 @@ notebook (Colab) --salin verbatim--> src/data/{docs.json,results.ts}
 | Hero menghitung jumlah kata dari teks | desain menulis 30, hitungan benar 29 | angka tidak pernah basi |
 | `base` Vite dari `BASE_PATH` | nama repo bisa berubah (`ringkas-jawa`) | workflow mengisi dari `github.event.repository.name` |
 | Teks keluaran model dirender sebagai teks | berisi `<extra_id_0>`; React meng-escape | tidak pernah `dangerouslySetInnerHTML` |
-| Font dari Google Fonts | sama dengan desain, `display=swap` | permintaan pihak ketiga; self-host bila dipermasalahkan |
+| Font di-host sendiri (`src/fonts/`) | tanpa pihak ketiga, CSS tidak lagi diblokir origin lain, CSP bisa ketat | subset latin saja; Noto Sans Javanese di-subset (pyftsubset) ke glyph yang dipakai, 67 KB → 2.7 KB; lisensi OFL ikut di repo |
+| CSP lewat `<meta>` saat build (`csp.ts`) | GitHub Pages tidak bisa mengirim header | skrip inline harus di-hash (otomatis), `assetsInlineLimit: 0` |
+| Fokus pindah ke `<h1>`/bagian tujuan saat navigasi | pembaca layar tahu halamannya berganti | target diberi `tabIndex={-1}` |
 
 ## Build dan deploy
 

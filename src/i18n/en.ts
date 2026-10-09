@@ -1,6 +1,10 @@
 import type { Dict } from './id.ts'
 
 export const en: Dict = {
+  meta: {
+    demoTitle: 'Ringkas Jawa: Javanese story summarizer demo',
+    resultsTitle: 'Experiment details · Ringkas Jawa',
+  },
   nav: {
     demo: 'Demo',
     results: 'Experiment details',
@@ -33,6 +37,7 @@ export const en: Dict = {
     refLabel: 'Lead-2 reference (first two sentences)',
     translationLabel: 'Meaning (AI translation, unverified):',
     noTranslation: 'Translations are only available for the 5 featured stories.',
+    nowShowing: (docId, title) => `Showing story #${docId}: ${title}. Outputs of the three models updated.`,
     outputsTitle: 'Output of three models',
     highlightKey: 'red',
     highlightText: '= words not in the reference',

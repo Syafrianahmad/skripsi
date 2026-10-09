@@ -29,8 +29,10 @@ Sumber kebenaran visual: `docs/design/*.dc.html`. Dokumen ini merangkum token da
 | `--primary` | `#1E3A5F` | `#93C5FD` | tautan, seri Hybrid |
 | `--hl-bg` / `--hl-line` | `#FFE4E6` / `#E11D48` | `rgba(244,63,94,.28)` / `#FB7185` | sorot bagian yang beda dari referensi |
 | `--good` | `#166534` | `#4ADE80` | kenaikan positif |
+| `--focus` | `#B45309` | `#F59E0B` | cincin fokus (amber `#F59E0B` hanya 2.15:1 di atas putih) |
+| `--series-murni` | `#7B8AA0` | `#94A3B8` | seri grafik Murni (≥ 3:1 di atas permukaan) |
 
-Tetap (tidak berubah per tema): hero `#13294B`, teks hero `#FFFFFF`/`#CBD5E1`, aksen `#F59E0B` (fokus, logo) dan `#FBBF24` (angka kunci di hero), seri grafik Murni `#94A3B8` dan GTrans `#64748B`.
+Tetap (tidak berubah per tema): hero `#13294B`, teks hero `#FFFFFF`/`#CBD5E1`, aksen `#F59E0B` (logo, fokus di dalam band biru) dan `#FBBF24` (angka kunci di hero), seri grafik GTrans `#64748B` (`--series-gtrans`).
 
 Aturan: maksimal 2-3 warna inti + 1 aksen. Warna tidak pernah menjadi satu-satunya pembeda (garis putus-putus untuk Murni di grafik, label langsung di ujung garis).
 
@@ -79,7 +81,8 @@ Panjang baris isi maksimal 70 karakter. Minimum teks 13px (hanya keterangan).
 ## Aksesibilitas
 
 - Kontras: teks normal >= 4.5:1, teks besar >= 3:1, diuji di kedua tema (`check_contrast`).
-- Fokus: `outline: 2px solid #F59E0B; outline-offset: 2px` pada semua kontrol; jangan `outline: none` tanpa pengganti.
+- Fokus: `outline: 2px solid var(--focus); outline-offset: 2px` pada semua kontrol (di band biru memakai amber `#F59E0B`); jangan `outline: none` tanpa pengganti.
+- Grafik di layar sempit: lebar minimum 560 px dan digulir di dalam kartu (`.chart-scroll`), supaya teks sumbu tetap terbaca.
 - Region `aria-live="polite"` untuk kolom keluaran model.
 - Tautan eksternal: `rel="noopener noreferrer"`.
 

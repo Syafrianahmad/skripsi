@@ -59,6 +59,11 @@ export function Summarizer() {
         </button>
       </div>
 
+      {/* short announcement instead of reading three long outputs aloud on every change */}
+      <p className="sr-only" aria-live="polite">
+        {t.demo.nowShowing(doc.id, doc.title)}
+      </p>
+
       <div className="tool-body">
         <div className="tool-col">
           <div>
@@ -87,7 +92,7 @@ export function Summarizer() {
           </div>
         </div>
 
-        <div className="tool-col tool-col-out" aria-live="polite">
+        <div className="tool-col tool-col-out">
           <h2>{t.demo.outputsTitle}</h2>
           {MODEL_ORDER.map((m) => (
             <ModelCard key={`${doc.id}-${m}`} model={m} out={doc.out[m]} primary={m === 'hybrid'} />

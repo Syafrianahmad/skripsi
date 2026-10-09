@@ -8,7 +8,7 @@ export function Findings() {
   const total = CONFIG.testDocs
 
   return (
-    <section id="temuan" className="findings">
+    <section id="temuan" className="findings" tabIndex={-1}>
       <h2 className="section-title sr">{t.findings.title}</h2>
       <div className="finding-grid">
         <article className="finding sr">

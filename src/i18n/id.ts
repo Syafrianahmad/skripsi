@@ -1,6 +1,10 @@
 // Source of the Dict type: en.ts must provide every key below.
 // UI text only; numbers come from src/data/results.ts. No em dashes.
 export const id = {
+  meta: {
+    demoTitle: 'Ringkas Jawa: demo peringkas cerita Jawa',
+    resultsTitle: 'Detail eksperimen · Ringkas Jawa',
+  },
   nav: {
     demo: 'Demo',
     results: 'Detail eksperimen',
@@ -34,6 +38,8 @@ export const id = {
     refLabel: 'Referensi lead-2 (dua kalimat pertama)',
     translationLabel: 'Artinya (terjemahan AI, belum diverifikasi):',
     noTranslation: 'Terjemahan hanya tersedia untuk 5 cerita pilihan.',
+    nowShowing: (docId: number, title: string) =>
+      `Menampilkan cerita #${docId}: ${title}. Keluaran tiga model diperbarui.`,
     outputsTitle: 'Keluaran tiga model',
     highlightKey: 'merah',
     highlightText: '= kata yang tidak ada di referensi',

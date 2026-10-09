@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isClipped, polyline, xEpoch, xPairs, yScore } from './chart.ts'
+import { polyline, xEpoch, xPairs, yScore } from './chart.ts'
 
 // Expected values are the hand-placed coordinates in docs/design/Hasil.dc.html.
 describe('yScore', () => {
@@ -33,14 +33,6 @@ describe('xPairs', () => {
     expect(xPairs(0)).toBe(60)
     expect(xPairs(633)).toBeCloseTo(250, 0)
     expect(xPairs(1633)).toBeCloseTo(550, 0)
-  })
-})
-
-describe('isClipped', () => {
-  it('flags only values above 1', () => {
-    expect(isClipped(2.811)).toBe(true)
-    expect(isClipped(1)).toBe(false)
-    expect(isClipped(0.944)).toBe(false)
   })
 })
 

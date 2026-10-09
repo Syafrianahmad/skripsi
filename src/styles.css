@@ -1,5 +1,56 @@
 /* Tokens: see docs/DESIGN-SYSTEM.md. */
 /* ponytail: light-dark() keeps one definition per token; needs 2024+ browsers (Baseline), add a media-query fallback if older ones matter */
+/* Self-hosted fonts, SIL OFL 1.1 (licenses in src/fonts/licenses). Latin subsets only;
+   Noto Sans Javanese is subset to the glyphs the page actually shows (logo + hero aksara). */
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-400-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-700-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/ibm-plex-mono-400-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-weight: 700 800;
+  font-display: swap;
+  src: url('./fonts/schibsted-grotesk-variable-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Sans Javanese';
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/noto-sans-javanese-400-subset.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Sans Javanese';
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/noto-sans-javanese-700-subset.woff2') format('woff2');
+}
+
 :root {
   color-scheme: light dark;
 

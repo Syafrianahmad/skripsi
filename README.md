@@ -1,77 +1,32 @@
-# React + TypeScript + Vite
+# Ringkas Jawa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Demo dan hasil skripsi **peringkasan cerita berbahasa Jawa** dengan `google/mt5-small`, dikemas sebagai situs portofolio statis. Dua halaman: **Demo** (keluaran asli tiga model pada dokumen uji nyata) dan **Hasil** (skor, kurva pelatihan, konfigurasi, keterbatasan). Bahasa ID/EN, mode terang/gelap.
 
-Currently, two official plugins are available:
+> Temuan utama ditampilkan apa adanya: baseline sederhana (lead-2, ROUGE-L 0.867) masih mengalahkan model terbaik (Hybrid, 0.7976), karena referensi memakai proksi lead-2 dan model cenderung menyalin awal cerita.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Demo live: _diisi setelah deploy GitHub Pages_.
 
-## React Compiler
+## Menjalankan
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # produksi ke dist/ (dengan Content-Security-Policy)
+npm run preview    # uji bundle produksi
+npm run lint
+npm run test
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Untuk GitHub Pages di subpath: `BASE_PATH=/<nama-repo>/ npm run build`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Teknologi
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+React 19, TypeScript, Vite 8, CSS biasa, data JSON statis, Vitest. Tanpa backend dan tanpa pelacak. Font di-host sendiri (lisensi SIL OFL di `src/fonts/licenses/`).
 
-```
-# skripsi
-# skripsi
+## Dokumen
+
+Semua dokumen proyek ada di [`docs/`](docs/README.md): PRD, arsitektur, design system, keamanan, gaya kode, pengujian, dan aturan untuk agen AI.
+
+## Penulis
+
+Ahmad Syafrian Cahyadi · [LinkedIn](https://www.linkedin.com/in/ahmad-syafrian-cahyadi-609790430/) · [GitHub](https://github.com/suiryuu-cmd)

@@ -4,7 +4,7 @@ import { resolveLang } from '../lib/lang.ts'
 import { readStored, writeStored } from '../lib/storage.ts'
 import { en } from './en.ts'
 import { id } from './id.ts'
-import { LangContext } from './langContext.ts'
+import { LangContext } from './useLang.ts'
 
 const STORAGE_KEY = 'lang'
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ConfigList } from '../components/ConfigList.tsx'
 import { CurveChart } from '../components/CurveChart.tsx'
 import { Masthead } from '../components/Masthead.tsx'
@@ -12,11 +13,17 @@ export function ResultsPage() {
   const { t } = useLang()
   const r = t.results
 
+  useEffect(() => {
+    document.title = t.meta.resultsTitle
+  }, [t.meta.resultsTitle])
+
   return (
     <>
       <Masthead page="hasil">
         <section className="masthead-body container">
-          <h1 className="rv">{r.title}</h1>
+          <h1 className="rv" tabIndex={-1}>
+            {r.title}
+          </h1>
           <p className="hero-sub rv" style={{ animationDelay: '100ms' }}>
             {r.intro}
           </p>

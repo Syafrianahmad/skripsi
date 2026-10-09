@@ -2,15 +2,31 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ringkas Jawa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Javanese:wght@400;700&family=Schibsted+Grotesk:wght@500;700;800&display=swap"
-      rel="stylesheet"
+    <title>Ringkas Jawa: demo peringkas cerita Jawa</title>
+    <meta
+      name="description"
+      content="Demo dan hasil skripsi peringkasan cerita bahasa Jawa dengan mT5-small: keluaran asli tiga model, skor ROUGE, dan alasan baseline lead-2 masih menang."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ringkas Jawa" />
+    <meta property="og:title" content="Ringkas Jawa: bisakah mT5 meringkas cerita Jawa?" />
+    <meta
+      property="og:description"
+      content="Demo dan hasil skripsi peringkasan cerita bahasa Jawa dengan mT5-small: keluaran asli tiga model, skor ROUGE, dan alasan baseline lead-2 masih menang."
+    />
+    <meta property="og:url" content="https://suiryuu-cmd.github.io%BASE_URL%" />
+    <meta property="og:image" content="https://suiryuu-cmd.github.io%BASE_URL%og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ringkas Jawa: peringkasan cerita bahasa Jawa dengan mT5" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#13294b" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- applies a stored theme before first paint (no flash); its hash goes into the CSP at build -->
+    <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
   </head>
   <body>
     <div id="root"></div>

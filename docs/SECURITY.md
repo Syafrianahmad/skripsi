@@ -19,7 +19,7 @@ Situs ini statis: tanpa backend, akun, form, atau database. Risikonya kecil teta
 | Secret masuk repo | Tidak ada secret yang dibutuhkan. Jangan buat `.env` berisi token; semua `VITE_*` terlihat publik |
 | Source map membuka kode | `build.sourcemap` tetap `false` (default) |
 | Tautan eksternal membajak jendela | `rel="noopener noreferrer"` pada semua `target="_blank"` |
-| Pihak ketiga (Google Fonts) mencatat IP pengunjung | Diterima untuk v1; opsi: self-host font. Tidak ada skrip analitik atau pelacak |
+| Pihak ketiga mencatat IP pengunjung | Tidak ada permintaan ke pihak ketiga: font di-host sendiri di `src/fonts/` (lisensi SIL OFL di `src/fonts/licenses/`). Tidak ada skrip analitik atau pelacak |
 | Klaim palsu merusak kepercayaan | Tidak ada statistik/klaim tanpa sumber (R-17/R-36); label "AI, belum diverifikasi" pada terjemahan |
 | Pengambilalihan akun GitHub | 2FA aktif; izin workflow minimal (`pages: write`, `id-token: write`, `contents: read`) |
 
@@ -31,14 +31,17 @@ Situs ini statis: tanpa backend, akun, form, atau database. Risikonya kecil teta
 
 ## Header dan CSP
 
-GitHub Pages tidak mengizinkan header kustom. Opsional, tambahkan di `index.html`:
+GitHub Pages tidak mengizinkan header kustom, jadi CSP dipasang sebagai `<meta>` oleh plugin build di `vite.config.ts` (logikanya di `csp.ts`, dites di `csp.test.ts`). Hasil di `dist/index.html`:
 
-```html
-<meta http-equiv="Content-Security-Policy"
-  content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'">
+```
+default-src 'self'; script-src 'self' 'sha256-…'; object-src 'none'; base-uri 'self'; form-action 'none'
 ```
 
-(`'unsafe-inline'` untuk style diperlukan karena gaya sebaris tertentu; hapus bila semua gaya pindah ke CSS.)
+- Satu-satunya skrip inline (penerap tema sebelum paint) diizinkan lewat hash SHA-256 yang dihitung otomatis saat build. Tidak ada `'unsafe-inline'`.
+- `'unsafe-inline'` untuk style **tidak** diperlukan: React memasang prop `style` lewat CSSOM, yang tidak dibatasi CSP.
+- CSP hanya dipasang saat build, karena dev server Vite menyuntik `<style>` inline.
+- `build.assetsInlineLimit: 0` wajib: tanpa itu, font kecil disisipkan sebagai `data:` URI dan diblokir CSP.
+- `frame-ancestors` tidak bisa lewat `<meta>`; risiko clickjacking kecil karena situs tidak punya aksi.
 
 ## Checklist sebelum push/rilis
 

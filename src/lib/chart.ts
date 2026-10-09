@@ -21,11 +21,6 @@ export function xPairs(n: number): number {
   return PLOT_LEFT + n * 0.3
 }
 
-/** True when a loss value is cut off by the 1.0 axis ceiling (drawn with an arrow note). */
-export function isClipped(v: number): boolean {
-  return v > 1
-}
-
 /** SVG `points` attribute: one decimal, trailing zeros dropped. */
 export function polyline(points: readonly (readonly [number, number])[]): string {
   return points.map(([x, y]) => `${+x.toFixed(1)},${+y.toFixed(1)}`).join(' ')

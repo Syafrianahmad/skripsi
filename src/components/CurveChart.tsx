@@ -1,7 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { EPOCH_LOSS, EPOCH_ROUGE, MODEL_IDS, TRAIN_MINUTES, VALIDATION_DOCS } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
-import { isClipped, polyline, xEpoch, yScore } from '../lib/chart.ts'
+import { polyline, xEpoch, yScore } from '../lib/chart.ts'
 import { YAxis } from './ChartAxes.tsx'
 import { MODEL_COLOR, MODEL_LABEL } from './models.ts'
 
@@ -29,7 +29,7 @@ export function CurveChart() {
   }
 
   return (
-    <section id="kurva" className="chart-card sr" aria-labelledby="curve-title">
+    <section id="kurva" className="chart-card sr" aria-labelledby="curve-title" tabIndex={-1}>
       <div className="chart-head">
         <div>
           <h2 id="curve-title">{c.title}</h2>
@@ -111,7 +111,8 @@ export function CurveChart() {
                 ))}
                 {metric === 'loss' &&
                   values.map((v, i) =>
-                    isClipped(v) ? (
+                    // loss above the 1.0 axis ceiling: drawn at the top with an arrow note
+                    v > 1 ? (
                       <text
                         key={`clip-${i}`}
                         className="pt chart-muted"
