@@ -48,7 +48,7 @@ Jalankan `npm run build && npm run preview` lalu:
 - [ ] "Cerita acak" 20x: tidak mengulang cerita yang sama dan bukan featured; label "Acak #id" tampil; cerita acak menampilkan catatan tanpa terjemahan.
 - [ ] Hero "putar ulang" mengulang animasi; angka kata sesuai.
 - [ ] Tab ROUGE-L/Loss (mouse dan panah keyboard); catatan clip loss tampil di tab Loss.
-- [ ] Tautan footer (LinkedIn, GitHub) membuka tab baru; tidak ada NIM/tahun.
+- [ ] Tautan sumber dataset (Kaggle) membuka tab baru; footer tanpa NIM, tahun, atau tautan profil.
 - [ ] Tab keyboard: urutan logis, fokus selalu terlihat, tidak ada jebakan.
 - [ ] 375 px: tanpa overflow horizontal (`document.documentElement.scrollWidth <= innerWidth`), tabel scroll di dalam kartu, target tap >= 44px.
 - [ ] 768 dan 1440 px: tata letak tidak patah.

@@ -13,19 +13,6 @@ export function Footer() {
           <span>{t.footer.journal}</span>
         </div>
         <div className="footer-side">
-          <div className="footer-links">
-            <a
-              className="footer-link"
-              href="https://www.linkedin.com/in/ahmad-syafrian-cahyadi-609790430/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a className="footer-link" href="https://github.com/suiryuu-cmd" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-          </div>
           <span>
             {t.footer.storiesFrom}{' '}
             <a href={DATASET.url} target="_blank" rel="noopener noreferrer">

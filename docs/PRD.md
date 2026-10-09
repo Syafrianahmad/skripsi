@@ -24,7 +24,7 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 2. Halaman **Hasil**: kartu skor, grafik data latih vs ROUGE-L, kurva per epoch (ROUGE-L dan loss), tabel n-gram baru, tabel rincian skenario, konfigurasi eksperimen, catatan keterbatasan.
 3. Dua bahasa **ID/EN**, awal mengikuti browser, fallback EN.
 4. Mode **terang/gelap**, awal mengikuti sistem.
-5. Footer: nama, prodi, kampus, LinkedIn, GitHub, label jurnal "dalam proses".
+5. Footer: nama, prodi, kampus, label jurnal "dalam proses", kredit dataset. Tanpa tautan profil (LinkedIn/GitHub), keputusan 2026-10-09.
 6. Deploy otomatis ke GitHub Pages.
 
 ### Tidak dibuat (sengaja)
@@ -52,7 +52,7 @@ Situs tidak boleh terlihat lebih baik dari hasilnya.
 2. Gulir ke alat peringkas → cerita #68 sudah terpilih → baca keluaran tiga model.
 3. Klik cerita lain atau "Cerita acak" → keluaran berubah, skor berubah.
 4. Gulir ke "Temuan" → membaca kenapa hasilnya tidak sebaik skor.
-5. Buka LinkedIn/GitHub di footer.
+5. Lihat nama, afiliasi, dan status jurnal penulis di footer.
 
 **Alur B: penguji**
 1. Buka halaman **Hasil** dari nav → lihat kartu skor dan baseline putus-putus.
@@ -82,7 +82,7 @@ DEMO (desktop 1440)
 |  TEMUAN: 4 kartu + strip "0.867 > 0.7976"                |
 |  DI BALIK LAYAR: 5 baris judul | isi   [Lihat hasil ->]  |
 +----------------------------------------------------------+
-| Footer: nama, prodi, kampus, jurnal | LinkedIn  GitHub   |
+| Footer: nama, prodi, kampus, jurnal | kredit dataset     |
 
 HASIL
   pita biru + judul | 4 kartu skor (baseline putus-putus)

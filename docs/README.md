@@ -48,4 +48,4 @@ Implementasi selesai sampai audit (2026-10-09); tinggal deploy GitHub Pages. Jur
 
 ## Penulis
 
-Ahmad Syafrian Cahyadi · [LinkedIn](https://www.linkedin.com/in/ahmad-syafrian-cahyadi-609790430/) · [GitHub](https://github.com/suiryuu-cmd)
+Ahmad Syafrian Cahyadi

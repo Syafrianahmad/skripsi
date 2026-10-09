@@ -318,27 +318,6 @@ a {
   gap: 8px;
 }
 
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.footer-link {
-  min-height: 44px;
-  padding-inline: 14px;
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  border-color: var(--primary);
-}
-
 /* Motion (all of it is switched off by the reduced-motion rule at the bottom) */
 @keyframes up {
   from { opacity: 0; transform: translateY(10px); }

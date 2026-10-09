@@ -13,7 +13,7 @@ Situs ini statis: tanpa backend, akun, form, atau database. Risikonya kecil teta
 
 | Ancaman | Mitigasi |
 |---|---|
-| Data pribadi bocor lewat konten (NIM, foto, dokumen) | Aturan keras di `AGENTS.md`; footer hanya nama, prodi, kampus, LinkedIn, GitHub; periksa `git diff` sebelum push; commit memakai email `noreply` GitHub (dicek 2026-10-09: semua 13 commit) |
+| Data pribadi bocor lewat konten (NIM, foto, dokumen) | Aturan keras di `AGENTS.md`; footer hanya nama, prodi, kampus, label jurnal, dan kredit dataset (tanpa tautan profil); periksa `git diff` sebelum push; commit memakai email `noreply` GitHub (dicek 2026-10-09: semua 13 commit) |
 | XSS lewat teks keluaran model / data (`<extra_id_0>`, tanda kutip, HTML) | Render hanya sebagai teks React; larangan `dangerouslySetInnerHTML`, `innerHTML`, `eval`; dijaga otomatis oleh `security.test.ts` |
 | Rantai pasok dependensi | Runtime hanya `react` dan `react-dom`; dev dependency minimal; `package-lock.json` di-commit; `npm audit` sebelum rilis; `.github/dependabot.yml` membuka PR update mingguan; `npm ci` akan dipakai di workflow deploy (belum dibuat) |
 | Secret masuk repo | Tidak ada secret yang dibutuhkan. Jangan buat `.env` berisi token; semua `VITE_*` terlihat publik; string mirip token diperiksa `security.test.ts` |
@@ -60,4 +60,4 @@ Manual:
 
 ## Melapor
 
-Temuan keamanan atau kebocoran data: hubungi Suiryu langsung (LinkedIn di footer). Jika data pribadi sudah ter-push, bersihkan riwayat dan ganti kredensial terkait; itu tindakan manual oleh Suiryu.
+Temuan keamanan atau kebocoran data: hubungi Suiryu langsung. Jika data pribadi sudah ter-push, bersihkan riwayat dan ganti kredensial terkait; itu tindakan manual oleh Suiryu.
