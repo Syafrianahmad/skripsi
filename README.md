@@ -90,4 +90,4 @@ Then open <http://localhost:5173>. Other commands: `npm run build` (production b
 
 ## License
 
-The code is released under the [MIT License](LICENSE). The license does not cover the Javanese stories in `src/data/docs.json` (they come from the dataset credited above, whose license is unknown) or the fonts in `src/fonts/` (SIL Open Font License 1.1, see `src/fonts/licenses/`).
+The code is released under the [MIT License](LICENSE).
