@@ -13,7 +13,6 @@ Situs portofolio statis "Ringkas Jawa": demo dan hasil skripsi peringkas cerita 
 | `PRD.md` | apa dan untuk siapa, ruang lingkup, alur, wireframe |
 | `ARCHITECTURE.md` | stack, struktur, aliran data, keputusan |
 | `DESIGN-SYSTEM.md` | token, tipografi, komponen, motion |
-| `SECURITY.md` | ancaman, privasi, aturan data |
 | `CODE-STYLE.md` | gaya kode dan commit |
 | `TESTING.md` | apa yang dites dan checklist verifikasi |
 

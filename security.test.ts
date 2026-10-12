@@ -1,4 +1,4 @@
-// Guards for the claims in docs/SECURITY.md. Static scans of the source, run with `npm run test`.
+// Security guards: static scans of the source and index.html, run with `npm run test`.
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'

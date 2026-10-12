@@ -13,7 +13,6 @@ Demo live: <https://syafrianahmad.github.io/skripsi/> (GitHub Pages, deploy otom
 | [PRD.md](PRD.md) | tujuan, pengguna, ruang lingkup, alur, wireframe |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | tech stack, struktur, aliran data, keputusan |
 | [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md) | token, tipografi, komponen, motion, aksesibilitas |
-| [SECURITY.md](SECURITY.md) | ancaman, privasi, checklist rilis |
 | [CODE-STYLE.md](CODE-STYLE.md) | gaya kode dan commit |
 | [TESTING.md](TESTING.md) | strategi tes dan checklist verifikasi |
 | [AGENTS.md](AGENTS.md) | aturan untuk agen AI |
