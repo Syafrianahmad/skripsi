@@ -4,7 +4,7 @@ Demo dan hasil skripsi **peringkasan cerita berbahasa Jawa** dengan `google/mt5-
 
 > Temuan utama yang sengaja ditampilkan apa adanya: baseline sederhana (lead-2, ROUGE-L 0.867) masih mengalahkan model terbaik (Hybrid, 0.7976), karena referensi memakai proksi lead-2 dan model cenderung menyalin awal cerita.
 
-Demo live: _diisi setelah deploy GitHub Pages_.
+Demo live: <https://syafrianahmad.github.io/skripsi/> (GitHub Pages, deploy otomatis dari `main`).
 
 ## Dokumen proyek
 
@@ -44,7 +44,7 @@ Uji pada 70 cerita Jawa murni; 8 epoch; `google/mt5-small`; beam 4. Detail lengk
 
 ## Status
 
-Implementasi selesai sampai audit (2026-10-09); tinggal deploy GitHub Pages. Jurnal MATICS masih dalam proses. Cerita berasal dari [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle; lisensi tidak dicantumkan pengunggah).
+Implementasi selesai dan live sejak 2026-10-12 (diaudit 2026-10-09). Jurnal MATICS masih dalam proses. Cerita berasal dari [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle; lisensi tidak dicantumkan pengunggah).
 
 ## Penulis
 

@@ -2,6 +2,8 @@
 
 Javanese Story Summarization Research Showcase
 
+**Live demo: <https://syafrianahmad.github.io/skripsi/>**
+
 ![Ringkas Jawa demo page: hero with the before/after summary of test story #68, and the summarizer comparing the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
 
 ## About the Project
@@ -68,7 +70,8 @@ Note:
 * Demo page and Experiment Details page are complete, in Indonesian and English, light and dark
 * Accessibility, contrast, performance, and security audit done (self-hosted fonts, strict Content-Security-Policy, no third-party requests)
 * 54 unit tests passing
-* Deploys to GitHub Pages automatically on every push to `main` (lint and tests must pass first); not live yet
+* Live on GitHub Pages, deployed automatically on every push to `main` (lint and tests must pass first)
+* CI (lint, tests, build) runs on every pull request
 * Journal article based on this thesis (MATICS) is in progress
 
 ## Running Locally
