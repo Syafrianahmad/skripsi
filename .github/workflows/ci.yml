@@ -1,0 +1,38 @@
+# Runs lint, tests, and a production build on every pull request and every push to develop,
+# so a bad change (for example a Dependabot bump) shows up red before it is merged into main.
+# Deploying is a separate workflow (deploy.yml, push to main).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+# a newer push to the same branch or PR makes the older run pointless
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm ci fails on a dependency conflict (ERESOLVE), which is exactly what we want to catch
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+
+      - name: Build (same base path as the deploy)
+        run: |
+          export BASE_PATH="/${GITHUB_REPOSITORY#*/}/"
+          npm run build

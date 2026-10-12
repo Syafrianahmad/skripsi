@@ -63,6 +63,7 @@ notebook (Colab) --salin verbatim--> src/data/{docs.json,results.ts}
 
 ## Build dan deploy
 
+0. CI `.github/workflows/ci.yml`: setiap pull request dan setiap push ke `develop` menjalankan `npm ci`, lint, tes, dan build (tanpa deploy). Dibuat setelah PR Dependabot yang menaikkan TypeScript ke 7 ter-merge tanpa pemeriksaan dan merusak `npm ci` (`typescript-eslint` belum mendukungnya).
 1. Workflow `.github/workflows/deploy.yml`: `npm ci` → `npm run lint` → `npm run test` → build → unggah `dist/` sebagai artifact → `deploy-pages`. Lint atau tes gagal berarti tidak ada deploy.
 2. Build memakai dua variabel dari konteks GitHub: `BASE_PATH=/<nama-repo>/` dan `VITE_SITE_ORIGIN=https://<pemilik-repo>.github.io` (untuk `og:url` dan `og:image`). Mengganti nama repo atau akun tidak butuh perubahan kode; build lokal memakai default di `.env`.
 3. Push ke `main` memicu workflow; `develop` dipakai untuk kerja harian. Prasyarat sekali saja: Settings > Pages > Source: GitHub Actions.

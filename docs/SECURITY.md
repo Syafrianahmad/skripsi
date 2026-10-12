@@ -15,7 +15,7 @@ Situs ini statis: tanpa backend, akun, form, atau database. Risikonya kecil teta
 |---|---|
 | Data pribadi bocor lewat konten (NIM, foto, dokumen) | Aturan keras di `AGENTS.md`; footer hanya nama, prodi, kampus, label jurnal, dan kredit dataset (tanpa tautan profil); periksa `git diff` sebelum push; commit memakai email `noreply` GitHub (dicek 2026-10-09: semua 13 commit) |
 | XSS lewat teks keluaran model / data (`<extra_id_0>`, tanda kutip, HTML) | Render hanya sebagai teks React; larangan `dangerouslySetInnerHTML`, `innerHTML`, `eval`; dijaga otomatis oleh `security.test.ts` |
-| Rantai pasok dependensi | Runtime hanya `react` dan `react-dom`; dev dependency minimal; `package-lock.json` di-commit; `npm audit` sebelum rilis; `.github/dependabot.yml` membuka PR update mingguan; workflow deploy memakai `npm ci`, lalu lint dan tes harus lulus sebelum build |
+| Rantai pasok dependensi | Runtime hanya `react` dan `react-dom`; dev dependency minimal; `package-lock.json` di-commit; `npm audit` sebelum rilis; `.github/dependabot.yml` membuka PR update mingguan (npm dan versi action; kenaikan mayor `typescript` dan `@types/node` diabaikan, mayor lain datang sebagai PR terpisah); `ci.yml` menguji setiap PR (`npm ci`, lint, tes, build) dan workflow deploy mengulang pemeriksaan itu sebelum publikasi. Jangan merge PR yang merah |
 | Secret masuk repo | Tidak ada secret yang dibutuhkan. Jangan buat `.env` berisi token; semua `VITE_*` terlihat publik; string mirip token diperiksa `security.test.ts` |
 | Source map membuka kode | `build.sourcemap` tetap `false` (default), dijaga `security.test.ts` |
 | Tautan eksternal membajak jendela | `rel="noopener noreferrer"` pada semua `target="_blank"`, dijaga `security.test.ts` |

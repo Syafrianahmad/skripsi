@@ -55,6 +55,10 @@ Jalankan `npm run build && npm run preview` lalu:
 - [ ] `prefers-reduced-motion: reduce`: tidak ada animasi.
 - [ ] Refresh di `#/hasil` dan di subpath Pages membuka halaman yang sama.
 
+## CI di GitHub
+
+`.github/workflows/ci.yml` menjalankan `npm ci`, `npm run lint`, `npm run test`, dan `npm run build` (dengan `BASE_PATH` subpath) pada setiap pull request dan push ke `develop`. Status merah berarti jangan di-merge. `npm ci` ikut menangkap konflik dependensi (`ERESOLVE`) yang tidak terlihat di `npm install`.
+
 ## Otomasi tambahan sebelum rilis
 
 - `npm run lint`, `npm run build` (termasuk `tsc -b`).
