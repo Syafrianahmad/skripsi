@@ -18,3 +18,14 @@ describe('parseRoute', () => {
     expect(parseRoute('#/hasil#kurva')).toEqual({ page: 'hasil', section: 'kurva' })
   })
 })
+
+describe('parseRoute story links', () => {
+  it('reads a story id from #/demo#story=N', () => {
+    expect(parseRoute('#/demo#story=68')).toEqual({ page: 'demo', story: 68 })
+    expect(parseRoute('#/#story=7')).toEqual({ page: 'demo', story: 7 })
+  })
+
+  it('ignores story values that are not a whole number', () => {
+    expect(parseRoute('#/demo#story=abc')).toEqual({ page: 'demo', section: 'story=abc' })
+  })
+})

@@ -20,7 +20,7 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 ## 3. Ruang lingkup
 
 ### Wajib (v1)
-1. Halaman **Demo**: hero sebelum/sesudah, alat peringkas dengan 5 cerita pilihan + cerita acak, keluaran tiga model dengan skor ROUGE-L, kartu temuan, bagian "di balik layar" (5 langkah).
+1. Halaman **Demo**: hero sebelum/sesudah, alat peringkas dengan 5 cerita pilihan, dropdown untuk 70 cerita, tautan permanen per cerita (`#/demo#story=N`), unduh CSV/JSON, dan mode kata beda (vs referensi atau vs model lain); keluaran tiga model dengan skor ROUGE-L, kartu temuan, bagian "di balik layar" (5 langkah).
 2. Halaman **Hasil**: kartu skor, grafik data latih vs ROUGE-L, kurva per epoch (ROUGE-L dan loss), tabel n-gram baru, tabel rincian skenario, konfigurasi eksperimen, catatan keterbatasan.
 3. Dua bahasa **ID/EN**, awal mengikuti browser, fallback EN.
 4. Mode **terang/gelap**, awal mengikuti sistem.
@@ -75,7 +75,7 @@ DEMO (desktop 1440)
 |  0.7976 | 0.867 | 97%+ | 70     | 46 -> 29 kata     |     |
 +----------------------------------------------------------+
 |  +----------------------------------------------------+  |  kartu mengambang
-|  | Pilih cerita: (68)(40)(69)(60)(50) [Cerita acak]   |  |
+|  | Pilih cerita: (68)(40)(69)(60)(50) [1–70 ▾] [Cerita acak]   |  |
 |  | Cuplikan + referensi lead-2 | Hybrid / GTrans /    |  |
 |  | + terjemahan AI             | Murni (bar + skor)   |  |
 |  +----------------------------------------------------+  |

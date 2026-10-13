@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { DATASET, DOCS, FEATURED_IDS } from '../data/results.ts'
-import type { ModelId } from '../data/types.ts'
+import type { Doc, ModelId, Part } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
+import { markAgainst, outputText, wordSet } from '../lib/compare.ts'
+import { toCsv, toJson, type ExportRow } from '../lib/export.ts'
+import { parseRoute } from '../lib/route.ts'
 import { pickRandomId } from '../lib/shuffle.ts'
 import { ModelCard } from './ModelCard.tsx'
 
@@ -9,6 +12,23 @@ const FEATURED: readonly number[] = FEATURED_IDS
 const ALL_IDS = DOCS.map((d) => d.id)
 // strongest model first
 const MODEL_ORDER: readonly ModelId[] = ['hybrid', 'gtrans', 'murni']
+
+type Compare = 'ref' | 'models'
+
+/** A shared link (`#/demo#story=N`) opens that story; anything else starts at the first featured one. */
+function initialId(): number {
+  const { story } = parseRoute(window.location.hash)
+  return story !== undefined && ALL_IDS.includes(story) ? story : FEATURED[0]
+}
+
+function download(name: string, type: string, body: string) {
+  const url = URL.createObjectURL(new Blob([body], { type }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 0)
+}
 
 function ShuffleIcon() {
   return (
@@ -21,8 +41,39 @@ function ShuffleIcon() {
 
 export function Summarizer() {
   const { lang, t } = useLang()
-  const [selectedId, setSelectedId] = useState<number>(FEATURED_IDS[0])
+  const [selectedId, setSelectedId] = useState<number>(initialId)
+  const [compare, setCompare] = useState<Compare>('ref')
+  const [copied, setCopied] = useState(false)
   const doc = DOCS.find((d) => d.id === selectedId)!
+
+  // replaceState, not a hash assignment: the permalink updates without a hashchange, scroll, or history entry
+  function pick(id: number) {
+    setSelectedId(id)
+    setCopied(false)
+    window.history.replaceState(null, '', `#/demo#story=${id}`)
+  }
+
+  function partsFor(d: Doc, m: ModelId): readonly Part[] {
+    if (compare === 'ref') return d.out[m].parts
+    const others = MODEL_ORDER.filter((x) => x !== m).map((x) => wordSet(outputText(d.out[x].parts)))
+    return markAgainst(outputText(d.out[m].parts), others)
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopied(true)
+    } catch {
+      // clipboard blocked: the address bar still holds the same link
+    }
+  }
+
+  const rows: ExportRow[] = MODEL_ORDER.map((m) => ({
+    doc: doc.id,
+    model: m,
+    rougeL: doc.out[m].rl,
+    output: outputText(doc.out[m].parts),
+  }))
 
   return (
     <section className="tool rv" aria-label={t.demo.sectionLabel} style={{ animationDelay: '150ms' }}>
@@ -39,20 +90,27 @@ export function Summarizer() {
                 name="story"
                 className="sr-only"
                 checked={selectedId === id}
-                onChange={() => setSelectedId(id)}
+                onChange={() => pick(id)}
               />
               <span>{d.title}</span>
               <span className={`tag tag-${d.tag}`}>{t.demo.tags[d.tag]}</span>
             </label>
           )
         })}
-        {!FEATURED.includes(selectedId) && (
-          <span className="chip is-active">{t.demo.randomLabel(doc.id, doc.title)}</span>
-        )}
+        <label className="picker-other">
+          <span className="picker-label">{t.demo.pickOther}</span>
+          <select className="picker-select" value={selectedId} onChange={(e) => pick(Number(e.target.value))}>
+            {DOCS.map((d) => (
+              <option key={d.id} value={d.id}>
+                {`#${d.id} · ${d.title}`}
+              </option>
+            ))}
+          </select>
+        </label>
         <button
           type="button"
           className="btn-dashed"
-          onClick={() => setSelectedId(pickRandomId(ALL_IDS, selectedId, FEATURED))}
+          onClick={() => pick(pickRandomId(ALL_IDS, selectedId, FEATURED))}
         >
           <ShuffleIcon />
           {t.demo.shuffle}
@@ -97,15 +155,51 @@ export function Summarizer() {
               )}
             </p>
           </div>
+          <div className="actions">
+            <button type="button" className="btn-dashed" onClick={copyLink}>
+              {copied ? t.demo.linkCopied : t.demo.copyLink}
+            </button>
+            <button
+              type="button"
+              className="btn-dashed"
+              onClick={() => download(`ringkas-jawa-${doc.id}.csv`, 'text/csv', toCsv(rows))}
+            >
+              {t.demo.downloadCsv}
+            </button>
+            <button
+              type="button"
+              className="btn-dashed"
+              onClick={() => download(`ringkas-jawa-${doc.id}.json`, 'application/json', toJson(rows))}
+            >
+              {t.demo.downloadJson}
+            </button>
+          </div>
         </div>
 
         <div className="tool-col tool-col-out">
-          <h2>{t.demo.outputsTitle}</h2>
+          <div className="outputs-head">
+            <h2>{t.demo.outputsTitle}</h2>
+            <div className="segmented" role="group" aria-label={t.demo.compareLabel}>
+              <button type="button" aria-pressed={compare === 'ref'} onClick={() => setCompare('ref')}>
+                {t.demo.compareRef}
+              </button>
+              <button type="button" aria-pressed={compare === 'models'} onClick={() => setCompare('models')}>
+                {t.demo.compareModels}
+              </button>
+            </div>
+          </div>
           {MODEL_ORDER.map((m) => (
-            <ModelCard key={`${doc.id}-${m}`} model={m} out={doc.out[m]} primary={m === 'hybrid'} />
+            <ModelCard
+              key={`${doc.id}-${m}`}
+              model={m}
+              rl={doc.out[m].rl}
+              parts={partsFor(doc, m)}
+              primary={m === 'hybrid'}
+            />
           ))}
           <p className="legend">
-            <mark className="diff">{t.demo.highlightKey}</mark> {t.demo.highlightText}. {t.demo.savedNote}.
+            <mark className="diff">{t.demo.highlightKey}</mark>{' '}
+            {compare === 'ref' ? t.demo.highlightText : t.demo.highlightModelsText}. {t.demo.savedNote}.
           </p>
         </div>
       </div>

@@ -15,7 +15,9 @@ The main feature of the project is a demo that shows the real outputs of the thr
 ## Feature Requirements
 
 1. Summarization Demo
-   * 5 featured test stories (best, median, worst) and a random story from the 70
+   * 5 featured test stories (best, median, worst), any of the 70 test stories from a dropdown, a random story, and a permanent link per story (`#/demo#story=68`)
+   * Download a story's three outputs and ROUGE-L scores as CSV or JSON
+   * Highlight words that differ from the reference, or from the other two models
    * Story excerpt, lead-2 reference, and an AI helper translation (featured stories only)
    * Outputs of the three models with per-document ROUGE-L, with words that differ from the reference highlighted
 2. Research Stats

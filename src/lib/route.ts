@@ -1,7 +1,7 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react'
 
 export type Page = 'demo' | 'hasil'
-export type Route = { page: Page; section?: string }
+export type Route = { page: Page; section?: string; story?: number }
 
 /**
  * Route format is `#/<page>[#<section>]`, so section anchors (`#/#temuan`)
@@ -10,6 +10,8 @@ export type Route = { page: Page; section?: string }
 export function parseRoute(hash: string): Route {
   const [path = '', section] = hash.replace(/^#/, '').split('#')
   const page: Page = path === '/hasil' ? 'hasil' : 'demo'
+  const story = /^story=(\d+)$/.exec(section ?? '')
+  if (story) return { page, story: Number(story[1]) }
   return section ? { page, section } : { page }
 }
 
