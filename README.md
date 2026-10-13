@@ -18,6 +18,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
    * 5 featured test stories (best, median, worst), any of the 70 test stories from a dropdown, a random story, and a permanent link per story (`#/demo#story=68`)
    * Download a story's three outputs and ROUGE-L scores as CSV or JSON
    * Highlight words that differ from the reference, or from the other two models
+   * Filter stories by finding (for example, outputs containing `<extra_id_0>`); clicking a count in Findings applies the filter
    * Story excerpt, lead-2 reference, and an AI helper translation (featured stories only)
    * Outputs of the three models with per-document ROUGE-L, with words that differ from the reference highlighted
 2. Research Stats
@@ -33,6 +34,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
 4. Experiment Details
    * Score card per scenario, compared with the baseline
    * Training data size vs. ROUGE-L chart
+   * ROUGE-L distribution per document (histogram per scenario, 70 documents)
    * Validation ROUGE-L and loss per epoch
    * New n-gram table and full scenario table (ROUGE-1, ROUGE-2, ROUGE-L)
    * Training configuration and limitations

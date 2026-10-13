@@ -38,6 +38,15 @@ export const id = {
     compareLabel: 'Bandingkan kata yang berbeda dengan',
     compareRef: 'Referensi',
     compareModels: 'Model lain',
+    filterLabel: 'Filter',
+    filterAll: 'Semua cerita',
+    filterKinds: {
+      extraId: 'Keluaran mengandung <extra_id_0>',
+      aku: 'Keluaran diawali "Aku"',
+      quote: 'Keluaran diawali tanda kutip',
+      low: 'ROUGE-L di bawah 0.5',
+    },
+    matchCount: (n: number, total: number) => `${n} dari ${total} cerita cocok`,
     storyLabel: 'Cuplikan cerita',
     storyMeta: (docId: number, words: number, sentences: number) =>
       `#${docId} · ${words} kata · ${sentences} kalimat`,
@@ -56,6 +65,7 @@ export const id = {
   },
   findings: {
     title: 'Yang terlihat saat membaca 210 keluaran model.',
+    showHint: 'Angka pada kartu bisa diklik: cerita yang cocok langsung difilter di bagian Demo.',
     extraIdTitle: 'Token sisa pretraining',
     extraIdBody:
       'Model Murni dan GTrans hampir selalu mengawali ringkasan dengan token sentinel mT5. Perlu dibersihkan sebelum ditampilkan ke pengguna.',
@@ -146,6 +156,15 @@ export const id = {
       title: 'Catatan keterbatasan',
       body: (baseline: string) =>
         `Referensi berupa lead-2, dan baseline lead-2 tanpa model (${baseline}) mengalahkan semua model. Skor ROUGE di sini mengukur kemiripan dengan lead-2, bukan kualitas ringkasan. Evaluasi manusia dan referensi buatan manusia dibutuhkan.`,
+    },
+    distribution: {
+      title: 'Sebaran ROUGE-L per dokumen',
+      subtitle:
+        'Jumlah dari 70 cerita uji di tiap rentang 0.1, per skenario. Ekor di kiri (di bawah 0.5) adalah dokumen yang dijelaskan filter lead-2 di bagian Temuan.',
+      lowBand: 'di bawah 0.5',
+      xAxis: 'rentang ROUGE-L per dokumen',
+      alt: (summary: string) => `Histogram ROUGE-L per dokumen untuk tiga skenario. Jumlah dokumen di bawah 0.5: ${summary}.`,
+      barTitle: (model: string, from: string, to: string, n: number) => `${model}, ${from}–${to}: ${n} cerita`,
     },
     curve: {
       title: 'Kurva pelatihan per epoch',

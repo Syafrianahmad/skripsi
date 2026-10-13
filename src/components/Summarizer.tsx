@@ -4,21 +4,21 @@ import type { Doc, ModelId, Part } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
 import { markAgainst, outputText, wordSet } from '../lib/compare.ts'
 import { toCsv, toJson, type ExportRow } from '../lib/export.ts'
-import { parseRoute } from '../lib/route.ts'
-import { pickRandomId } from '../lib/shuffle.ts'
+import { type FilterKey, storyIds } from '../lib/findings.ts'
 import { ModelCard } from './ModelCard.tsx'
+import { MODEL_LABEL } from './models.ts'
 
-const FEATURED: readonly number[] = FEATURED_IDS
-const ALL_IDS = DOCS.map((d) => d.id)
 // strongest model first
 const MODEL_ORDER: readonly ModelId[] = ['hybrid', 'gtrans', 'murni']
 
 type Compare = 'ref' | 'models'
 
-/** A shared link (`#/demo#story=N`) opens that story; anything else starts at the first featured one. */
-function initialId(): number {
-  const { story } = parseRoute(window.location.hash)
-  return story !== undefined && ALL_IDS.includes(story) ? story : FEATURED[0]
+type Props = {
+  id: number
+  filter: FilterKey | null
+  onPick: (id: number) => void
+  onFilter: (filter: FilterKey | null) => void
+  onShuffle: () => void
 }
 
 function download(name: string, type: string, body: string) {
@@ -39,19 +39,25 @@ function ShuffleIcon() {
   )
 }
 
-export function Summarizer() {
-  const { lang, t } = useLang()
-  const [selectedId, setSelectedId] = useState<number>(initialId)
-  const [compare, setCompare] = useState<Compare>('ref')
-  const [copied, setCopied] = useState(false)
-  const doc = DOCS.find((d) => d.id === selectedId)!
+const FILTER_KEYS: readonly FilterKey[] = [
+  'extraId:murni',
+  'extraId:gtrans',
+  'aku:hybrid',
+  'quote:hybrid',
+  'low:murni',
+  'low:gtrans',
+  'low:hybrid',
+]
 
-  // replaceState, not a hash assignment: the permalink updates without a hashchange, scroll, or history entry
-  function pick(id: number) {
-    setSelectedId(id)
-    setCopied(false)
-    window.history.replaceState(null, '', `#/demo#story=${id}`)
-  }
+export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
+  const { lang, t } = useLang()
+  const [compare, setCompare] = useState<Compare>('ref')
+  const [copiedId, setCopiedId] = useState<number | null>(null)
+  const doc = DOCS.find((d) => d.id === id)!
+  const matches = storyIds(filter)
+  // the current story stays listed even when a featured chip picked it outside the filter
+  const options = DOCS.filter((d) => d.id === doc.id || matches.includes(d.id))
+  const copied = copiedId === doc.id
 
   function partsFor(d: Doc, m: ModelId): readonly Part[] {
     if (compare === 'ref') return d.out[m].parts
@@ -62,7 +68,7 @@ export function Summarizer() {
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(window.location.href)
-      setCopied(true)
+      setCopiedId(doc.id)
     } catch {
       // clipboard blocked: the address bar still holds the same link
     }
@@ -76,21 +82,21 @@ export function Summarizer() {
   }))
 
   return (
-    <section className="tool rv" aria-label={t.demo.sectionLabel} style={{ animationDelay: '150ms' }}>
+    <section id="alat" className="tool rv" aria-label={t.demo.sectionLabel} tabIndex={-1} style={{ animationDelay: '150ms' }}>
       <div className="picker" role="radiogroup" aria-labelledby="picker-label">
         <span id="picker-label" className="picker-label">
           {t.demo.pickStory}
         </span>
-        {FEATURED_IDS.map((id) => {
-          const d = DOCS.find((x) => x.id === id)!
+        {FEATURED_IDS.map((fid) => {
+          const d = DOCS.find((x) => x.id === fid)!
           return (
-            <label key={id} className="chip">
+            <label key={fid} className="chip">
               <input
                 type="radio"
                 name="story"
                 className="sr-only"
-                checked={selectedId === id}
-                onChange={() => pick(id)}
+                checked={id === fid}
+                onChange={() => onPick(fid)}
               />
               <span>{d.title}</span>
               <span className={`tag tag-${d.tag}`}>{t.demo.tags[d.tag]}</span>
@@ -99,22 +105,40 @@ export function Summarizer() {
         })}
         <label className="picker-other">
           <span className="picker-label">{t.demo.pickOther}</span>
-          <select className="picker-select" value={selectedId} onChange={(e) => pick(Number(e.target.value))}>
-            {DOCS.map((d) => (
+          <select className="picker-select" value={doc.id} onChange={(e) => onPick(Number(e.target.value))}>
+            {options.map((d) => (
               <option key={d.id} value={d.id}>
                 {`#${d.id} · ${d.title}`}
               </option>
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          className="btn-dashed"
-          onClick={() => pick(pickRandomId(ALL_IDS, selectedId, FEATURED))}
-        >
+        <button type="button" className="btn-dashed" onClick={onShuffle} disabled={matches.length < 2}>
           <ShuffleIcon />
           {t.demo.shuffle}
         </button>
+      </div>
+
+      <div className="picker picker-filter">
+        <label className="picker-other">
+          <span className="picker-label">{t.demo.filterLabel}</span>
+          <select
+            className="picker-select"
+            value={filter ?? ''}
+            onChange={(e) => onFilter((e.target.value || null) as FilterKey | null)}
+          >
+            <option value="">{t.demo.filterAll}</option>
+            {FILTER_KEYS.map((key) => {
+              const [kind, model] = key.split(':') as [keyof typeof t.demo.filterKinds, ModelId]
+              return (
+                <option key={key} value={key}>
+                  {`${t.demo.filterKinds[kind]} · ${MODEL_LABEL[model]}`}
+                </option>
+              )
+            })}
+          </select>
+        </label>
+        {filter && <span className="meta">{t.demo.matchCount(matches.length, DOCS.length)}</span>}
       </div>
 
       {/* short announcement instead of reading three long outputs aloud on every change */}

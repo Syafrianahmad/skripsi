@@ -1483,3 +1483,57 @@ mark.diff {
     transition: none !important;
   }
 }
+
+.stat-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.stat-link:hover {
+  color: var(--primary);
+}
+
+.stat-link:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.findings-hint {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.dist-low {
+  fill: light-dark(#fef2f2, #2a1517);
+}
+
+.dist-legend {
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  list-style: none;
+  font-size: 14px;
+}
+
+.dist-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dist-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}

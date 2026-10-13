@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { ConfigList } from '../components/ConfigList.tsx'
+import { DistributionChart } from '../components/DistributionChart.tsx'
 import { CurveChart } from '../components/CurveChart.tsx'
 import { Masthead } from '../components/Masthead.tsx'
 import { NgramTable } from '../components/NgramTable.tsx'
@@ -44,6 +45,8 @@ export function ResultsPage() {
         </section>
 
         <CurveChart />
+
+        <DistributionChart />
 
         <section className="abstractive sr" aria-labelledby="abstraktif">
           <div className="abstractive-text">

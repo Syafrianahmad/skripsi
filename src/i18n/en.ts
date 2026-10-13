@@ -38,6 +38,15 @@ export const en: Dict = {
     compareLabel: 'Compare differing words with',
     compareRef: 'Reference',
     compareModels: 'Other models',
+    filterLabel: 'Filter',
+    filterAll: 'All stories',
+    filterKinds: {
+      extraId: 'Output contains <extra_id_0>',
+      aku: 'Output starts with "Aku"',
+      quote: 'Output starts with a quote mark',
+      low: 'ROUGE-L below 0.5',
+    },
+    matchCount: (n, total) => `${n} of ${total} stories match`,
     storyLabel: 'Story excerpt',
     storyMeta: (docId, words, sentences) => `#${docId} · ${words} words · ${sentences} sentences`,
     sourceLabel: 'Story source:',
@@ -54,6 +63,7 @@ export const en: Dict = {
   },
   findings: {
     title: 'What 210 model outputs reveal.',
+    showHint: 'Click a count to filter the Demo to the stories it counts.',
     extraIdTitle: 'Leftover pretraining token',
     extraIdBody:
       'The Murni and GTrans models almost always start with the mT5 sentinel token. It must be stripped before showing output to users.',
@@ -143,6 +153,15 @@ export const en: Dict = {
       title: 'Limitations',
       body: (baseline) =>
         `The reference is lead-2, and the no-model lead-2 baseline (${baseline}) beats every model. ROUGE here measures similarity to lead-2, not summary quality. Human evaluation and human-written references are needed.`,
+    },
+    distribution: {
+      title: 'ROUGE-L spread per document',
+      subtitle:
+        'Number of the 70 test stories in each 0.1 range, per scenario. The tail on the left (below 0.5) holds the documents that the lead-2 filter explains in the Findings section.',
+      lowBand: 'below 0.5',
+      xAxis: 'ROUGE-L range per document',
+      alt: (summary) => `ROUGE-L histogram per document for three scenarios. Documents below 0.5: ${summary}.`,
+      barTitle: (model, from, to, n) => `${model}, ${from}–${to}: ${n} stories`,
     },
     curve: {
       title: 'Training curve per epoch',
