@@ -58,7 +58,8 @@ notebook (Colab) --salin verbatim--> src/data/{docs.json,results.ts}
 | `base` Vite dari `BASE_PATH` | nama repo bisa berubah (`ringkas-jawa`) | workflow mengisi dari `github.event.repository.name` |
 | Teks keluaran model dirender sebagai teks | berisi `<extra_id_0>`; React meng-escape | tidak pernah `dangerouslySetInnerHTML` |
 | Font di-host sendiri (`src/fonts/`) | tanpa pihak ketiga, CSS tidak lagi diblokir origin lain, CSP bisa ketat | subset latin saja; Noto Sans Javanese di-subset (pyftsubset) ke glyph yang dipakai, 67 KB → 2.7 KB; lisensi OFL ikut di repo |
-| CSP lewat `<meta>` saat build (`csp.ts`) | GitHub Pages tidak bisa mengirim header | skrip inline harus di-hash (otomatis), `assetsInlineLimit: 0` |
+| CSP lewat `<meta>` saat build (`csp.ts`) | GitHub Pages tidak bisa mengirim header | skrip dan gaya inline di-hash (otomatis), `assetsInlineLimit: 0` |
+| CSS di-inline ke HTML saat build (`inlineCss`) | menghapus permintaan CSS yang memblokir render (PageSpeed mobile) | CSS tidak lagi di-cache terpisah; file CSS ~20 KB, jadi biayanya kecil |
 | Fokus pindah ke `<h1>`/bagian tujuan saat navigasi | pembaca layar tahu halamannya berganti | target diberi `tabIndex={-1}` |
 
 ## Build dan deploy

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { withCsp } from './csp.ts'
+import { inlineCss, withCsp } from './csp.ts'
 
 const page = (head: string) => `<!doctype html><html><head>${head}</head><body></body></html>`
 const policyOf = (html: string) => html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)![1]
@@ -28,5 +28,27 @@ describe('withCsp', () => {
     expect(policy).toContain("object-src 'none'")
     expect(policy).toContain("base-uri 'self'")
     expect(policy).toContain("form-action 'none'")
+  })
+})
+
+describe('inlineCss', () => {
+  it('replaces the stylesheet link with the CSS and removes the file from the bundle', () => {
+    const bundle = { 'assets/index-abc.css': { fileName: 'assets/index-abc.css', type: 'asset', source: 'body{margin:0}' } }
+    const html = page('<link rel="stylesheet" crossorigin href="/skripsi/assets/index-abc.css">')
+    expect(inlineCss(html, bundle)).toContain('<style>body{margin:0}</style>')
+    expect(bundle).toEqual({})
+  })
+
+  it('leaves links it does not recognise alone', () => {
+    const html = page('<link rel="stylesheet" href="https://fonts.example/x.css">')
+    expect(inlineCss(html, {})).toBe(html)
+  })
+})
+
+describe('withCsp styles', () => {
+  it('allows an inline style by its sha256 hash only', () => {
+    const policy = policyOf(withCsp(page('<style></style>')))
+    expect(policy).toContain("style-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='")
+    expect(policy).not.toContain('unsafe-inline')
   })
 })

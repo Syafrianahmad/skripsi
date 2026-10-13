@@ -72,14 +72,14 @@ export function Hero() {
             {t.hero.replay}
           </button>
         </div>
-        {/* the key restarts the keep/cut animations on replay */}
+        {/* the key restarts the cut animation on replay */}
         <div key={round}>
           <p className="hero-text" lang="jv">
             {SENTENCES.map((s, i) => (
               <span key={s}>
                 <span
                   className={i < KEPT ? 'keep' : 'cut'}
-                  style={{ animationDelay: i < KEPT ? `${700 + i * 150}ms` : `${400 + (i - KEPT) * 100}ms` }}
+                  style={i < KEPT ? undefined : { animationDelay: `${400 + (i - KEPT) * 100}ms` }}
                 >
                   {s}
                 </span>{' '}

@@ -324,19 +324,15 @@ a {
   to { opacity: 1; transform: none; }
 }
 
+/* transform only: a dimmed start state fails contrast for text below the fold (PageSpeed) */
 @keyframes up-soft {
-  from { opacity: 0.3; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateY(8px); }
+  to { transform: none; }
 }
 
 @keyframes dim {
   from { opacity: 1; }
   to { opacity: 0.6; }
-}
-
-@keyframes grow {
-  from { background-size: 0% 100%; }
-  to { background-size: 100% 100%; }
 }
 
 .rv {
@@ -480,7 +476,6 @@ a {
   background-size: 100% 100%;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  animation: grow 300ms var(--ease-out) both;
 }
 
 .cut {

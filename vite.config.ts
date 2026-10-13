@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import { withCsp } from './csp.ts'
+import { inlineCss, withCsp } from './csp.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     // build only: the dev server injects inline <style> tags that a strict CSP would block
-    { name: 'csp', apply: 'build', transformIndexHtml: { order: 'post', handler: withCsp } },
+    { name: 'csp', apply: 'build', transformIndexHtml: { order: 'post', handler: (html, ctx) => withCsp(inlineCss(html, ctx.bundle)) } },
   ],
   // never inline small assets as data: URIs; the CSP (default-src 'self') would block the inlined fonts
   build: { assetsInlineLimit: 0 },
