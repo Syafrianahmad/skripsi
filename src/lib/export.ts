@@ -12,6 +12,17 @@ export function toCsv(rows: readonly ExportRow[]): string {
   return ['doc,model,rouge_l,output', ...lines].join('\r\n')
 }
 
-export function toJson(rows: readonly ExportRow[]): string {
-  return JSON.stringify(rows, null, 2)
+/** Body of the downloaded CSV file. The BOM (U+FEFF, written as an escape so it stays visible in source) makes Excel read it as UTF-8. */
+export function csvDownload(rows: readonly ExportRow[]): string {
+  return '﻿' + toCsv(rows)
+}
+
+/** Saves `body` as a file named `name` through a temporary object URL. */
+export function download(name: string, type: string, body: string) {
+  const url = URL.createObjectURL(new Blob([body], { type }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 0)
 }

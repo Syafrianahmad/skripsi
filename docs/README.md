@@ -2,7 +2,7 @@
 
 Demo dan hasil skripsi **peringkasan cerita berbahasa Jawa** dengan `google/mt5-small`, dikemas sebagai situs portofolio statis (React + TypeScript + Vite). Dua halaman: **Demo** (keluaran asli tiga model pada dokumen uji nyata) dan **Hasil** (skor, kurva pelatihan, konfigurasi, keterbatasan). Bahasa ID/EN, mode terang/gelap.
 
-> Temuan utama yang sengaja ditampilkan apa adanya: baseline sederhana (lead-2, ROUGE-L 0.867) masih mengalahkan model terbaik (Hybrid, 0.7976), karena referensi memakai proksi lead-2 dan model cenderung menyalin awal cerita.
+> Temuan utama yang sengaja ditampilkan apa adanya: baseline sederhana (lead-2, ROUGE-L 0,867) masih mengalahkan model terbaik (Hybrid, 0,7976), karena referensi memakai proksi lead-2 dan model cenderung menyalin awal cerita.
 
 Demo live: <https://syafrianahmad.github.io/skripsi/> (GitHub Pages, deploy otomatis dari `main`).
 
@@ -21,25 +21,27 @@ Demo live: <https://syafrianahmad.github.io/skripsi/> (GitHub Pages, deploy otom
 ## Mulai cepat
 
 ```bash
-npm install
+npm install        # Node 22 (lihat .nvmrc)
 npm run dev        # http://localhost:5173
 npm run build      # produksi ke dist/
 npm run lint
-npm run test       # tersedia setelah vitest dipasang
+npm run test       # Vitest (tes unit)
+npm run test:e2e   # Playwright + axe, membangun sendiri (lihat TESTING.md)
+npm run size       # anggaran ukuran build, jalankan setelah build
 ```
 
-Untuk GitHub Pages di subpath: `BASE_PATH=/ringkas-jawa/ npm run build`.
+Untuk GitHub Pages di subpath: `BASE_PATH=/<nama-repo>/ npm run build`. Situs live saat ini ada di `/skripsi/`; nama repo menentukan subpath (lihat ARCHITECTURE.md, bagian Build dan deploy).
 
 ## Ringkasan hasil
 
 | Skenario | Pasangan latih | ROUGE-L |
 |---|---|---|
-| Murni | 633 | 0.3978 |
-| GTrans | 1.000 | 0.6437 |
-| Hybrid | 1.633 | 0.7976 |
-| Baseline lead-2 (tanpa model) | 0 | 0.867 |
+| Murni | 633 | 0,3978 |
+| GTrans | 1.000 | 0,6437 |
+| Hybrid | 1.633 | 0,7976 |
+| Baseline lead-2 (tanpa model) | 0 | 0,867 |
 
-Uji pada 70 cerita Jawa murni; 8 epoch; `google/mt5-small`; beam 4. Detail lengkap dan keterbatasan ada di halaman Hasil.
+Evaluasi pada 70 dokumen uji (cerita Jawa murni); 8 epoch; `google/mt5-small`; beam 4. Detail lengkap dan keterbatasan ada di halaman Hasil.
 
 ## Status
 

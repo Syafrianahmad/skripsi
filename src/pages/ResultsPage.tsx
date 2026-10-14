@@ -9,9 +9,10 @@ import { ScoreCards } from '../components/ScoreCards.tsx'
 import { TrainingChart } from '../components/TrainingChart.tsx'
 import { BASELINE, CONFIG, FINDINGS } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
+import { formatDec } from '../lib/format.ts'
 
 export function ResultsPage() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
   const r = t.results
 
   useEffect(() => {
@@ -21,8 +22,8 @@ export function ResultsPage() {
   return (
     <>
       <Masthead page="hasil">
-        <section className="masthead-body container">
-          <h1 className="rv" tabIndex={-1}>
+        <section className="masthead-body container" aria-labelledby="results-title">
+          <h1 id="results-title" className="rv" tabIndex={-1}>
             {r.title}
           </h1>
           <p className="hero-sub rv" style={{ animationDelay: '100ms' }}>
@@ -30,7 +31,7 @@ export function ResultsPage() {
           </p>
         </section>
       </Masthead>
-      <main className="results-main container">
+      <main id="main" tabIndex={-1} className="results-main container">
         <ScoreCards />
 
         <section className="results-row">
@@ -39,7 +40,7 @@ export function ResultsPage() {
             <ConfigList />
             <div className="side-card is-muted">
               <h2>{r.limitations.title}</h2>
-              <p>{r.limitations.body(BASELINE.rougeL.toFixed(3))}</p>
+              <p>{r.limitations.body(formatDec(BASELINE.rougeL, lang, 3))}</p>
             </div>
           </aside>
         </section>

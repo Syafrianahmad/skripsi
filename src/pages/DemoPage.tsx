@@ -7,53 +7,52 @@ import { Summarizer } from '../components/Summarizer.tsx'
 import { DOCS, FEATURED_IDS } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
 import { type FilterKey, storyIds } from '../lib/findings.ts'
-import { parseRoute } from '../lib/route.ts'
-import { pickRandomId } from '../lib/shuffle.ts'
+import { goToSection, linkedStory } from '../lib/route.ts'
+import { nextStoryId } from '../lib/shuffle.ts'
 
-const FEATURED: readonly number[] = FEATURED_IDS
+const isKnown = (id: number) => DOCS.some((d) => d.id === id)
 
 /** A shared link (`#/demo#story=N`) opens that story; anything else starts at the first featured one. */
-function startingId(): number {
-  const { story } = parseRoute(window.location.hash)
-  return story !== undefined && DOCS.some((d) => d.id === story) ? story : FEATURED[0]
+function startingId(story: number | undefined): number {
+  return story !== undefined && isKnown(story) ? story : FEATURED_IDS[0]
 }
 
-export function DemoPage() {
+/** `story` comes from the route. Only a link that names a different story switches it; the Summarizer is remounted (`gen`) so its compare mode and filter reset too. */
+export function DemoPage({ story }: { story: number | undefined }) {
   const { t } = useLang()
-  const [sel, setSel] = useState(() => ({ id: startingId(), filter: null as FilterKey | null }))
+  const [sel, setSel] = useState(() => ({ id: startingId(story), filter: null as FilterKey | null, gen: 0 }))
+  const [prevStory, setPrevStory] = useState(story)
+
+  // adjust state while rendering, compared against the previous prop (no effect, no extra pass)
+  if (story !== prevStory) {
+    setPrevStory(story)
+    const linked = linkedStory(prevStory, story)
+    if (linked !== undefined && isKnown(linked)) setSel({ id: linked, filter: null, gen: sel.gen + 1 })
+  }
 
   useEffect(() => {
     document.title = t.meta.demoTitle
   }, [t.meta.demoTitle])
 
-  // replaceState keeps the permalink current without a hashchange (no scroll, no history entry)
-  function syncLink(id: number) {
-    window.history.replaceState(null, '', `#/demo#story=${id}`)
-  }
-
-  function pick(id: number) {
+  function handlePick(id: number) {
     setSel((s) => ({ ...s, id }))
-    syncLink(id)
   }
 
   // keep the current story when it still matches; otherwise move to the first match
-  function filterBy(filter: FilterKey | null) {
+  function handleFilter(filter: FilterKey | null) {
     const ids = storyIds(filter)
     const id = ids.includes(sel.id) ? sel.id : ids[0]
-    setSel({ id, filter })
-    syncLink(id)
+    setSel((s) => ({ ...s, id, filter }))
   }
 
-  function shuffle() {
-    pick(pickRandomId(storyIds(sel.filter), sel.id, sel.filter ? [] : FEATURED))
+  function handleShuffle() {
+    handlePick(nextStoryId(sel.id, sel.filter, Math.random))
   }
 
   // from a Temuan stat: apply the filter and bring the summarizer into view
-  function showStories(filter: FilterKey) {
-    filterBy(filter)
-    const tool = document.getElementById('alat')
-    tool?.scrollIntoView()
-    tool?.focus({ preventScroll: true })
+  function handleShowStories(filter: FilterKey) {
+    handleFilter(filter)
+    goToSection('alat')
   }
 
   return (
@@ -61,15 +60,16 @@ export function DemoPage() {
       <Masthead page="demo">
         <Hero />
       </Masthead>
-      <main className="demo-main container">
+      <main id="main" tabIndex={-1} className="demo-main container">
         <Summarizer
+          key={sel.gen}
           id={sel.id}
           filter={sel.filter}
-          onPick={pick}
-          onFilter={filterBy}
-          onShuffle={shuffle}
+          onPick={handlePick}
+          onFilter={handleFilter}
+          onShuffle={handleShuffle}
         />
-        <Findings onShow={showStories} />
+        <Findings onShow={handleShowStories} />
         <CaseSteps />
       </main>
     </>

@@ -11,12 +11,23 @@ const normalize = (word: string) => word.toLowerCase().replace(/^[^\p{L}\p{N}<]+
  * `others` word sets contains it. Whitespace is kept so the text reads the same.
  */
 export function markAgainst(text: string, others: readonly Set<string>[]): Part[] {
-  return text.split(/(\s+)/).filter(Boolean).map((t) => {
-    if (/^\s+$/.test(t)) return { t, d: 0 }
+  const tokens = text.split(/(\s+)/).filter(Boolean)
+  // null marks a gap (whitespace); it is resolved from its neighbours below
+  const marks = tokens.map((t): 0 | 1 | null => {
+    if (/^\s+$/.test(t)) return null
     const word = normalize(t)
     const shared = word === '' || others.some((set) => set.has(word))
-    return { t, d: shared ? 0 : 1 }
+    return shared ? 0 : 1
   })
+  const parts: Part[] = []
+  tokens.forEach((t, i) => {
+    // a gap between two differing words joins their run, so a run of differing words is one mark
+    const d = marks[i] ?? (marks[i - 1] === 1 && marks[i + 1] === 1 ? 1 : 0)
+    const last = parts[parts.length - 1]
+    if (d === 1 && last?.d === 1) last.t += t
+    else parts.push({ t, d })
+  })
+  return parts
 }
 
 export function wordSet(text: string): Set<string> {

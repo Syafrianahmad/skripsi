@@ -28,4 +28,26 @@ describe('markAgainst', () => {
     const parts = markAgainst('a b', [new Set(['a']), new Set(['b'])])
     expect(parts.filter((p) => p.d === 1)).toEqual([])
   })
+
+  it('joins neighbouring differing words, gap included, into one mark', () => {
+    const parts = markAgainst('Ibu sayur kacang masak', [new Set(['ibu', 'masak'])])
+    expect(parts).toEqual([
+      { t: 'Ibu', d: 0 },
+      { t: ' ', d: 0 },
+      { t: 'sayur kacang', d: 1 },
+      { t: ' ', d: 0 },
+      { t: 'masak', d: 0 },
+    ])
+  })
+
+  it('keeps marks apart when a shared word sits between them', () => {
+    const parts = markAgainst('sayur ibu kacang', [new Set(['ibu'])])
+    expect(parts).toEqual([
+      { t: 'sayur', d: 1 },
+      { t: ' ', d: 0 },
+      { t: 'ibu', d: 0 },
+      { t: ' ', d: 0 },
+      { t: 'kacang', d: 1 },
+    ])
+  })
 })

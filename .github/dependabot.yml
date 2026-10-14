@@ -6,6 +6,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     groups:
       # only safe bumps are bundled; a major bump arrives as its own PR so a failure points at one package
       dev-dependencies:
@@ -25,3 +27,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      # one PR for all action bumps, so each SHA pin and its version comment change together
+      actions:
+        patterns: ['*']

@@ -6,7 +6,7 @@ export function CaseSteps() {
   return (
     <section id="di-balik-layar" className="behind">
       <h2 className="section-title sr">{t.behind.title}</h2>
-      <ol>
+      <ol role="list">
         {t.behind.steps.map((step) => (
           <li key={step.title} className="sr">
             <h3>{step.title}</h3>

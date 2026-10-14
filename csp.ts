@@ -25,8 +25,9 @@ export function inlineCss(html: string, bundle: Bundle = {}): string {
  * React sets `style` props through the CSSOM, which CSP does not restrict.
  */
 export function withCsp(html: string): string {
-  const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => sha256(m[1]))
-  const styles = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map((m) => sha256(m[1]))
+  // inline means no src= attribute; the \s keeps data-src= from counting. Other attributes (type=) must still be hashed
+  const hashes = [...html.matchAll(/<script\b(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => sha256(m[1]))
+  const styles = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)].map((m) => sha256(m[1]))
   const policy = [
     "default-src 'self'",
     ["script-src 'self'", ...hashes].join(' '),

@@ -1,14 +1,19 @@
 import { Footer } from './components/Footer.tsx'
-import { useRoute } from './lib/route.ts'
+import { useLang } from './i18n/useLang.ts'
+import { goToSection, useRoute } from './lib/route.ts'
 import { DemoPage } from './pages/DemoPage.tsx'
 import { ResultsPage } from './pages/ResultsPage.tsx'
 
 export default function App() {
-  const { page } = useRoute()
+  const route = useRoute()
+  const { t } = useLang()
 
   return (
     <>
-      {page === 'hasil' ? <ResultsPage /> : <DemoPage />}
+      <button type="button" className="skip-link" onClick={() => goToSection('main')}>
+        {t.nav.skipToContent}
+      </button>
+      {route.page === 'hasil' ? <ResultsPage /> : <DemoPage story={route.story} />}
       <Footer />
     </>
   )

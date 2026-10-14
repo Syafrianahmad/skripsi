@@ -1,4 +1,4 @@
-// Security guards: static scans of the source and index.html, run with `npm run test`.
+// Security guards: static scans of the source, docs, and index.html, run with `npm run test`.
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,11 +15,22 @@ const sources = walk('src')
   .filter((f) => /\.(ts|tsx|css)$/.test(f) && !f.includes('.test.'))
   .map((f) => ({ file: f, text: read(f) }))
 const html = read('index.html')
+// every text file under src/ and docs/ (binary images are skipped)
+const textFiles = [...walk('src'), ...walk('docs')]
+  .filter((f) => /\.(ts|tsx|css|md|html|json)$/.test(f))
+  .map((f) => ({ file: f, text: read(f) }))
 
 describe('security guards', () => {
   it('never renders raw HTML or evaluates strings (model output stays plain text)', () => {
     for (const { file, text } of sources) {
       expect(text, file).not.toMatch(/dangerouslySetInnerHTML|\.innerHTML|outerHTML|insertAdjacentHTML|\beval\(|new Function\(/)
+    }
+  })
+
+  it('formats UI numbers through src/lib/format.ts, never toFixed (id shows a decimal comma)', () => {
+    // src/lib/chart.ts, export.ts, and format.ts are outside these roots: SVG coordinates and CSV/JSON keep the dot.
+    for (const { file, text } of sources.filter((s) => /^src[\\/](components|pages)[\\/]/.test(s.file))) {
+      expect(text, file).not.toMatch(/\.toFixed\(/)
     }
   })
 
@@ -43,6 +54,18 @@ describe('security guards', () => {
 
   it('keeps production source maps off', () => {
     expect(read('vite.config.ts')).not.toMatch(/sourcemap\s*:\s*(true|['"])/)
+  })
+
+  it('keeps personal profile links out of src and docs (PRD forbids personal data)', () => {
+    for (const { file, text } of textFiles) {
+      expect(text, file).not.toContain('linkedin.com/in/')
+    }
+  })
+
+  it('changes the hash only through location.hash or goToSection, never the history API', () => {
+    for (const { file, text } of textFiles.filter((f) => f.file.startsWith('src'))) {
+      expect(text, file).not.toMatch(/\bhistory\??\.(replaceState|pushState)\b/)
+    }
   })
 
   it('contains nothing that looks like a secret', () => {

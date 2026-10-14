@@ -1,17 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { DATASET, DOCS, FEATURED_IDS } from '../data/results.ts'
-import type { Doc, ModelId, Part } from '../data/types.ts'
+import type { Doc, Lang, ModelId, Part } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
 import { markAgainst, outputText, wordSet } from '../lib/compare.ts'
-import { toCsv, toJson, type ExportRow } from '../lib/export.ts'
-import { type FilterKey, storyIds } from '../lib/findings.ts'
+import { csvDownload, download, type ExportRow } from '../lib/export.ts'
+import { FILTER_KEYS, type FilterKey, storyIds } from '../lib/findings.ts'
 import { ModelCard } from './ModelCard.tsx'
 import { MODEL_LABEL } from './models.ts'
 
 // strongest model first
 const MODEL_ORDER: readonly ModelId[] = ['hybrid', 'gtrans', 'murni']
 
+// how long a status message stays in the live region before it is cleared
+const MESSAGE_MS = 6000
+
 type Compare = 'ref' | 'models'
+
+type Seen = { id: number; filter: FilterKey | null; lang: Lang }
+
+// a new object per announcement restarts the timer, even when the text repeats
+type Status = { text: string }
 
 type Props = {
   id: number
@@ -19,15 +28,6 @@ type Props = {
   onPick: (id: number) => void
   onFilter: (filter: FilterKey | null) => void
   onShuffle: () => void
-}
-
-function download(name: string, type: string, body: string) {
-  const url = URL.createObjectURL(new Blob([body], { type }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = name
-  link.click()
-  setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 
 function ShuffleIcon() {
@@ -39,25 +39,40 @@ function ShuffleIcon() {
   )
 }
 
-const FILTER_KEYS: readonly FilterKey[] = [
-  'extraId:murni',
-  'extraId:gtrans',
-  'aku:hybrid',
-  'quote:hybrid',
-  'low:murni',
-  'low:gtrans',
-  'low:hybrid',
-]
-
 export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
   const { lang, t } = useLang()
   const [compare, setCompare] = useState<Compare>('ref')
-  const [copiedId, setCopiedId] = useState<number | null>(null)
+  const [seen, setSeen] = useState<Seen>({ id, filter, lang })
+  const [status, setStatus] = useState<Status>({ text: '' })
   const doc = DOCS.find((d) => d.id === id)!
   const matches = storyIds(filter)
   // the current story stays listed even when a featured chip picked it outside the filter
   const options = DOCS.filter((d) => d.id === doc.id || matches.includes(d.id))
-  const copied = copiedId === doc.id
+  // the copy button reads "copied" only while that message is up, so the 6 s timer below resets it
+  const copied = status.text === t.demo.linkCopied
+
+  // Announce only what changed in the story or filter. A filter change that also moves the
+  // story says both. A language switch clears the message instead of re-announcing it translated.
+  // Compared against the last render, not an effect.
+  if (seen.lang !== lang || seen.id !== id || seen.filter !== filter) {
+    const count = seen.filter !== filter && filter ? t.demo.matchCount(matches.length, DOCS.length) : ''
+    const story = seen.id !== id || !count ? t.demo.nowShowing(doc.id, doc.title) : ''
+    setSeen({ id, filter, lang })
+    if (seen.lang !== lang) setStatus({ text: '' })
+    else setStatus({ text: [count, story].filter(Boolean).join('. ') })
+  }
+
+  useEffect(() => {
+    if (!status.text) return
+    const timer = window.setTimeout(() => setStatus({ text: '' }), MESSAGE_MS)
+    return () => window.clearTimeout(timer)
+  }, [status])
+
+  // a repeated text is not read again, so the region is blanked in a commit of its own first
+  function announce(text: string) {
+    flushSync(() => setStatus({ text: '' }))
+    setStatus({ text })
+  }
 
   function partsFor(d: Doc, m: ModelId): readonly Part[] {
     if (compare === 'ref') return d.out[m].parts
@@ -65,12 +80,13 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
     return markAgainst(outputText(d.out[m].parts), others)
   }
 
-  async function copyLink() {
+  async function handleCopyLink() {
+    const link = `${window.location.origin}${window.location.pathname}#/demo#story=${doc.id}`
     try {
-      await navigator.clipboard.writeText(window.location.href)
-      setCopiedId(doc.id)
+      await navigator.clipboard.writeText(link)
+      announce(t.demo.linkCopied)
     } catch {
-      // clipboard blocked: the address bar still holds the same link
+      announce(t.demo.copyFailed)
     }
   }
 
@@ -80,43 +96,49 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
     rougeL: doc.out[m].rl,
     output: outputText(doc.out[m].parts),
   }))
+  const handleDownloadCsv = () => download(`ringkas-jawa-${doc.id}.csv`, 'text/csv', csvDownload(rows))
+  const handleDownloadJson = () => download(`ringkas-jawa-${doc.id}.json`, 'application/json', JSON.stringify(rows, null, 2))
 
   return (
     <section id="alat" className="tool rv" aria-label={t.demo.sectionLabel} tabIndex={-1} style={{ animationDelay: '150ms' }}>
-      <div className="picker" role="radiogroup" aria-labelledby="picker-label">
-        <span id="picker-label" className="picker-label">
-          {t.demo.pickStory}
-        </span>
-        {FEATURED_IDS.map((fid) => {
-          const d = DOCS.find((x) => x.id === fid)!
-          return (
-            <label key={fid} className="chip">
-              <input
-                type="radio"
-                name="story"
-                className="sr-only"
-                checked={id === fid}
-                onChange={() => onPick(fid)}
-              />
-              <span>{d.title}</span>
-              <span className={`tag tag-${d.tag}`}>{t.demo.tags[d.tag]}</span>
-            </label>
-          )
-        })}
-        <label className="picker-other">
-          <span className="picker-label">{t.demo.pickOther}</span>
-          <select className="picker-select" value={doc.id} onChange={(e) => onPick(Number(e.target.value))}>
-            {options.map((d) => (
-              <option key={d.id} value={d.id}>
-                {`#${d.id} · ${d.title}`}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button type="button" className="btn-dashed" onClick={onShuffle} disabled={matches.length < 2}>
-          <ShuffleIcon />
-          {t.demo.shuffle}
-        </button>
+      <div className="picker">
+        <div className="picker-chips" role="radiogroup" aria-labelledby="picker-label">
+          <span id="picker-label" className="picker-label">
+            {t.demo.pickStory}
+          </span>
+          {FEATURED_IDS.map((fid) => {
+            const d = DOCS.find((x) => x.id === fid)!
+            return (
+              <label key={fid} className="chip">
+                <input
+                  type="radio"
+                  name="story"
+                  className="sr-only"
+                  checked={id === fid}
+                  onChange={() => onPick(fid)}
+                />
+                <span lang="jv">{d.title}</span>
+                <span className={`tag tag-${d.tag}`}>{t.demo.tags[d.tag]}</span>
+              </label>
+            )
+          })}
+        </div>
+        <div className="picker-row" role="group">
+          <label className="picker-other">
+            <span className="picker-label">{t.demo.pickOther}</span>
+            <select className="picker-select" value={doc.id} onChange={(e) => onPick(Number(e.target.value))}>
+              {options.map((d) => (
+                <option key={d.id} value={d.id} lang="jv">
+                  {`#${d.id} · ${d.title}`}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button type="button" className="btn-dashed" onClick={onShuffle} disabled={matches.length < 2}>
+            <ShuffleIcon />
+            {t.demo.shuffle}
+          </button>
+        </div>
       </div>
 
       <div className="picker picker-filter">
@@ -141,10 +163,8 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
         {filter && <span className="meta">{t.demo.matchCount(matches.length, DOCS.length)}</span>}
       </div>
 
-      {/* short announcement instead of reading three long outputs aloud on every change */}
-      <p className="sr-only" aria-live="polite">
-        {t.demo.nowShowing(doc.id, doc.title)}
-      </p>
+      {/* one live region for copy and filter/story changes; it stays in the DOM so the first change is heard */}
+      <span role="status" className="sr-only">{status.text}</span>
 
       <div className="tool-body">
         <div className="tool-col">
@@ -180,21 +200,13 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
             </p>
           </div>
           <div className="actions">
-            <button type="button" className="btn-dashed" onClick={copyLink}>
+            <button type="button" className="btn-dashed" onClick={handleCopyLink}>
               {copied ? t.demo.linkCopied : t.demo.copyLink}
             </button>
-            <button
-              type="button"
-              className="btn-dashed"
-              onClick={() => download(`ringkas-jawa-${doc.id}.csv`, 'text/csv', toCsv(rows))}
-            >
+            <button type="button" className="btn-dashed" onClick={handleDownloadCsv}>
               {t.demo.downloadCsv}
             </button>
-            <button
-              type="button"
-              className="btn-dashed"
-              onClick={() => download(`ringkas-jawa-${doc.id}.json`, 'application/json', toJson(rows))}
-            >
+            <button type="button" className="btn-dashed" onClick={handleDownloadJson}>
               {t.demo.downloadJson}
             </button>
           </div>
@@ -224,6 +236,7 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
           <p className="legend">
             <mark className="diff">{t.demo.highlightKey}</mark>{' '}
             {compare === 'ref' ? t.demo.highlightText : t.demo.highlightModelsText}. {t.demo.savedNote}.
+            <span className="sr-only"> {t.demo.diffLegend}</span>
           </p>
         </div>
       </div>

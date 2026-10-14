@@ -1,14 +1,14 @@
 import { MODEL_IDS, NGRAM_NEW } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
+import { formatDec } from '../lib/format.ts'
 import { MODEL_LABEL } from './models.ts'
 
-const pct = (v: number) => `${v.toFixed(1)}%`
-
 export function NgramTable() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
+  const pct = (v: number) => `${formatDec(v, lang, 1)}%`
 
   return (
-    <div className="table-wrap" role="region" aria-label={t.results.abstractive.caption} tabIndex={0}>
+    <div className="table-wrap" role="region" aria-label={t.results.scrollRegion(t.results.abstractive.caption)} tabIndex={0}>
       <table className="data-table">
         <caption>{t.results.abstractive.caption}</caption>
         <thead>

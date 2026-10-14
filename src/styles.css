@@ -69,14 +69,22 @@
   --good: light-dark(#166534, #4ade80);
   /* focus ring and chart series meet 3:1 against light surfaces (amber #f59e0b is only 2.15:1 on white) */
   --focus: light-dark(#b45309, #f59e0b);
-  --series-murni: light-dark(#7b8aa0, #94a3b8);
-  --series-gtrans: #64748b;
+  /* Murni (orange) and GTrans (violet) differ in hue and lightness: >= 3:1 against each other and against --surface in both themes.
+     Light: Murni 3.56:1 and GTrans 14.99:1 on #fff, Murni/GTrans 4.21:1. Dark: Murni 12.8:1 and GTrans 3.62:1 on #111a2e, Murni/GTrans 3.54:1.
+     Hybrid (--primary) is told apart by solid line and triangle marker, see models.ts. */
+  --series-murni: light-dark(#ea580c, #fed7aa);
+  --series-gtrans: light-dark(#3b0764, #8250f2);
 
   /* fixed across themes */
   --hero: #13294b;
   --accent: #f59e0b;
   --accent-soft: #fbbf24;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* how far the content cards pull up into the masthead; the masthead bottom padding adds 48px on top of it */
+  --pull: clamp(48px, 8vw, 72px);
+  --space-section: clamp(40px, 6vw, 72px);
+  --z-skip: 100;
 
   --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
   --font-display: 'Schibsted Grotesk', system-ui, sans-serif;
@@ -116,8 +124,50 @@ a {
   outline-offset: 2px;
 }
 
+/* Programmatic focus targets (skip link, section jumps): focus lands there but no ring around a whole region */
+main:focus-visible,
+section[tabindex='-1']:focus-visible {
+  outline: none;
+}
+
+/* scrollable regions are tab stops, so they get an explicit ring (5:1 on #fff, 8:1 on #111a2e) */
+.chart-scroll:focus-visible,
+.table-wrap:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .masthead :focus-visible {
   outline-color: var(--accent);
+}
+
+/* skip link: parked above the viewport, drops in on keyboard focus; fixed so it never shifts layout */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: var(--z-skip);
+  min-height: 44px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: #0b1220; /* 11.2:1 on #fbbf24 */
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
+  outline: 3px solid #fff; /* 14:1 on the masthead, and the amber fill separates it from the white ring */
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #0b1220, 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 .container {
@@ -129,7 +179,6 @@ a {
 /* Masthead: dark band with the kawung motif (decorative, fades out to the left) */
 .masthead {
   position: relative;
-  overflow: hidden;
   background: var(--hero);
   color: #fff;
 }
@@ -153,19 +202,23 @@ a {
 }
 
 .masthead-body {
-  padding-block: 56px 120px;
+  padding-block: clamp(32px, 6vw, 56px) calc(var(--pull) + 48px);
 }
 
 .masthead h1 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 48px;
+  font-size: clamp(34px, 7vw, 48px);
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
 
-/* Header */
+/* Header: the rule spans the full width, the nav inside is capped by .container */
+.masthead header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 .site-nav {
   min-height: 68px;
   display: flex;
@@ -173,7 +226,6 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .brand {
@@ -210,20 +262,33 @@ a {
 }
 
 .nav-link {
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   color: #cbd5e1;
   text-decoration: none;
 }
 
-.nav-link:hover {
-  color: #fff;
+@media (hover: hover) {
+  .nav-link:hover {
+    color: #fff;
+  }
 }
 
 .nav-link[aria-current='page'] {
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
   font-weight: 700;
+}
+
+/* forced colors drop the background tint: the current page keeps an underline */
+@media (forced-colors: active) {
+  .nav-link[aria-current='page'] {
+    text-decoration: underline;
+  }
 }
 
 .lang-switch {
@@ -284,9 +349,81 @@ a {
   transform: scale(0.96);
 }
 
+/* Phones: row 1 = brand + language + theme, row 2 = the three links across the full width.
+   .nav-links dissolves into the flex row; its ::after is a full-width line break between the two rows.
+   Last in the header rules so it wins over the base margins above. */
+@media (max-width: 767.98px) {
+  .site-nav {
+    min-height: 0;
+    padding-block: 4px;
+    gap: 0 8px;
+    justify-content: flex-start;
+  }
+
+  .brand {
+    margin-right: auto;
+    gap: 8px;
+    font-size: 17px;
+    order: 1;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+
+  .nav-links {
+    display: contents;
+  }
+
+  .lang-switch {
+    margin-left: 0;
+    order: 2;
+  }
+
+  .icon-btn {
+    margin-left: 0;
+    order: 3;
+  }
+
+  .nav-links::after {
+    content: '';
+    flex: 0 0 100%;
+    order: 4;
+  }
+
+  .nav-link {
+    flex: 1 1 0;
+    padding-inline: 4px;
+    line-height: 1.3;
+    text-align: center;
+    order: 5;
+  }
+}
+
+/* 320px: row 1 needs brand 148 + lang 96 + theme 44 + 2 gaps = 304px; 16px side padding leaves 288px */
+@media (max-width: 359.98px) {
+  .site-nav {
+    padding-inline: 16px;
+    column-gap: 6px;
+  }
+
+  .brand {
+    gap: 6px;
+    font-size: 15px;
+  }
+
+  .brand-mark {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+}
+
 /* Footer */
 .site-footer {
-  margin-top: 72px;
+  margin-top: var(--space-section);
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
@@ -316,6 +453,14 @@ a {
 .footer-side {
   align-items: flex-start;
   gap: 8px;
+}
+
+/* standalone links (footer, dataset credit) get a 44px touch target */
+.footer-side a,
+.source-line a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Motion (all of it is switched off by the reduced-motion rule at the bottom) */
@@ -401,8 +546,15 @@ a {
   max-width: 600px;
   margin: 32px 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  /* four stats: 2x2 on phones, one row from 768 (never 3+1) */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+@media (min-width: 768px) {
+  .hero-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .hero-stats > div {
@@ -505,10 +657,10 @@ a {
 /* Demo page body: content card overlaps the masthead */
 .demo-main {
   position: relative;
-  margin-top: -72px;
+  margin-top: calc(var(--pull) * -1);
   display: flex;
   flex-direction: column;
-  gap: 72px;
+  gap: var(--space-section);
 }
 
 .section-title {
@@ -522,7 +674,6 @@ a {
 
 /* Summarizer */
 .tool {
-  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface);
@@ -544,6 +695,20 @@ a {
   border-bottom: 1px solid var(--border-soft);
 }
 
+.picker-chips,
+.picker-row {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+/* beside the chips when there is room, otherwise on its own line */
+.picker-row {
+  flex: 1 1 320px;
+}
+
 .picker-label {
   margin-right: 4px;
   font-size: 14px;
@@ -553,7 +718,8 @@ a {
 .chip {
   position: relative;
   min-height: 44px;
-  padding: 0 8px 0 14px;
+  max-width: 100%;
+  padding: 4px 8px 4px 14px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -567,24 +733,31 @@ a {
     border-color 150ms ease-out;
 }
 
-.chip:hover {
-  border-color: var(--primary);
+.chip > span[lang] {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-.chip:has(input:checked),
-.chip.is-active {
+.chip .tag {
+  flex: none;
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    border-color: var(--primary);
+  }
+}
+
+/* selected: 2px ring (border + inset line, so nothing shifts) in --primary: 9.9:1 on the light --sel, 7.9:1 on the dark one */
+.chip:has(input:checked) {
   border-color: var(--primary);
   background: var(--sel);
+  box-shadow: inset 0 0 0 1px var(--primary);
 }
 
 .chip:has(input:focus-visible) {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
-}
-
-.chip.is-active {
-  padding-right: 14px;
-  cursor: default;
 }
 
 .tag {
@@ -614,16 +787,24 @@ a {
 }
 
 .picker-other {
-  display: inline-flex;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
 }
 
+/* border is --muted (>= 3:1 on both surfaces, WCAG 1.4.11); --border was 1.5:1 on white */
 .picker-select {
+  flex: 1 1 200px;
+  width: 100%;
+  min-width: 0;
   min-height: 44px;
-  max-width: 100%;
+  max-width: min(100%, 420px);
   padding: 0 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--muted);
   border-radius: 999px;
   background: var(--surface);
   color: var(--ink);
@@ -632,8 +813,10 @@ a {
   cursor: pointer;
 }
 
-.picker-select:hover {
-  border-color: var(--primary);
+@media (hover: hover) {
+  .picker-select:hover {
+    border-color: var(--primary);
+  }
 }
 
 .picker-select:focus-visible {
@@ -665,8 +848,8 @@ a {
 }
 
 .segmented button {
-  min-height: 38px;
-  padding: 0 12px;
+  min-height: 44px;
+  padding: 0 14px;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -677,9 +860,11 @@ a {
   cursor: pointer;
 }
 
+/* pressed: filled + 2px inset ring in --primary (9.9:1 on the light --sel, 7.9:1 on the dark one), not just a tint */
 .segmented button[aria-pressed='true'] {
   background: var(--sel);
   color: var(--primary);
+  box-shadow: inset 0 0 0 2px var(--primary);
 }
 
 .segmented button:focus-visible {
@@ -689,7 +874,7 @@ a {
 
 .tool-body {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .tool-col {
@@ -700,20 +885,23 @@ a {
   gap: 18px;
 }
 
+/* .tool no longer clips (overflow hidden removed): this column's tinted fill follows the card's rounded bottom corners itself */
 .tool-col-out {
   gap: 12px;
   border-left: 1px solid var(--border-soft);
+  border-radius: 0 0 15px 0;
   background: var(--surface-2);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 767.98px) {
   .tool-body {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .tool-col-out {
     border-left: 0;
     border-top: 1px solid var(--border-soft);
+    border-radius: 0 0 15px 15px;
   }
 }
 
@@ -792,7 +980,7 @@ a {
 }
 
 .model-row h3 {
-  width: 64px;
+  min-width: 64px;
   margin: 0;
   font-size: 15px;
 }
@@ -812,7 +1000,7 @@ a {
 }
 
 .score {
-  width: 52px;
+  min-width: 52px;
   text-align: right;
   font-family: var(--font-mono);
   font-size: 14px;
@@ -843,6 +1031,14 @@ mark.diff {
   color: var(--ink);
 }
 
+/* forced colors drop the highlight fill and its inset line: the mark takes the system mark colours */
+@media (forced-colors: active) {
+  mark.diff {
+    background: Mark;
+    color: MarkText;
+  }
+}
+
 /* Findings */
 .findings,
 .behind {
@@ -853,6 +1049,7 @@ mark.diff {
 
 .finding-grid {
   display: grid;
+  /* four cards: the 400px minimum allows at most 2 columns inside the 1152px content box, so 1 or 2x2, never 3+1 */
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
   gap: 16px;
 }
@@ -868,8 +1065,10 @@ mark.diff {
   transition: transform 150ms ease-out;
 }
 
-.finding:hover {
-  transform: translateY(-3px);
+@media (hover: hover) {
+  .finding:hover {
+    transform: translateY(-3px);
+  }
 }
 
 .finding-key {
@@ -899,7 +1098,8 @@ mark.diff {
   padding-top: 8px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  align-items: center;
+  gap: 0 20px;
   font-family: var(--font-mono);
   font-size: 14px;
 }
@@ -927,6 +1127,18 @@ mark.diff {
 
 .finding-strong .finding-stats strong {
   color: var(--accent-soft);
+}
+
+/* on the fixed #1e3a5f card: hover text and ring use --accent-soft, 6.9:1 (text needs 4.5:1, ring 3:1) */
+@media (hover: hover) {
+  .finding-strong .stat-link:hover {
+    color: var(--accent-soft);
+  }
+}
+
+.finding-strong :focus-visible,
+.finding-strong .stat-link:focus-visible {
+  outline-color: var(--accent-soft);
 }
 
 .finding-meta {
@@ -1032,16 +1244,29 @@ mark.diff {
 
 .results-main {
   position: relative;
-  margin-top: -64px;
+  margin-top: calc(var(--pull) * -1 + 8px);
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
 
+/* four cards: 1 column on phones, 2x2 on tablets, one row of 4 from 1280 (never 3+1) */
 .score-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
+}
+
+@media (min-width: 480px) {
+  .score-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .score-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .score-card {
@@ -1053,8 +1278,10 @@ mark.diff {
   transition: transform 150ms ease-out;
 }
 
-.score-card:hover {
-  transform: translateY(-3px);
+@media (hover: hover) {
+  .score-card:hover {
+    transform: translateY(-3px);
+  }
 }
 
 .score-card-head {
@@ -1127,12 +1354,13 @@ mark.diff {
   gap: 24px;
 }
 
+/* 698px = training chart 640 + card padding 2x28 + border 2: no scroll. Row fits side by side from 1072px viewport, stacks below */
 .chart-main {
-  flex: 999 1 600px;
+  flex: 999 1 700px;
 }
 
 .results-aside {
-  flex: 1 1 320px;
+  flex: 1 1 300px;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -1227,7 +1455,7 @@ mark.diff {
 
 .tabs {
   position: relative;
-  min-width: 260px;
+  min-width: min(260px, 100%);
   padding: 4px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1260,6 +1488,56 @@ mark.diff {
   cursor: pointer;
 }
 
+/* selected tab: 3px bar under the label in --primary (11.5:1 on the white thumb, 9.6:1 on the dark one),
+   so the state does not depend on the thumb's 1.2:1 tint against the track */
+.tab::after {
+  content: '';
+  position: absolute;
+  inset: auto 12px 5px;
+  height: 3px;
+  border-radius: 2px;
+  background: transparent;
+}
+
+.tab[aria-selected='true']::after {
+  background: var(--primary);
+}
+
+/* forced colors strip fills and box-shadows. The pick is a bar under the label (like .tab), not an outline,
+   so the outline stays free for focus: a picked control that has focus shows the bar and the ring. */
+@media (forced-colors: active) {
+  .tab[aria-selected='true']::after {
+    background: Highlight;
+  }
+
+  .segmented button {
+    position: relative;
+  }
+
+  .chip:has(input:checked)::after,
+  .segmented button[aria-pressed='true']::after,
+  .lang-btn[aria-pressed='true']::after {
+    content: '';
+    position: absolute;
+    inset: auto 10px 3px;
+    height: 3px;
+    border-radius: 2px;
+    background: Highlight;
+  }
+
+  /* after the pick rules above, so the focus outline is not overridden */
+  .chip:has(input:focus-visible),
+  .segmented button:focus-visible,
+  .lang-btn:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .bar-fill {
+    outline: 2px solid CanvasText;
+  }
+}
+
 .legend-row {
   display: flex;
   flex-wrap: wrap;
@@ -1272,6 +1550,11 @@ mark.diff {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+.legend-item svg {
+  flex: none;
+  overflow: visible;
 }
 
 .side-card {
@@ -1311,7 +1594,7 @@ mark.diff {
 
 .config-row {
   display: grid;
-  grid-template-columns: 104px 1fr;
+  grid-template-columns: 104px minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -1322,6 +1605,8 @@ mark.diff {
 .config-row dd {
   min-width: 0;
   margin: 0;
+  /* measured at 320px: "beam 4, no_repeat_ngram 3" overflowed its dd by 2px (scrollWidth 112 > 110) */
+  overflow-wrap: anywhere;
 }
 
 .mono {
@@ -1365,7 +1650,9 @@ mark.diff {
   flex: 2 1 520px;
 }
 
+/* scroll containers are also containing blocks: absolutely positioned children (.sr-only) stay clipped inside them */
 .table-wrap {
+  position: relative;
   min-width: 0;
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -1417,8 +1704,10 @@ mark.diff {
   transition: background-color 150ms ease-out;
 }
 
-.data-table tbody tr:hover {
-  background: var(--sel);
+@media (hover: hover) {
+  .data-table tbody tr:hover {
+    background: var(--sel);
+  }
 }
 
 .data-table .num {
@@ -1449,16 +1738,22 @@ mark.diff {
   color: var(--ink-2);
 }
 
-/* Narrow screens: charts keep a readable minimum width and scroll inside their card */
+/* Narrow screens: a chart never renders narrower than its viewBox (scale >= 1, so the 12px SVG text stays >= 12px)
+   and scrolls inside its card. Curve and distribution are 680 wide, training is 640. */
 .chart-scroll {
+  position: relative;
   overflow-x: auto;
 }
 
 .chart-scroll .chart {
-  min-width: 560px;
+  min-width: 680px;
 }
 
-@media (max-width: 560px) {
+.chart-scroll .chart[viewBox^='0 0 640'] {
+  min-width: 640px;
+}
+
+@media (max-width: 479.98px) {
   .chart-card,
   .side-card,
   .tool-col {
@@ -1480,7 +1775,10 @@ mark.diff {
 }
 
 .stat-link {
-  padding: 0;
+  min-height: 44px;
+  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
   border: 0;
   background: none;
   color: inherit;
@@ -1491,13 +1789,16 @@ mark.diff {
   cursor: pointer;
 }
 
-.stat-link:hover {
-  color: var(--primary);
+@media (hover: hover) {
+  .stat-link:hover {
+    color: var(--primary);
+    text-decoration-style: solid;
+  }
 }
 
 .stat-link:focus-visible {
   outline: 2px solid var(--focus);
-  outline-offset: 2px;
+  outline-offset: 0;
   border-radius: 4px;
 }
 
@@ -1527,8 +1828,110 @@ mark.diff {
   gap: 6px;
 }
 
+/* 12x12 <svg> holding a rect filled with the series pattern (see DistributionChart) */
 .dist-swatch {
+  flex: none;
   width: 12px;
   height: 12px;
-  border-radius: 3px;
+}
+
+/* Data table behind each chart. Scrolls sideways inside its own box on narrow screens. */
+details.chart-data {
+  position: relative;
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+#curve-panel > .chart-data {
+  margin-top: 16px;
+}
+
+#curve-panel > .chart-note {
+  margin-top: 12px;
+}
+
+details.chart-data > summary {
+  min-height: 44px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+details.chart-data > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.chart-data > summary::before {
+  content: '';
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+details.chart-data[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+/* inside the box: the details element clips (overflow) anything drawn outside it */
+details.chart-data > summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -4px;
+  border-radius: 10px;
+}
+
+.chart-data table {
+  width: 100%;
+  min-width: 360px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.chart-data caption {
+  padding: 4px 16px 8px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.chart-data :is(th, td) {
+  padding: 8px 12px;
+  text-align: right;
+}
+
+.chart-data :is(th, td):first-child {
+  padding-left: 16px;
+  text-align: left;
+}
+
+.chart-data :is(th, td):last-child {
+  padding-right: 16px;
+}
+
+.chart-data thead th {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chart-data tbody tr {
+  border-top: 1px solid var(--border-soft);
+}
+
+.chart-data tbody th {
+  font-weight: 500;
+}
+
+.chart-data td {
+  font-family: var(--font-mono);
 }

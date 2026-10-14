@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { polyline, xEpoch, xPairs, yScore } from './chart.ts'
+import { nextMetric, polyline, xEpoch, xPairs, yScore } from './chart.ts'
 
 // Expected values are the hand-placed coordinates in docs/design/Hasil.dc.html.
 describe('yScore', () => {
@@ -48,5 +48,22 @@ describe('polyline', () => {
 
   it('returns an empty string for no points', () => {
     expect(polyline([])).toBe('')
+  })
+})
+
+describe('nextMetric', () => {
+  it('moves between the two curve metrics with the arrow keys', () => {
+    expect(nextMetric('rouge', 'ArrowRight')).toBe('loss')
+    expect(nextMetric('loss', 'ArrowLeft')).toBe('rouge')
+  })
+
+  it('jumps to the first and last metric with Home and End', () => {
+    expect(nextMetric('loss', 'Home')).toBe('rouge')
+    expect(nextMetric('rouge', 'End')).toBe('loss')
+  })
+
+  it('returns null for keys that do not move the tab', () => {
+    expect(nextMetric('rouge', 'a')).toBeNull()
+    expect(nextMetric('rouge', 'Enter')).toBeNull()
   })
 })

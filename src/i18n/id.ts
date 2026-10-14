@@ -12,9 +12,11 @@ export const id = {
     switchLanguage: 'Bahasa / Language',
     themeToLight: 'Ganti ke mode terang',
     themeToDark: 'Ganti ke mode gelap',
+    skipToContent: 'Lewati ke konten',
+    langNames: { id: 'ID, Bahasa Indonesia', en: 'EN, English' },
   },
   hero: {
-    aksaraLabel: 'ringkesan',
+    aksaraLabel: 'Ringkesan (aksara Jawa)',
     h1: 'Bisakah mT5 meringkas cerita Jawa?',
     sub: 'Saya melatih mT5-small dengan tiga sumber data. Model terbaik belajar menyalin dua kalimat pertama, dan baseline tanpa model masih menang. Ini datanya.',
     statBest: 'ROUGE-L model terbaik (Hybrid)',
@@ -24,15 +26,16 @@ export const id = {
     caption: (docId: number, sentences: number) => `Dokumen uji #${docId}, ${sentences} kalimat`,
     replay: 'Putar ulang',
     words: 'kata',
-    note: 'Keluaran asli model Hybrid, ROUGE-L 1.0.',
+    note: 'Keluaran asli model Hybrid, ROUGE-L 1,0.',
   },
   demo: {
     sectionLabel: 'Alat peringkas',
-    pickStory: 'Pilih cerita dari 70 data uji',
+    pickStory: 'Pilih cerita dari 70 dokumen uji',
     shuffle: 'Cerita acak',
     pickOther: 'Cerita lain (1–70)',
     copyLink: 'Salin tautan cerita',
     linkCopied: 'Tautan disalin',
+    copyFailed: 'Gagal menyalin tautan.',
     downloadCsv: 'Unduh CSV',
     downloadJson: 'Unduh JSON',
     compareLabel: 'Bandingkan kata yang berbeda dengan',
@@ -44,7 +47,7 @@ export const id = {
       extraId: 'Keluaran mengandung <extra_id_0>',
       aku: 'Keluaran diawali "Aku"',
       quote: 'Keluaran diawali tanda kutip',
-      low: 'ROUGE-L di bawah 0.5',
+      low: 'ROUGE-L di bawah 0,5',
     },
     matchCount: (n: number, total: number) => `${n} dari ${total} cerita cocok`,
     storyLabel: 'Cuplikan cerita',
@@ -57,9 +60,12 @@ export const id = {
     nowShowing: (docId: number, title: string) =>
       `Menampilkan cerita #${docId}: ${title}. Keluaran tiga model diperbarui.`,
     outputsTitle: 'Keluaran tiga model',
-    highlightKey: 'merah',
+    highlightKey: 'bergaris bawah',
     highlightText: '= kata yang tidak ada di referensi',
     highlightModelsText: '= kata yang tidak ada di dua model lain',
+    diffMarker: '(beda)',
+    diffLegend: 'Kata beda juga diberi penanda "(beda)" untuk pembaca layar.',
+    rougeLabel: 'ROUGE-L',
     savedNote: 'Keluaran tersimpan dari eksperimen, bukan inferensi langsung',
     tags: { best: 'terbaik', mid: 'median', worst: 'terburuk', rand: 'acak' },
   },
@@ -69,17 +75,20 @@ export const id = {
     extraIdTitle: 'Token sisa pretraining',
     extraIdBody:
       'Model Murni dan GTrans hampir selalu mengawali ringkasan dengan token sentinel mT5. Perlu dibersihkan sebelum ditampilkan ke pengguna.',
-    akuTitle: 'Kata pertama tergantikan',
+    akuTitle: 'Kata pertama berubah',
     akuBody:
-      'Model Hybrid sering mengganti kata pertama dengan "Aku" atau menambah tanda kutip. ROUGE tetap tinggi karena hanya satu token yang meleset.',
+      'Keluaran Hybrid sering diawali "Aku", kadang menempel pada kata pertama (mis. AkuCIL), atau diawali tanda kutip. ROUGE tetap tinggi karena hanya sedikit token yang meleset.',
+    akuMark: 'diawali "Aku"',
     quoteMark: 'diawali tanda kutip',
     noveltyTitle: 'Hampir tidak ada kata baru',
     noveltyBody:
-      'Lebih dari 97% kata di ringkasan diambil dari cerita. Model bekerja ekstraktif walau arsitekturnya abstraktif, dan "kata baru" Hybrid sebagian besar adalah artefak "Aku".',
-    shortLead2Title: 'Dokumen dengan ROUGE-L di bawah 0.5',
+      'Rata-rata sedikitnya 97% kata di ringkasan diambil dari cerita. Model bekerja ekstraktif walau arsitekturnya abstraktif, dan "kata baru" Hybrid sebagian besar adalah artefak "Aku".',
+    shortLead2Title: 'Dokumen dengan ROUGE-L di bawah 0,5',
     shortLead2Body:
       'Kasus terburuk bukan salah model: filter kalimat di bawah 20 karakter membuat referensi lead-2 melompati kalimat pendek di awal cerita.',
     shortLead2Meta: 'dari 70 dokumen uji per skenario',
+    noveltyKey: '1-gram baru',
+    shortLead2Key: 'lead-2 < 20 karakter',
     baselineCaption: 'lead-2 polos vs Hybrid',
     baselineBody:
       'Cukup mengambil dua kalimat pertama sudah mengalahkan semua model, karena referensinya memang lead-2. Jadi skor ini mengukur seberapa baik model meniru lead-2, bukan kualitas ringkasan.',
@@ -98,15 +107,15 @@ export const id = {
       },
       {
         title: 'Keputusan',
-        body: 'Data uji 70 cerita murni dipisah lebih dulu agar adil. fp16 menghasilkan NaN, jadi pakai fp32. T4 kehabisan memori, jadi batch 1 dengan akumulasi 16 dan gradient checkpointing.',
+        body: '70 dokumen uji murni dipisah lebih dulu agar adil. fp16 menghasilkan NaN, jadi pakai fp32. T4 kehabisan memori, jadi batch 1 dengan akumulasi 16 dan gradient checkpointing.',
       },
       {
         title: 'Yang ternyata',
-        body: 'Data terjemahan mesin menaikkan skor dua kali lipat, tapi model belajar menyalin awal cerita dan kalah dari baseline lead-2.',
+        body: 'Terjemahan mesin saja menaikkan skor sekitar 62% dari data asli, gabungan keduanya sekitar dua kali lipat, tapi model belajar menyalin awal cerita dan kalah dari baseline lead-2.',
       },
       {
         title: 'Kalau diulang',
-        body: 'Buat ringkasan manusia untuk sebagian data uji, ukur kata baru sejak awal, bersihkan token sentinel, dan tambah evaluasi manusia.',
+        body: 'Buat ringkasan manusia untuk sebagian dokumen uji, ukur kata baru sejak awal, bersihkan token sentinel, dan tambah evaluasi manusia.',
       },
     ],
   },
@@ -129,13 +138,14 @@ export const id = {
       xAxis: 'pasangan data latih',
       baselineLabel: (score: string) => `Baseline lead-2, tanpa model: ${score}`,
       alt: (points: string) => `Grafik ROUGE-L terhadap jumlah data latih: ${points}`,
+      pointTitle: (model: string, pairs: string, value: string) => `${model}, ${pairs} pasangan: ROUGE-L ${value}`,
     },
     config: {
       title: 'Pengaturan eksperimen',
       model: 'Model',
       epochs: 'Epoch',
       split: 'Pembagian',
-      test: 'Data uji',
+      test: 'Dokumen uji',
       reference: 'Referensi',
       io: 'Input / output',
       optimizer: 'Optimasi',
@@ -160,10 +170,10 @@ export const id = {
     distribution: {
       title: 'Sebaran ROUGE-L per dokumen',
       subtitle:
-        'Jumlah dari 70 cerita uji di tiap rentang 0.1, per skenario. Ekor di kiri (di bawah 0.5) adalah dokumen yang dijelaskan filter lead-2 di bagian Temuan.',
-      lowBand: 'di bawah 0.5',
+        'Jumlah dari 70 dokumen uji di tiap rentang 0,1, per skenario. Ekor di kiri (di bawah 0,5) adalah dokumen yang dijelaskan filter lead-2 di bagian Temuan.',
+      lowBand: 'di bawah 0,5',
       xAxis: 'rentang ROUGE-L per dokumen',
-      alt: (summary: string) => `Histogram ROUGE-L per dokumen untuk tiga skenario. Jumlah dokumen di bawah 0.5: ${summary}.`,
+      alt: (summary: string) => `Histogram ROUGE-L per dokumen untuk tiga skenario. Jumlah dokumen di bawah 0,5: ${summary}.`,
       barTitle: (model: string, from: string, to: string, n: number) => `${model}, ${from}–${to}: ${n} cerita`,
     },
     curve: {
@@ -171,20 +181,28 @@ export const id = {
       subtitle: (murni: number, gtrans: number, hybrid: number) =>
         `Diukur pada data validasi tiap akhir epoch. Murni ${murni}, GTrans ${gtrans}, Hybrid ${hybrid} dokumen validasi.`,
       tabsLabel: 'Metrik kurva',
+      lossLabel: 'Loss',
       xAxis: 'epoch',
       rougeAlt: 'ROUGE-L validasi per epoch untuk tiga skenario',
       lossAlt: 'Loss validasi per epoch untuk tiga skenario',
       clipNote:
-        'Sumbu dipotong di 1,0. Nilai di atasnya ditandai panah: loss awal Murni dan GTrans masih tinggi di epoch 1 sampai 2.',
+        'Sumbu dipotong di 1,0. Nilai di atasnya ditandai panah: loss Murni masih tinggi di epoch 1 sampai 2, dan GTrans di epoch 1.',
       trainTime: (murni: number, gtrans: number, hybrid: number) =>
         `Waktu latih: Murni ${murni} menit, GTrans ${gtrans} menit, Hybrid ${hybrid} menit.`,
       pointTitle: (model: string, epoch: number, value: string) => `${model}, epoch ${epoch}: ${value}`,
     },
+    chartData: {
+      summary: 'Data grafik',
+      epoch: 'Epoch',
+      range: 'Rentang',
+      stories: (n: number) => `${n} cerita`,
+    },
+    scrollRegion: (title: string) => `${title} (area yang dapat digulir)`,
     abstractive: {
       title: 'Seberapa abstraktif ringkasannya?',
       body: 'Persentase n-gram di ringkasan yang tidak ada di cerita asli. Makin kecil, makin mirip salinan. Referensi lead-2 sendiri 0% untuk 1-gram.',
       note: (aku: number, total: number) =>
-        `Kata baru Hybrid sebagian besar adalah artefak "Aku" di awal kalimat (${aku} dari ${total} keluaran).`,
+        `Kata baru Hybrid sebagian besar adalah artefak "Aku" di awal keluaran (${aku} dari ${total} keluaran).`,
       caption: 'N-gram baru di keluaran (rata-rata 70 dokumen)',
     },
     scenarios: {
@@ -193,6 +211,7 @@ export const id = {
       source: 'Sumber data',
       pairs: 'Pasangan',
       delta: 'Selisih dari murni',
+      none: 'tidak ada',
       sources: {
         murni: 'Cerita Jawa asli',
         gtrans: 'Terjemahan Google',

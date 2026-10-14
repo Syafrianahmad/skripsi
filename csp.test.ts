@@ -16,10 +16,21 @@ describe('withCsp', () => {
     expect(policy).not.toContain('unsafe-inline')
   })
 
+  it('hashes an inline script that has attributes too (type=module without src)', () => {
+    const policy = policyOf(withCsp(page('<script type="module">x</script>')))
+    expect(policy).toContain("script-src 'self' 'sha256-LXEWQrcmsEQBYnyp+6wy9chTD7GQPMTbAiWHF5IaSIE='")
+  })
+
   it('does not hash scripts loaded from a file', () => {
     const policy = policyOf(withCsp(page('<script type="module" src="/assets/index.js"></script>')))
     expect(policy).toContain("script-src 'self';")
     expect(policy).not.toContain('sha256')
+  })
+
+  it('treats data-src= as an ordinary attribute: that script is inline and gets hashed', () => {
+    // sha256 of "inline"
+    const policy = policyOf(withCsp(page('<script data-src="x">inline</script>')))
+    expect(policy).toContain("script-src 'self' 'sha256-mVzyCpxF2q8KLMMehcKQAyztl6rbrGydYlWV9c4O1Cc='")
   })
 
   it('blocks plugins, base hijacking, and form posts', () => {
@@ -50,5 +61,10 @@ describe('withCsp styles', () => {
     const policy = policyOf(withCsp(page('<style></style>')))
     expect(policy).toContain("style-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='")
     expect(policy).not.toContain('unsafe-inline')
+  })
+
+  it('hashes a style that has attributes too (media=print)', () => {
+    const policy = policyOf(withCsp(page('<style media="print">x</style>')))
+    expect(policy).toContain("style-src 'self' 'sha256-LXEWQrcmsEQBYnyp+6wy9chTD7GQPMTbAiWHF5IaSIE='")
   })
 })
