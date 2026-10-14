@@ -12,6 +12,7 @@ import {
 
 const MODELS = ['murni', 'gtrans', 'hybrid'] as const
 const scenario = (id: (typeof MODELS)[number]) => SCENARIOS.find((s) => s.id === id)!
+const text = (d: (typeof DOCS)[number], m: (typeof MODELS)[number]) => d.out[m].parts.map((p) => p.t).join('')
 
 describe('docs', () => {
   it('has 70 test documents with unique ids', () => {
@@ -31,8 +32,9 @@ describe('docs', () => {
     }
   })
 
-  it('has three model outputs per document with scores in [0, 1]', () => {
+  it('has exactly three model outputs per document, with scores in [0, 1]', () => {
     for (const d of DOCS) {
+      expect(Object.keys(d.out).sort()).toEqual([...MODELS].sort())
       for (const m of MODELS) {
         expect(d.out[m].rl).toBeGreaterThanOrEqual(0)
         expect(d.out[m].rl).toBeLessThanOrEqual(1)
@@ -40,11 +42,39 @@ describe('docs', () => {
       }
     }
   })
+
+  it('has a story length at least the excerpt length for every document', () => {
+    expect(DOCS.filter((d) => d.words >= d.excerpt.trim().split(/\s+/).length)).toHaveLength(70)
+  })
+})
+
+// Literal values below were computed outside this code (plain node script over docs.json, 2026-10-14).
+// They pin the data; they do not prove the data matches the notebook.
+describe('data contract', () => {
+  const mean = (m: (typeof MODELS)[number]) => DOCS.reduce((sum, d) => sum + d.out[m].rl, 0) / DOCS.length
+
+  it('averages per-document ROUGE-L near the literal values (tolerance 0.0005)', () => {
+    expect(Math.abs(mean('murni') - 0.4184)).toBeLessThanOrEqual(0.0005)
+    expect(Math.abs(mean('gtrans') - 0.6691)).toBeLessThanOrEqual(0.0005)
+    expect(Math.abs(mean('hybrid') - 0.7967)).toBeLessThanOrEqual(0.0005)
+  })
+
+  it('lists the Hybrid stories scoring below 0.5', () => {
+    const ids = DOCS.filter((d) => d.out.hybrid.rl < 0.5).map((d) => d.id)
+    expect(ids).toEqual([29, 31, 41, 45, 50, 52, 54, 63, 65])
+  })
+
+  it('counts Hybrid outputs that open with a quote mark', () => {
+    expect(DOCS.filter((d) => /^\s*["“]/.test(text(d, 'hybrid')))).toHaveLength(17)
+  })
+
+  it('opens the Hybrid output of story 69 with "AkuCIL LAN MERAK"', () => {
+    expect(text(DOCS.find((d) => d.id === 69)!, 'hybrid')).toMatch(/^AkuCIL LAN MERAK/)
+  })
 })
 
 // The "Temuan" cards quote these counts; they must match what is actually in the outputs.
 describe('findings match the stored outputs', () => {
-  const text = (d: (typeof DOCS)[number], m: (typeof MODELS)[number]) => d.out[m].parts.map((p) => p.t).join('')
   const count = (pred: (d: (typeof DOCS)[number]) => boolean) => DOCS.filter(pred).length
 
   it('counts sentinel tokens, "Aku" openings, and quoted openings', () => {
@@ -59,7 +89,9 @@ describe('findings match the stored outputs', () => {
   })
 })
 
-describe('results', () => {
+// Snapshot locks: these literals were copied from the thesis notebook. They catch accidental edits
+// to results.ts, not a wrong copy from the notebook (that needs a manual check against the notebook).
+describe('results (snapshot of the notebook numbers)', () => {
   it('matches the thesis scores', () => {
     expect(scenario('murni').rougeL).toBe(0.3978)
     expect(scenario('gtrans').rougeL).toBe(0.6437)
@@ -79,11 +111,15 @@ describe('results', () => {
     expect(BASELINE.deltaFromMurni).toBeCloseTo(BASELINE.rougeL - scenario('murni').rougeL, 4)
   })
 
-  it('has 8 epochs per series with the known endpoints', () => {
+  it('has 8 epochs per series; the last epoch of each scenario has the literal ROUGE-L', () => {
+    // array index 0 to 7 is epoch 1 to 8
     for (const m of MODELS) {
       expect(EPOCH_ROUGE[m]).toHaveLength(8)
       expect(EPOCH_LOSS[m]).toHaveLength(8)
+      for (const v of EPOCH_ROUGE[m]) expect(v).toBeGreaterThanOrEqual(0)
     }
+    expect(EPOCH_ROUGE.murni[7]).toBe(0.428)
+    expect(EPOCH_ROUGE.gtrans[7]).toBe(0.6744)
     expect(EPOCH_ROUGE.hybrid[7]).toBe(0.8521)
     expect(EPOCH_LOSS.murni[0]).toBe(6.881)
   })

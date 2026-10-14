@@ -1,5 +1,7 @@
 import type { Dict } from './id.ts'
 
+const stories = (n: number) => (n === 1 ? '1 story' : `${n} stories`)
+
 export const en: Dict = {
   meta: {
     demoTitle: 'Ringkas Jawa: Javanese story summarizer demo',
@@ -12,9 +14,11 @@ export const en: Dict = {
     switchLanguage: 'Bahasa / Language',
     themeToLight: 'Switch to light mode',
     themeToDark: 'Switch to dark mode',
+    skipToContent: 'Skip to content',
+    langNames: { id: 'ID, Bahasa Indonesia', en: 'EN, English' },
   },
   hero: {
-    aksaraLabel: 'summary',
+    aksaraLabel: 'Summary (Javanese script)',
     h1: 'Can mT5 summarize Javanese stories?',
     sub: 'I trained mT5-small on three data sources. The best model learned to copy the first two sentences, and a no-model baseline still wins. Here is the data.',
     statBest: 'best model ROUGE-L (Hybrid)',
@@ -30,7 +34,24 @@ export const en: Dict = {
     sectionLabel: 'Summarizer',
     pickStory: 'Pick a story from 70 test documents',
     shuffle: 'Random story',
-    randomLabel: (docId, title) => `Random #${docId}: ${title}…`,
+    pickOther: 'Other story (1–70)',
+    copyLink: 'Copy story link',
+    linkCopied: 'Link copied',
+    copyFailed: 'Could not copy the link.',
+    downloadCsv: 'Download CSV',
+    downloadJson: 'Download JSON',
+    compareLabel: 'Compare differing words with',
+    compareRef: 'Reference',
+    compareModels: 'Other models',
+    filterLabel: 'Filter',
+    filterAll: 'All stories',
+    filterKinds: {
+      extraId: 'Output contains <extra_id_0>',
+      aku: 'Output starts with "Aku"',
+      quote: 'Output starts with a quote mark',
+      low: 'ROUGE-L below 0.5',
+    },
+    matchCount: (n, total) => `${n} of ${total} stories match`,
     storyLabel: 'Story excerpt',
     storyMeta: (docId, words, sentences) => `#${docId} · ${words} words · ${sentences} sentences`,
     sourceLabel: 'Story source:',
@@ -39,27 +60,35 @@ export const en: Dict = {
     noTranslation: 'Translations are only available for the 5 featured stories.',
     nowShowing: (docId, title) => `Showing story #${docId}: ${title}. Outputs of the three models updated.`,
     outputsTitle: 'Output of three models',
-    highlightKey: 'red',
+    highlightKey: 'underlined',
     highlightText: '= words not in the reference',
+    highlightModelsText: '= words not in the other two models',
+    diffMarker: '(differs)',
+    diffLegend: 'Differing words also get a "(differs)" marker for screen readers.',
+    rougeLabel: 'ROUGE-L',
     savedNote: 'Stored output from the experiment, not live inference',
     tags: { best: 'best', mid: 'median', worst: 'worst', rand: 'random' },
   },
   findings: {
     title: 'What 210 model outputs reveal.',
+    showHint: 'Click a count to filter the Demo to the stories it counts.',
     extraIdTitle: 'Leftover pretraining token',
     extraIdBody:
       'The Murni and GTrans models almost always start with the mT5 sentinel token. It must be stripped before showing output to users.',
-    akuTitle: 'First word replaced',
+    akuTitle: 'First word changed',
     akuBody:
-      'The Hybrid model often swaps the first word for "Aku" or adds a quote mark. ROUGE stays high because only one token is off.',
+      'Hybrid outputs often start with "Aku", sometimes stuck to the first word (e.g. AkuCIL), or start with a quote mark. ROUGE stays high because only a few tokens are off.',
+    akuMark: 'start with "Aku"',
     quoteMark: 'start with a quote mark',
     noveltyTitle: 'Almost no new words',
     noveltyBody:
-      'Over 97% of summary words come straight from the story. The model behaves extractively despite its abstractive architecture, and most of Hybrid’s "new words" are the "Aku" artifact.',
+      'On average at least 97% of summary words come straight from the story. The model behaves extractively despite its abstractive architecture, and most of Hybrid\'s "new words" are the "Aku" artifact.',
     shortLead2Title: 'Documents with ROUGE-L below 0.5',
     shortLead2Body:
-      'The worst case is not the model’s fault: dropping sentences under 20 characters makes the lead-2 reference skip short opening lines.',
+      'The worst case is not the model\'s fault: dropping sentences under 20 characters makes the lead-2 reference skip short opening lines.',
     shortLead2Meta: 'out of 70 test documents per scenario',
+    noveltyKey: 'novel 1-gram',
+    shortLead2Key: 'lead-2 < 20 chars',
     baselineCaption: 'plain lead-2 vs Hybrid',
     baselineBody:
       'Taking the first two sentences already beats every model, because the reference is lead-2 itself. The score measures how well a model imitates lead-2, not summary quality.',
@@ -78,22 +107,22 @@ export const en: Dict = {
       },
       {
         title: 'Decisions',
-        body: 'The 70-story test set was held out first for a fair comparison. fp16 produced NaN, so fp32. The T4 ran out of memory, so batch 1 with 16-step accumulation and gradient checkpointing.',
+        body: 'The 70 test documents were held out first for a fair comparison. fp16 produced NaN, so fp32. The T4 ran out of memory, so batch 1 with 16-step accumulation and gradient checkpointing.',
       },
       {
         title: 'What happened',
-        body: 'Machine-translated data doubled the score, but the model learned to copy the opening and lost to the lead-2 baseline.',
+        body: 'Machine translation alone raised the score about 62% over the original data, and combining both roughly doubled it, but the model learned to copy the opening and lost to the lead-2 baseline.',
       },
       {
         title: 'Next time',
-        body: 'Write human summaries for part of the test set, track novel words from day one, strip sentinel tokens, and add human evaluation.',
+        body: 'Write human summaries for part of the test documents, track novel words from day one, strip sentinel tokens, and add human evaluation.',
       },
     ],
   },
   results: {
     title: 'Experiment details',
     intro:
-      'Appendix to the main page: each scenario’s score against the baseline, training curves, abstractiveness, and the full configuration.',
+      'Appendix to the main page: each scenario\'s score against the baseline, training curves, abstractiveness, and the full configuration.',
     scoresLabel: 'Score summary',
     pairsCount: (n) => `${n} pairs`,
     pairsUnit: 'pairs',
@@ -109,13 +138,14 @@ export const en: Dict = {
       xAxis: 'training pairs',
       baselineLabel: (score) => `Lead-2 baseline, no model: ${score}`,
       alt: (points) => `ROUGE-L against training data size: ${points}`,
+      pointTitle: (model, pairs, value) => `${model}, ${pairs} pairs: ROUGE-L ${value}`,
     },
     config: {
       title: 'Experiment setup',
       model: 'Model',
       epochs: 'Epochs',
       split: 'Split',
-      test: 'Test data',
+      test: 'Test documents',
       reference: 'Reference',
       io: 'Input / output',
       optimizer: 'Optimization',
@@ -136,25 +166,42 @@ export const en: Dict = {
       body: (baseline) =>
         `The reference is lead-2, and the no-model lead-2 baseline (${baseline}) beats every model. ROUGE here measures similarity to lead-2, not summary quality. Human evaluation and human-written references are needed.`,
     },
+    distribution: {
+      title: 'ROUGE-L spread per document',
+      subtitle:
+        'Number of the 70 test documents in each 0.1 range, per scenario. The tail on the left (below 0.5) holds the documents that the lead-2 filter explains in the Findings section.',
+      lowBand: 'below 0.5',
+      xAxis: 'ROUGE-L range per document',
+      alt: (summary) => `ROUGE-L histogram per document for three scenarios. Documents below 0.5: ${summary}.`,
+      barTitle: (model, from, to, n) => `${model}, ${from}–${to}: ${stories(n)}`,
+    },
     curve: {
       title: 'Training curve per epoch',
       subtitle: (murni, gtrans, hybrid) =>
         `Measured on validation data at the end of each epoch. Murni ${murni}, GTrans ${gtrans}, Hybrid ${hybrid} validation documents.`,
       tabsLabel: 'Curve metric',
+      lossLabel: 'Loss',
       xAxis: 'epoch',
       rougeAlt: 'Validation ROUGE-L per epoch for the three scenarios',
       lossAlt: 'Validation loss per epoch for the three scenarios',
       clipNote:
-        'The axis is cut at 1.0. Values above it are marked with an arrow: Murni and GTrans start with high loss in epochs 1 and 2.',
+        'The axis is cut at 1.0. Values above it are marked with an arrow: Murni stays high in epochs 1 and 2, and GTrans in epoch 1.',
       trainTime: (murni, gtrans, hybrid) =>
         `Training time: Murni ${murni} min, GTrans ${gtrans} min, Hybrid ${hybrid} min.`,
       pointTitle: (model, epoch, value) => `${model}, epoch ${epoch}: ${value}`,
     },
+    chartData: {
+      summary: 'Chart data',
+      epoch: 'Epoch',
+      range: 'Range',
+      stories,
+    },
+    scrollRegion: (title) => `${title} (scrollable area)`,
     abstractive: {
       title: 'How abstractive are the summaries?',
       body: 'Share of summary n-grams that do not appear in the original story. Lower means closer to a copy. The lead-2 reference itself scores 0% for 1-grams.',
       note: (aku, total) =>
-        `Most of Hybrid’s new words are the "Aku" artifact at the start of a sentence (${aku} of ${total} outputs).`,
+        `Most of Hybrid's new words are the "Aku" artifact at the start of the output (${aku} of ${total} outputs).`,
       caption: 'New n-grams in the output (average of 70 documents)',
     },
     scenarios: {
@@ -163,6 +210,7 @@ export const en: Dict = {
       source: 'Data source',
       pairs: 'Pairs',
       delta: 'Gain over Murni',
+      none: 'none',
       sources: {
         murni: 'Original Javanese stories',
         gtrans: 'Google translation',

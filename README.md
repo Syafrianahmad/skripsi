@@ -4,7 +4,7 @@ Javanese Story Summarization Research Showcase
 
 **Live demo: <https://syafrianahmad.github.io/skripsi/>**
 
-![Ringkas Jawa demo page: hero with the before/after summary of test story #68, and the summarizer comparing the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
+![Ringkas Jawa demo page: hero with the before/after summary of test document #68, and the summarizer comparing the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
 
 ## About the Project
 
@@ -15,7 +15,10 @@ The main feature of the project is a demo that shows the real outputs of the thr
 ## Feature Requirements
 
 1. Summarization Demo
-   * 5 featured test stories (best, median, worst) and a random story from the 70
+   * 5 featured test documents (best, median, worst), any of the 70 test documents from a dropdown, a random story, and a permanent link per story (`#/demo#story=68`)
+   * Download a story's three outputs and ROUGE-L scores as CSV or JSON
+   * Highlight words that differ from the reference, or from the other two models
+   * Filter stories by finding (for example, outputs containing `<extra_id_0>`); clicking a count in Findings applies the filter
    * Story excerpt, lead-2 reference, and an AI helper translation (featured stories only)
    * Outputs of the three models with per-document ROUGE-L, with words that differ from the reference highlighted
 2. Research Stats
@@ -31,6 +34,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
 4. Experiment Details
    * Score card per scenario, compared with the baseline
    * Training data size vs. ROUGE-L chart
+   * ROUGE-L distribution per document (histogram per scenario, 70 documents)
    * Validation ROUGE-L and loss per epoch
    * New n-gram table and full scenario table (ROUGE-1, ROUGE-2, ROUGE-L)
    * Training configuration and limitations
@@ -41,7 +45,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
 ## UI Requirements
 
 1. Navigation Bar (Demo, Experiment details, Findings, language toggle, theme toggle)
-2. Hero Section (short explanation of the research, key stats, and a before/after summary of one test story) (Feature 2)
+2. Hero Section (short explanation of the research, key stats, and a before/after summary of one test document) (Feature 2)
 3. Summarizer (Feature 1)
 4. Findings (Feature 3)
 5. Behind the Scenes (why it matters, the problem, key decisions, what happened, what to do next time)
@@ -61,7 +65,7 @@ Note:
 * Frontend: Vite + React 19 + TypeScript
 * Styling: plain CSS with custom properties (no UI framework)
 * Charts: hand-built SVG (no chart library)
-* Testing: Vitest (unit tests, plus security and Content-Security-Policy checks)
+* Testing: Vitest (unit tests, plus security and Content-Security-Policy checks); Playwright and axe for end-to-end and accessibility checks
 * Fonts: self-hosted (Atkinson Hyperlegible, IBM Plex Mono, Schibsted Grotesk, Noto Sans Javanese), SIL Open Font License
 * Research model: `google/mt5-small`, fine-tuned with Hugging Face Transformers on Google Colab (T4 GPU)
 
@@ -69,14 +73,14 @@ Note:
 
 * Demo page and Experiment Details page are complete, in Indonesian and English, light and dark
 * Accessibility, contrast, performance, and security audit done (self-hosted fonts, strict Content-Security-Policy, no third-party requests)
-* 54 unit tests passing
-* Live on GitHub Pages, deployed automatically on every push to `main` (lint and tests must pass first)
-* CI (lint, tests, build) runs on every pull request
+* Unit tests passing (`npm run test`)
+* Live on GitHub Pages, deployed automatically on every push to `main` (dependency audit, lint, and unit tests must pass first)
+* CI runs on every pull request and push to `develop`: dependency audit, lint, unit tests, build, CSP check, size budget, and Playwright end-to-end tests
 * Journal article based on this thesis (MATICS) is in progress
 
 ## Running Locally
 
-Requires Node.js 20.19+ or 22.12+. From the project folder:
+Requires Node.js 22 or newer (22.12+ is enforced by `engines`). `.nvmrc` pins 22, the version CI uses. With [fnm](https://github.com/Schniz/fnm), run `fnm install` and then `fnm use` in the project folder to pick it up. From the project folder:
 
 ```bash
 npm ci
@@ -86,7 +90,15 @@ npm ci
 npm run dev
 ```
 
-Then open <http://localhost:5173>. Other commands: `npm run build` (production build into `dist/`), `npm run preview` (serve the build), `npm run test`, `npm run lint`.
+Then open <http://localhost:5173>.
+
+Other commands:
+
+* `npm run build`: type check and production build into `dist/`. To check the CSP of that build, run `npx vitest run dist.test.ts` afterwards. Without `dist/` that test is skipped locally; under `CI`, `npm run test` leaves it out, and the explicit run fails if `dist/` is missing.
+* `npm run preview`: serve the build.
+* `npm run lint` and `npm run test` (Vitest, unit tests).
+* `npm run size`: size budget for the build (JS gzip and woff2). Run it after `npm run build`.
+* `npm run test:e2e`: Playwright and axe checks against a production build with the GitHub Pages sub-path (`/skripsi/`, see `playwright.config.ts`). It builds and serves by itself on port 4173. Stop any server already on that port first, or the run tests an old build. Before the first run, install the browser once: `npx playwright install chromium-headless-shell`. The browser version follows the installed `@playwright/test`.
 
 ## License
 

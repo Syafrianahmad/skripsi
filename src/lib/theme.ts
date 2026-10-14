@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { readStored, writeStored } from './storage.ts'
 
-export type Theme = 'light' | 'dark'
+type Theme = 'light' | 'dark'
 
 const STORAGE_KEY = 'theme'
 

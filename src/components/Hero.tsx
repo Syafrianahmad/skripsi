@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BASELINE, CONFIG, DOCS, NGRAM_NEW, SCENARIOS } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
+import { formatDec } from '../lib/format.ts'
 import { countWords, splitSentences } from '../lib/words.ts'
 
 const HERO_DOC = DOCS.find((d) => d.id === 68)!
@@ -24,23 +25,24 @@ function ReplayIcon() {
 }
 
 export function Hero() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
   const [round, setRound] = useState(0)
 
   const stats = [
-    { value: hybridScore.toFixed(4), label: t.hero.statBest },
-    { value: BASELINE.rougeL.toFixed(3), label: t.hero.statBaseline, accent: true },
+    { value: formatDec(hybridScore, lang, 4), label: t.hero.statBest },
+    { value: formatDec(BASELINE.rougeL, lang, 3), label: t.hero.statBaseline, accent: true },
     { value: `${Math.floor(100 - NGRAM_NEW.hybrid.oneGram)}%+`, label: t.hero.statCopied },
     { value: String(CONFIG.testDocs), label: t.hero.statDocs },
   ]
 
   return (
-    <section className="masthead-body hero container">
+    <section className="masthead-body hero container" aria-labelledby="hero-title">
       <div className="hero-copy">
-        <div className="aksara" lang="jv" role="img" aria-label={t.hero.aksaraLabel}>
+        <div className="aksara" role="img" aria-label={t.hero.aksaraLabel}>
           {AKSARA.map((g, i) => (
             <span
               key={g}
+              lang="jv"
               className="glyph"
               style={{ animationDelay: `${(i + 1) * 100}ms`, color: i === AKSARA.length - 1 ? 'var(--accent-soft)' : undefined }}
             >
@@ -48,7 +50,7 @@ export function Hero() {
             </span>
           ))}
         </div>
-        <h1 className="rv" tabIndex={-1}>
+        <h1 id="hero-title" className="rv" tabIndex={-1}>
           {t.hero.h1}
         </h1>
         <p className="hero-sub rv" style={{ animationDelay: '100ms' }}>
@@ -64,25 +66,26 @@ export function Hero() {
         </dl>
       </div>
 
-      <figure className="hero-card rv" style={{ animationDelay: '300ms' }}>
+      <figure className="hero-card rv" style={{ animationDelay: '300ms' }} aria-labelledby="hero-caption">
         <div className="hero-card-head">
-          <span>{t.hero.caption(HERO_DOC.id, SENTENCES.length)}</span>
+          <span id="hero-caption">{t.hero.caption(HERO_DOC.id, SENTENCES.length)}</span>
           <button type="button" className="btn-ghost" onClick={() => setRound((r) => r + 1)}>
             <ReplayIcon />
             {t.hero.replay}
           </button>
         </div>
-        {/* the key restarts the keep/cut animations on replay */}
+        {/* the key restarts the cut animation on replay */}
         <div key={round}>
           <p className="hero-text" lang="jv">
             {SENTENCES.map((s, i) => (
               <span key={s}>
-                <span
-                  className={i < KEPT ? 'keep' : 'cut'}
-                  style={{ animationDelay: i < KEPT ? `${700 + i * 150}ms` : `${400 + (i - KEPT) * 100}ms` }}
-                >
-                  {s}
-                </span>{' '}
+                {i < KEPT ? (
+                  <span className="keep">{s}</span>
+                ) : (
+                  <del className="cut" style={{ animationDelay: `${400 + (i - KEPT) * 100}ms` }}>
+                    {s}
+                  </del>
+                )}{' '}
               </span>
             ))}
           </p>

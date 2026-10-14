@@ -20,8 +20,8 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 ## 3. Ruang lingkup
 
 ### Wajib (v1)
-1. Halaman **Demo**: hero sebelum/sesudah, alat peringkas dengan 5 cerita pilihan + cerita acak, keluaran tiga model dengan skor ROUGE-L, kartu temuan, bagian "di balik layar" (5 langkah).
-2. Halaman **Hasil**: kartu skor, grafik data latih vs ROUGE-L, kurva per epoch (ROUGE-L dan loss), tabel n-gram baru, tabel rincian skenario, konfigurasi eksperimen, catatan keterbatasan.
+1. Halaman **Demo**: hero sebelum/sesudah, alat peringkas dengan 5 cerita pilihan, dropdown untuk 70 cerita, tautan permanen per cerita (`#/demo#story=N`), unduh CSV/JSON, dan mode kata beda (vs referensi atau vs model lain), filter cerita menurut temuan (angka di kartu temuan langsung memfilter alat); keluaran tiga model dengan skor ROUGE-L, kartu temuan, bagian "di balik layar" (5 langkah).
+2. Halaman **Hasil**: kartu skor, grafik data latih vs ROUGE-L, kurva per epoch (ROUGE-L dan loss), histogram sebaran ROUGE-L per dokumen per skenario, tabel n-gram baru, tabel rincian skenario, konfigurasi eksperimen, catatan keterbatasan.
 3. Dua bahasa **ID/EN**, awal mengikuti browser, fallback EN.
 4. Mode **terang/gelap**, awal mengikuti sistem.
 5. Footer: nama, prodi, kampus, label jurnal "dalam proses", kredit dataset. Tanpa tautan profil (LinkedIn/GitHub), keputusan 2026-10-09.
@@ -33,15 +33,16 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 - PDF jurnal MATICS (masih proses; cukup label).
 - NIM, tahun lulus, atau data pribadi lain di situs.
 - Testimoni, statistik pengunjung, atau klaim tanpa sumber.
-- Terjemahan bantu untuk semua 70 dokumen (hanya 5 pilihan, dilabeli "AI, belum diverifikasi").
+- Terjemahan bantu untuk semua 70 dokumen. Hanya 5 dokumen pilihan yang punya terjemahan, dilabeli "terjemahan AI, belum diverifikasi".
 
 ## 4. Narasi yang wajib jujur
 
 Situs tidak boleh terlihat lebih baik dari hasilnya.
 
-- Baseline lead-2 (dua kalimat pertama, tanpa model) ROUGE-L **0.867** > Hybrid **0.7976** (ditulis empat desimal di semua tempat, sama dengan notebook).
+- Baseline lead-2 (dua kalimat pertama, tanpa model) ROUGE-L **0,867** > Hybrid **0,7976** (angka sama dengan notebook).
+- Jumlah desimal tampil per tempat lewat `formatDec`: skor skenario 4 desimal (0,7976), baseline 3 desimal (0,867), kartu model 2 desimal (0,80), kenaikan dan persentase 1 desimal (+61,8%). Titik desimal hanya di export CSV/JSON dan koordinat SVG.
 - Referensi adalah proksi lead-2, bukan ringkasan buatan manusia; skor mengukur kemiripan dengan lead-2.
-- N-gram baru 1-gram: Murni 0.9%, GTrans 1.5%, Hybrid 3.0% (sangat ekstraktif).
+- N-gram baru 1-gram: Murni 0,9%, GTrans 1,5%, Hybrid 3,0% (sangat ekstraktif).
 - Artefak: `<extra_id_0>` muncul 70/70 (Murni) dan 67/70 (GTrans); "Aku" mengawali 50/70 keluaran Hybrid.
 - Sumber cerita: [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle). Lisensi di Kaggle "Unknown", jadi kredit wajib tampil (di bawah cuplikan dan di footer) dan cerita hanya tampil sebagai cuplikan untuk penelitian.
 
@@ -63,7 +64,7 @@ Situs tidak boleh terlihat lebih baik dari hasilnya.
 
 ## 6. Wireframe (deskripsi)
 
-Sumber visual final: `docs/design/{Main,Hasil,Mobile}.dc.html`.
+Sumber visual final: `docs/design/{Main,Hasil,Mobile}.dc.html`. Angka di wireframe memakai notasi UI Indonesia (koma desimal). Wireframe Inggris memakai titik.
 
 ```
 DEMO (desktop 1440)
@@ -72,14 +73,14 @@ DEMO (desktop 1440)
 |  ꦫꦶꦁꦏꦼꦱꦤ꧀                                                |
 |  Judul H1                       +-------------------+     |
 |  subjudul                       | sebelum -> sesudah|     |
-|  0.7976 | 0.867 | 97%+ | 70     | 46 -> 29 kata     |     |
+|  0,7976 | 0,867 | 97%+ | 70     | 46 -> 29 kata     |     |
 +----------------------------------------------------------+
 |  +----------------------------------------------------+  |  kartu mengambang
-|  | Pilih cerita: (68)(40)(69)(60)(50) [Cerita acak]   |  |
+|  | Pilih cerita: (68)(40)(69)(60)(50) [1–70 ▾] [Cerita acak]   |  |
 |  | Cuplikan + referensi lead-2 | Hybrid / GTrans /    |  |
 |  | + terjemahan AI             | Murni (bar + skor)   |  |
 |  +----------------------------------------------------+  |
-|  TEMUAN: 4 kartu + strip "0.867 > 0.7976"                |
+|  TEMUAN: 4 kartu + strip "0,867 > 0,7976"                |
 |  DI BALIK LAYAR: 5 baris judul | isi   [Lihat hasil ->]  |
 +----------------------------------------------------------+
 | Footer: nama, prodi, kampus, jurnal | kredit dataset     |

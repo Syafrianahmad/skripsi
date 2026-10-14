@@ -1,9 +1,17 @@
+import type { MouseEvent } from 'react'
 import type { Lang } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
-import type { Page } from '../lib/route.ts'
+import { goToSection, isSamePageClick, type Page, parseRoute } from '../lib/route.ts'
 import { useTheme } from '../lib/theme.ts'
 
 const LANGS: readonly Lang[] = ['id', 'en']
+
+// A link to the current hash fires no hashchange, so the page would not move: scroll here instead.
+function jumpIfCurrentHash(e: MouseEvent<HTMLAnchorElement>) {
+  if (!isSamePageClick(e.currentTarget.hash, window.location.hash, e)) return
+  e.preventDefault()
+  goToSection(parseRoute(window.location.hash).section)
+}
 
 function SunIcon() {
   return (
@@ -30,18 +38,18 @@ export function Header({ page }: { page: Page }) {
   return (
     <header>
       <nav className="site-nav container">
-        <a href="#/" className="brand">
+        <a href="#/" className="brand" onClick={jumpIfCurrentHash}>
           <span className="brand-mark" lang="jv" aria-hidden="true">ꦫ</span>
           Ringkas Jawa
         </a>
         <div className="nav-links">
-          <a href="#/" className="nav-link" aria-current={page === 'demo' ? 'page' : undefined}>
+          <a href="#/" className="nav-link" aria-current={page === 'demo' ? 'page' : undefined} onClick={jumpIfCurrentHash}>
             {t.nav.demo}
           </a>
-          <a href="#/hasil" className="nav-link" aria-current={page === 'hasil' ? 'page' : undefined}>
+          <a href="#/hasil" className="nav-link" aria-current={page === 'hasil' ? 'page' : undefined} onClick={jumpIfCurrentHash}>
             {t.nav.results}
           </a>
-          <a href="#/#temuan" className="nav-link">
+          <a href="#/#temuan" className="nav-link" onClick={jumpIfCurrentHash}>
             {t.nav.findings}
           </a>
           <div className="lang-switch" role="group" aria-label={t.nav.switchLanguage}>
@@ -51,7 +59,14 @@ export function Header({ page }: { page: Page }) {
               style={{ transform: `translateX(${LANGS.indexOf(lang) * 100}%)` }}
             />
             {LANGS.map((l) => (
-              <button key={l} type="button" className="lang-btn" aria-pressed={l === lang} onClick={() => setLang(l)}>
+              <button
+                key={l}
+                type="button"
+                className="lang-btn"
+                aria-pressed={l === lang}
+                aria-label={t.nav.langNames[l]}
+                onClick={() => setLang(l)}
+              >
                 {l.toUpperCase()}
               </button>
             ))}

@@ -1,11 +1,15 @@
-/** Random story that is neither the current one nor a featured chip. `rand` is injectable for tests. */
-export function pickRandomId(
-  ids: readonly number[],
-  currentId: number,
-  featured: readonly number[],
-  rand: () => number = Math.random,
-): number {
-  const pool = ids.filter((id) => id !== currentId && !featured.includes(id))
+import { FEATURED_IDS } from '../data/results.ts'
+import { type FilterKey, storyIds } from './findings.ts'
+
+const featured: readonly number[] = FEATURED_IDS
+
+/**
+ * Random story for the shuffle button: never the current one, and without a filter never a featured chip.
+ * `rng` returns a number in [0, 1); injectable so tests can fix the draw.
+ */
+export function nextStoryId(currentId: number, filter: FilterKey | null, rng: () => number): number {
+  const excluded = filter ? [] : featured
+  const pool = storyIds(filter).filter((id) => id !== currentId && !excluded.includes(id))
   if (pool.length === 0) throw new Error('no story left to pick')
-  return pool[Math.min(pool.length - 1, Math.floor(rand() * pool.length))]
+  return pool[Math.min(pool.length - 1, Math.floor(rng() * pool.length))]
 }

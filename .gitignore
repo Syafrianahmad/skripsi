@@ -11,8 +11,15 @@ node_modules
 dist
 dist-ssr
 coverage
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 *.tsbuildinfo
 *.local
+.env
+.env.*
+!.env.example
 
 # AI tooling (local only)
 .claude/
