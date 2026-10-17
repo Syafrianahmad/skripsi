@@ -222,7 +222,6 @@ export const en: Dict = {
   },
   footer: {
     affil: 'Informatics Engineering, UIN Maulana Malik Ibrahim Malang',
-    journal: 'Journal article in progress (MATICS)',
     storiesFrom: 'Stories from',
     source: 'The uploader states no license; stories are shown as excerpts for research purposes.',
   },

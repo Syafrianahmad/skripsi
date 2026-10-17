@@ -45,7 +45,7 @@ Evaluasi pada 70 dokumen uji (cerita Jawa murni); 8 epoch; `google/mt5-small`; b
 
 ## Status
 
-Implementasi selesai dan live sejak 2026-10-12 (diaudit 2026-10-09). Jurnal MATICS masih dalam proses. Cerita berasal dari [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle; lisensi tidak dicantumkan pengunggah).
+Implementasi selesai dan live sejak 2026-10-12 (diaudit 2026-10-09). Cerita berasal dari [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle; lisensi tidak dicantumkan pengunggah).
 
 ## Penulis
 

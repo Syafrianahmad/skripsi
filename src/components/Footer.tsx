@@ -10,7 +10,6 @@ export function Footer() {
         <div className="footer-id">
           <strong>Ahmad Syafrian Cahyadi</strong>
           <span>{t.footer.affil}</span>
-          <span>{t.footer.journal}</span>
         </div>
         <div className="footer-side">
           <span>

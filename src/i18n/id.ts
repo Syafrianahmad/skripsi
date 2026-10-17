@@ -223,7 +223,6 @@ export const id = {
   },
   footer: {
     affil: 'Teknik Informatika, UIN Maulana Malik Ibrahim Malang',
-    journal: 'Artikel jurnal dalam proses (MATICS)',
     storiesFrom: 'Cerita dari',
     source: 'Pengunggah tidak mencantumkan lisensi; cerita ditampilkan sebagai cuplikan untuk keperluan penelitian.',
   },

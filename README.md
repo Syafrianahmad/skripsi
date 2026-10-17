@@ -50,7 +50,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
 4. Findings (Feature 3)
 5. Behind the Scenes (why it matters, the problem, key decisions, what happened, what to do next time)
 6. Experiment Details (Feature 4)
-7. Footer (author, study program, university, journal status, dataset credit)
+7. Footer (author, study program, university, dataset credit)
 
 Note:
 
@@ -76,7 +76,6 @@ Note:
 * Unit tests passing (`npm run test`)
 * Live on GitHub Pages, deployed automatically on every push to `main` (dependency audit, lint, and unit tests must pass first)
 * CI runs on every pull request and push to `develop`: dependency audit, lint, unit tests, build, CSP check, size budget, and Playwright end-to-end tests
-* Journal article based on this thesis (MATICS) is in progress
 
 ## Running Locally
 
