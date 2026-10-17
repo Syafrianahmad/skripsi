@@ -2,7 +2,7 @@
 
 Javanese Story Summarization Research Showcase
 
-[![Deploy](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml) [![CI](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml)
+[![Deploy](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml) [![CI](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml)
 
 **In 10 seconds**
 
@@ -83,7 +83,7 @@ Note:
 * Accessibility, contrast, performance, and security audit done (self-hosted fonts, strict Content-Security-Policy, no third-party requests)
 * Unit tests passing (`npm run test`)
 * Live on GitHub Pages, deployed automatically on every push to `main` (dependency audit, lint, and unit tests must pass first)
-* CI runs on every pull request and push to `develop`: dependency audit, lint, unit tests, build, CSP check, size budget, and Playwright end-to-end tests
+* CI runs on every pull request and push to `develop` or `main`: dependency audit, lint, unit tests, build, CSP check, size budget, and Playwright end-to-end tests
 
 ## Running Locally
 

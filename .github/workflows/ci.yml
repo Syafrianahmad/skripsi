@@ -1,4 +1,4 @@
-# Runs lint, tests, and a production build on every pull request and every push to develop,
+# Runs lint, tests, and a production build on every pull request and every push to develop and main,
 # so a bad change (for example a Dependabot bump) shows up red before it is merged into main.
 # Deploying is a separate workflow (deploy.yml, push to main).
 name: CI
@@ -6,7 +6,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [develop]
+    branches: [develop, main]
 
 permissions:
   contents: read
