@@ -59,6 +59,7 @@ export const id = {
     noTranslation: 'Terjemahan hanya tersedia untuk 5 cerita pilihan.',
     nowShowing: (docId: number, title: string) =>
       `Menampilkan cerita #${docId}: ${title}. Keluaran tiga model diperbarui.`,
+    storyNotFound: (n: string, shown: number) => `Cerita #${n} tidak ditemukan, menampilkan #${shown}.`,
     outputsTitle: 'Keluaran tiga model',
     highlightKey: 'bergaris bawah',
     highlightText: '= kata yang tidak ada di referensi',

@@ -65,6 +65,20 @@ test('regresi S1: nav Temuan tidak mengubah cerita; tautan cerita baru mengganti
   await expect(select).toHaveValue('12')
 })
 
+test('tautan cerita di luar daftar (#/demo#story=999) menampilkan cerita 68 dan mengumumkan pesannya', async ({ page }) => {
+  await page.goto('#/demo#story=999')
+  await expect(page.locator('.picker-row select')).toHaveValue('68')
+  await expect(page.getByRole('status').filter({ hasText: 'tidak ditemukan' })).toHaveText('Cerita #999 tidak ditemukan, menampilkan #68.')
+})
+
+test('tautan cerita yang ada (#/demo#story=7) tidak memunculkan pesan', async ({ page }) => {
+  await page.goto('#/demo#story=7')
+  await expect(page.locator('.picker-row select')).toHaveValue('7')
+  // the region itself is always in the DOM; only its text stays empty
+  await expect(page.locator('.story-notice')).toBeEmpty()
+  await expect(page.getByRole('status').filter({ hasText: 'tidak ditemukan' })).toHaveCount(0)
+})
+
 test('navigasi ke Detail eksperimen memfokus h1 halaman hasil', async ({ page }) => {
   await page.goto('#/')
   await navLink(page, 'Detail eksperimen').click()

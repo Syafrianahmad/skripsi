@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { goToSection, isSamePageClick, linkedStory, parseRoute, scrollTargetId } from './route.ts'
+import { goToSection, isSamePageClick, linkedStory, parseRoute, scrollTargetId, shortStoryId } from './route.ts'
 
 describe('parseRoute', () => {
   it('falls back to the demo page for empty or unknown hashes', () => {
@@ -33,6 +33,28 @@ describe('parseRoute story links', () => {
 
   it('ignores story ids that are not positive', () => {
     expect(parseRoute('#/demo#story=0')).toEqual({ page: 'demo', section: 'story=0' })
+  })
+
+  it('ignores story ids with a leading zero', () => {
+    expect(parseRoute('#/demo#story=007')).toEqual({ page: 'demo', section: 'story=007' })
+  })
+
+  it('reads numbers past the story count as ids; the demo page falls back to the known ones', () => {
+    expect(parseRoute('#/demo#story=71')).toEqual({ page: 'demo', story: 71 })
+    expect(parseRoute('#/demo#story=999')).toEqual({ page: 'demo', story: 999 })
+  })
+
+  it('ignores story ids too large to be a safe integer', () => {
+    expect(parseRoute('#/demo#story=99999999999999999999')).toEqual({ page: 'demo', section: 'story=99999999999999999999' })
+  })
+})
+
+describe('shortStoryId', () => {
+  it('shows ids up to six digits as they are, cuts longer ones', () => {
+    expect(shortStoryId(7)).toBe('7')
+    expect(shortStoryId(999999)).toBe('999999')
+    expect(shortStoryId(1000000)).toBe('999999+')
+    expect(shortStoryId(Number.MAX_SAFE_INTEGER)).toBe('999999+')
   })
 })
 

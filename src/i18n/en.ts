@@ -59,6 +59,7 @@ export const en: Dict = {
     translationLabel: 'Meaning (AI translation, unverified):',
     noTranslation: 'Translations are only available for the 5 featured stories.',
     nowShowing: (docId, title) => `Showing story #${docId}: ${title}. Outputs of the three models updated.`,
+    storyNotFound: (n, shown) => `Story #${n} not found, showing #${shown}.`,
     outputsTitle: 'Output of three models',
     highlightKey: 'underlined',
     highlightText: '= words not in the reference',

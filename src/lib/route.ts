@@ -6,14 +6,19 @@ export type Route = { page: Page; section?: string; story?: number }
 /**
  * Route format is `#/<page>[#<section>]`, so section anchors (`#/#temuan`)
  * never collide with page routes. Anything unknown falls back to the demo page.
- * `#/demo#story=N` selects a story; only positive whole numbers count as N.
+ * `#/demo#story=N` selects a story; only positive whole numbers without a leading zero count as N.
  */
 export function parseRoute(hash: string): Route {
   const [path = '', section] = hash.replace(/^#/, '').split('#')
   const page: Page = path === '/hasil' ? 'hasil' : 'demo'
-  const story = /^story=(\d+)$/.exec(section ?? '')
-  if (story && Number(story[1]) > 0) return { page, story: Number(story[1]) }
+  const n = Number(/^story=([1-9]\d*)$/.exec(section ?? '')?.[1])
+  if (Number.isSafeInteger(n)) return { page, story: n }
   return section ? { page, section } : { page }
+}
+
+/** Story id as shown in the notice. Ids over six digits are cut to `999999+` so a long hash stays short. */
+export function shortStoryId(n: number): string {
+  return n > 999999 ? '999999+' : String(n)
 }
 
 /** A story link switches stories only when it names a story other than the previous route did. A route without a story (nav to `#/#temuan`) leaves the choice alone. */

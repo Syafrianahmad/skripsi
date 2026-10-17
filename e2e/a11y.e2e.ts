@@ -109,6 +109,7 @@ test.describe('forced colors', () => {
   })
 })
 
+// DemoPage has a second role=status (the story notice) above the Summarizer, so these tests scope to #alat
 test.describe('pengumuman lewat wilayah status', () => {
   test.use({ locale: 'id-ID', permissions: ['clipboard-read', 'clipboard-write'] })
 
@@ -128,7 +129,7 @@ test.describe('pengumuman lewat wilayah status', () => {
 
   test('salin tautan mengumumkan "Tautan disalin", ganti bahasa tidak membunyikan pesan baru', async ({ page }) => {
     await page.goto('#/')
-    const status = page.getByRole('status')
+    const status = page.locator('#alat').getByRole('status')
     await expect(status).toHaveText('')
 
     await page.getByRole('button', { name: 'Salin tautan cerita' }).click()
@@ -154,7 +155,7 @@ test.describe('pengumuman lewat wilayah status', () => {
     // every text node the live region receives, recorded by a MutationObserver (a blank removes the node, a new text adds one)
     await page.evaluate(() => {
       const w = window as unknown as { __status: string[] }
-      const el = document.querySelector('[role="status"]')!
+      const el = document.querySelector('#alat [role="status"]')!
       w.__status = []
       new MutationObserver((records) => {
         for (const r of records) for (const n of r.addedNodes) w.__status.push(n.textContent ?? '')
@@ -162,12 +163,12 @@ test.describe('pengumuman lewat wilayah status', () => {
     })
 
     await page.getByRole('button', { name: 'Salin tautan cerita' }).click()
-    await expect(page.getByRole('status')).toHaveText('Tautan disalin')
+    await expect(page.locator('#alat').getByRole('status')).toHaveText('Tautan disalin')
     await page.clock.runFor(2000)
     await page.getByRole('button', { name: 'Tautan disalin' }).click()
     // 7 s after the first copy, 5 s after the second: the timer restarted, so the text is still up
     await page.clock.runFor(5000)
-    await expect(page.getByRole('status')).toHaveText('Tautan disalin')
+    await expect(page.locator('#alat').getByRole('status')).toHaveText('Tautan disalin')
 
     // the region is blanked and set again on the second copy: two "Tautan disalin" text nodes, not one
     const said = await page.evaluate(() => (window as unknown as { __status: string[] }).__status)
@@ -180,7 +181,7 @@ test.describe('pengumuman lewat wilayah status', () => {
     test('salin tautan mengumumkan "copied" dalam bahasa Inggris', async ({ page }) => {
       await page.goto('#/')
       await page.getByRole('button', { name: 'Copy story link' }).click()
-      await expect(page.getByRole('status')).toContainText('copied')
+      await expect(page.locator('#alat').getByRole('status')).toContainText('copied')
     })
 
     test('salin yang ditolak browser mengumumkan "Could not copy the link."', async ({ page }) => {
@@ -189,7 +190,7 @@ test.describe('pengumuman lewat wilayah status', () => {
       })
       await page.goto('#/')
       await page.getByRole('button', { name: 'Copy story link' }).click()
-      await expect(page.getByRole('status')).toHaveText('Could not copy the link.')
+      await expect(page.locator('#alat').getByRole('status')).toHaveText('Could not copy the link.')
       // the button keeps its own label: nothing says "copied"
       await expect(page.getByRole('button', { name: 'Copy story link' })).toBeVisible()
     })
