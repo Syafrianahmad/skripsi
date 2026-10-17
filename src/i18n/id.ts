@@ -134,8 +134,6 @@ export const id = {
     baselineName: 'Baseline lead-2',
     noModel: 'tanpa model',
     baselineNote: 'Dua kalimat pertama, tanpa filter',
-    modelOnHub: 'Model di Hugging Face',
-    newTab: '(tab baru)',
     training: {
       title: 'Makin banyak data latih, makin tinggi ROUGE-L',
       subtitle: 'Sumbu X: jumlah pasangan latih. Sumbu Y: ROUGE-L pada 70 dokumen uji.',
@@ -169,7 +167,7 @@ export const id = {
     limitations: {
       title: 'Catatan keterbatasan',
       body: (baseline: string) =>
-        `Referensi berupa lead-2, dan baseline lead-2 tanpa model (${baseline}) mengalahkan semua model. Skor ROUGE di sini mengukur kemiripan dengan lead-2, bukan kualitas ringkasan. Evaluasi manusia dan referensi buatan manusia dibutuhkan.`,
+        `Referensi berupa lead-2, dan baseline lead-2 tanpa model (${baseline}) mengalahkan semua model. Skor ROUGE di sini mengukur kemiripan dengan lead-2, bukan kualitas ringkasan. Evaluasi manusia dan referensi buatan manusia dibutuhkan. Bobot model tidak dirilis, jadi yang ditampilkan hanya keluaran dan skor.`,
     },
     distribution: {
       title: 'Sebaran ROUGE-L per dokumen',

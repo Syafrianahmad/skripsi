@@ -134,8 +134,6 @@ export const en: Dict = {
     baselineName: 'Lead-2 baseline',
     noModel: 'no model',
     baselineNote: 'First two sentences, no filter',
-    modelOnHub: 'Model on Hugging Face',
-    newTab: '(new tab)',
     training: {
       title: 'More training data, higher ROUGE-L',
       subtitle: 'X axis: number of training pairs. Y axis: ROUGE-L on the 70 test documents.',
@@ -168,7 +166,7 @@ export const en: Dict = {
     limitations: {
       title: 'Limitations',
       body: (baseline) =>
-        `The reference is lead-2, and the no-model lead-2 baseline (${baseline}) beats every model. ROUGE here measures similarity to lead-2, not summary quality. Human evaluation and human-written references are needed.`,
+        `The reference is lead-2, and the no-model lead-2 baseline (${baseline}) beats every model. ROUGE here measures similarity to lead-2, not summary quality. Human evaluation and human-written references are needed. Model weights are not released, so only outputs and scores are shown.`,
     },
     distribution: {
       title: 'ROUGE-L spread per document',
