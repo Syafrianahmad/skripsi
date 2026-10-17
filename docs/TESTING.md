@@ -10,11 +10,12 @@ Prinsip: **tes yang gagal jika logikanya salah, tanpa kerangka berlebih.** Situs
 
 ## Tes Vitest
 
-17 berkas `*.test.ts`: tiga di root (`security.test.ts`, `csp.test.ts`, `dist.test.ts`), satu di `src/data/`, satu di `src/i18n/`, dan dua belas di `src/lib/`. Tes ada di sebelah modulnya. Satu berkas per modul, tanpa fixture rumit.
+18 berkas `*.test.ts`: tiga di root (`security.test.ts`, `csp.test.ts`, `dist.test.ts`), satu di `src/` (`links.test.ts`), satu di `src/data/`, satu di `src/i18n/`, dan dua belas di `src/lib/`. Tes ada di sebelah modulnya. Satu berkas per modul, tanpa fixture rumit.
 
 | Berkas | Yang dijamin |
 |---|---|
 | `src/lib/format.test.ts` | `formatInt` (pemisah ribuan per bahasa). `formatDec` dan `gainPercent`: koma desimal dan titik ribuan untuk `id` (`0,7976`, `1.633,5`), titik desimal dan koma ribuan untuk `en` (`0.7976`, `1,633.5`); `gainPercent` (`61,8` / `61.8`); nilai terhadap dirinya sendiri `0,0`; pembulatan seperti `toFixed` sebelum lokalisasi; hasil nol tanpa tanda minus; NaN, tak hingga, dan basis nol tampil `-`; paling banyak satu `Intl.NumberFormat` per bahasa dan jumlah desimal |
+| `src/links.test.ts` | `MODEL_HUB` punya ketiga kunci (murni, gtrans, hybrid); URL yang terisi diawali `https://huggingface.co/`, kosong berarti tanpa tautan |
 | `src/i18n/i18n.test.ts` | paritas `id` dan `en`: kunci, arity fungsi, panjang array, dan tipe daun sama; prosa `id` tanpa pola `\d\.\d` (tanpa pengecualian ribuan); tanpa em dash di kedua kamus; plural `en` (`1 story`, `2 stories`); label area grafik yang bisa digulir berbeda dari judul bagian; kartu Aku memuat contoh token `AkuCIL`; label sr-only (`demo.rougeLabel`, `demo.diffLegend`, `results.scenarios.none`) ada di kedua kamus; `findings.akuMark` dan `quoteMark` memakai "diawali"; `nav.langNames` sama di kedua kamus |
 | `src/lib/route.test.ts` | `parseRoute`: hash kosong atau tak dikenal ke demo; `#/hasil`; `#/#temuan` membaca bagian; `#/demo#story=N` hanya untuk bilangan bulat positif tanpa nol di depan dan dalam rentang aman (`#/demo#story=68.5` dan `story=007` bukan cerita; `story=999` terbaca sebagai angka lalu ditolak `isKnown` di DemoPage). `shortStoryId` (id sampai enam digit apa adanya, lebih panjang jadi `999999+`), `linkedStory` (hanya tautan ke cerita lain yang mengganti pilihan), `scrollTargetId`, `isSamePageClick`, dan `goToSection` |
 | `src/lib/shuffle.test.ts` | `nextStoryId` tanpa filter: 300 undian (rng terkontrol) tidak pernah memilih featured atau cerita aktif; rng 0 memilih id terkecil, rng 1 id terbesar; dengan filter, featured yang cocok boleh dipilih; melempar bila tak ada kandidat |

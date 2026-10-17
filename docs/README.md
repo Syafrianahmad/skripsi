@@ -43,6 +43,8 @@ Untuk GitHub Pages di subpath: `BASE_PATH=/<nama-repo>/ npm run build`. Situs li
 
 Evaluasi pada 70 dokumen uji (cerita Jawa murni); 8 epoch; `google/mt5-small`; beam 4. Detail lengkap dan keterbatasan ada di halaman Hasil.
 
+Model card untuk tiga skenario ada di `docs/model-cards/` (`murni.md`, `gtrans.md`, `hybrid.md`), berbahasa Inggris, untuk README repo Hugging Face. Pengunggahan dilakukan manual oleh pemilik repo: buat repo model baru di huggingface.co, lalu samakan `model_id` di card dengan nama repo itu (contoh: `Syafrian/ringkas-jawa-mt5-murni`). Sebelum menyalin isi file ke `README.md` di repo itu lewat tombol Edit model card atau git, hapus dua baris komentar `# TODO` dan `# Dataset license` di front matter, lalu isi field `license` sendiri (keputusan pemilik, tidak diisi di draf). Setelah repo jadi, tempel URL-nya ke konstanta `MODEL_HUB` di `src/links.ts`.
+
 ## Status
 
 Implementasi selesai dan live sejak 2026-10-12 (diaudit 2026-10-09). Cerita berasal dari [GPT2 Javanese Dataset](https://www.kaggle.com/datasets/lutfiandri/gpt2-javanese-dataset) (Lutfi Andriyanto, Kaggle; lisensi tidak dicantumkan pengunggah).

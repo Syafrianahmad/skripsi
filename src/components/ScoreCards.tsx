@@ -1,5 +1,6 @@
 import { BASELINE, SCENARIOS } from '../data/results.ts'
 import { useLang } from '../i18n/useLang.ts'
+import { MODEL_HUB } from '../links.ts'
 import { formatDec, formatInt, gainPercent } from '../lib/format.ts'
 import { MODEL_LABEL } from './models.ts'
 
@@ -32,6 +33,12 @@ export function ScoreCards() {
             </div>
             <div className="score-card-value">{formatDec(s.rougeL, lang, 4)}</div>
             <div className={`score-card-note${s.id === 'murni' ? '' : ' is-gain'}`}>{note}</div>
+            {MODEL_HUB[s.id] !== '' && (
+              <a className="score-card-link" href={MODEL_HUB[s.id]} target="_blank" rel="noopener noreferrer">
+                {r.modelOnHub}
+                <span className="sr-only"> {MODEL_LABEL[s.id]} {r.newTab}</span>
+              </a>
+            )}
           </article>
         )
       })}
