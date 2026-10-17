@@ -40,7 +40,7 @@ export function Header({ page }: { page: Page }) {
       <nav className="site-nav container">
         <a href="#/" className="brand" onClick={jumpIfCurrentHash}>
           <span className="brand-mark" lang="jv" aria-hidden="true">ꦫ</span>
-          Ringkas Jawa
+          <span className="brand-name" title="Ringkas Jawa">Ringkas Jawa</span>
         </a>
         <div className="nav-links">
           <a href="#/" className="nav-link" aria-current={page === 'demo' ? 'page' : undefined} onClick={jumpIfCurrentHash}>

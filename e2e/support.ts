@@ -21,7 +21,10 @@ export type Layout = {
  * Layout measurements, the same logic as the baseline script (kategori a-f) so that
  * before and after numbers are comparable. Runs inside the page.
  */
-export function measureLayout(page: Page): Promise<Layout> {
+export async function measureLayout(page: Page): Promise<Layout> {
+  // font-display: swap paints the system fallback first. On a runner whose fallback is wider (DejaVu Sans) the
+  // 360px header row 1 has only 8px of slack and wraps to three rows (149px) until the webfonts arrive, so wait for them.
+  await page.evaluate(() => document.fonts.ready)
   return page.evaluate(() => {
     const de = document.documentElement
     const vw = de.clientWidth

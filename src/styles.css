@@ -402,7 +402,30 @@ section[tabindex='-1']:focus-visible {
   }
 }
 
-/* 320px: row 1 needs brand 148 + lang 96 + theme 44 + 2 gaps = 304px; 16px side padding leaves 288px */
+/* Under 480px the brand takes the space row 1 leaves (flex-basis 0, so it never decides the row break), and its name
+   ellipses with title (Header.tsx) as the last resort for a wider fallback font. From 480px the brand stays content-sized. */
+@media (max-width: 479.98px) {
+  .brand {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .brand-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* 360-379px: the DejaVu fallback brand (wider than the webfont) only fits row 1 at 16px */
+@media (max-width: 379.98px) {
+  .brand {
+    font-size: 16px;
+  }
+}
+
+/* 320px: 288px after 16px side padding; the DejaVu fallback brand only fits row 1 at 14px */
 @media (max-width: 359.98px) {
   .site-nav {
     padding-inline: 16px;
@@ -411,7 +434,7 @@ section[tabindex='-1']:focus-visible {
 
   .brand {
     gap: 6px;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .brand-mark {
