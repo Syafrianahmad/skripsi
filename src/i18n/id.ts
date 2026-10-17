@@ -19,6 +19,7 @@ export const id = {
     aksaraLabel: 'Ringkesan (aksara Jawa)',
     h1: 'Bisakah mT5 meringkas cerita Jawa?',
     sub: 'Saya melatih mT5-small dengan tiga sumber data. Model terbaik belajar menyalin dua kalimat pertama, dan baseline tanpa model masih menang. Ini datanya.',
+    stack: 'React + TypeScript + Vite; mT5-small fine-tune; data dibundel saat build.',
     statBest: 'ROUGE-L model terbaik (Hybrid)',
     statBaseline: 'baseline tanpa model, lebih tinggi',
     statCopied: 'kata ringkasan disalin dari cerita',
@@ -59,6 +60,7 @@ export const id = {
     noTranslation: 'Terjemahan hanya tersedia untuk 5 cerita pilihan.',
     nowShowing: (docId: number, title: string) =>
       `Menampilkan cerita #${docId}: ${title}. Keluaran tiga model diperbarui.`,
+    storyNotFound: (n: string, shown: number) => `Cerita #${n} tidak ditemukan, menampilkan #${shown}.`,
     outputsTitle: 'Keluaran tiga model',
     highlightKey: 'bergaris bawah',
     highlightText: '= kata yang tidak ada di referensi',
@@ -132,6 +134,8 @@ export const id = {
     baselineName: 'Baseline lead-2',
     noModel: 'tanpa model',
     baselineNote: 'Dua kalimat pertama, tanpa filter',
+    modelOnHub: 'Model di Hugging Face',
+    newTab: '(tab baru)',
     training: {
       title: 'Makin banyak data latih, makin tinggi ROUGE-L',
       subtitle: 'Sumbu X: jumlah pasangan latih. Sumbu Y: ROUGE-L pada 70 dokumen uji.',
@@ -222,7 +226,6 @@ export const id = {
   },
   footer: {
     affil: 'Teknik Informatika, UIN Maulana Malik Ibrahim Malang',
-    journal: 'Artikel jurnal dalam proses (MATICS)',
     storiesFrom: 'Cerita dari',
     source: 'Pengunggah tidak mencantumkan lisensi; cerita ditampilkan sebagai cuplikan untuk keperluan penelitian.',
   },

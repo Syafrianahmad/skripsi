@@ -2,9 +2,17 @@
 
 Javanese Story Summarization Research Showcase
 
+[![Deploy](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Syafrianahmad/skripsi/actions/workflows/deploy.yml) [![CI](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/Syafrianahmad/skripsi/actions/workflows/ci.yml)
+
+**In 10 seconds**
+
+- **What:** A static portfolio site that shows the real outputs of three `google/mt5-small` models fine-tuned to summarize Javanese stories, next to the experiment results.
+- **Stack:** React 19, TypeScript, Vite, static site on GitHub Pages; mT5-small fine-tuned on Google Colab.
+- **Honest result:** The plain lead-2 baseline (ROUGE-L 0.867) beats the best model (Hybrid, 0.7976), and the models mostly copy the opening of each story.
+
 **Live demo: <https://syafrianahmad.github.io/skripsi/>**
 
-![Ringkas Jawa demo page: hero with the before/after summary of test document #68, and the summarizer comparing the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
+![Ringkas Jawa demo page in English, light theme: hero with the tech stack line and the before/after summary of test document #68, and the summarizer with the story picker, the "Other story (1–70)" dropdown, the filter, and the Hybrid, GTrans and Murni outputs](docs/screenshot.png)
 
 ## About the Project
 
@@ -50,7 +58,7 @@ The main feature of the project is a demo that shows the real outputs of the thr
 4. Findings (Feature 3)
 5. Behind the Scenes (why it matters, the problem, key decisions, what happened, what to do next time)
 6. Experiment Details (Feature 4)
-7. Footer (author, study program, university, journal status, dataset credit)
+7. Footer (author, study program, university, dataset credit)
 
 Note:
 
@@ -76,7 +84,6 @@ Note:
 * Unit tests passing (`npm run test`)
 * Live on GitHub Pages, deployed automatically on every push to `main` (dependency audit, lint, and unit tests must pass first)
 * CI runs on every pull request and push to `develop`: dependency audit, lint, unit tests, build, CSP check, size budget, and Playwright end-to-end tests
-* Journal article based on this thesis (MATICS) is in progress
 
 ## Running Locally
 

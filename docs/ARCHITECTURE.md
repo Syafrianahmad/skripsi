@@ -20,6 +20,7 @@ Tidak dipilih: Next.js/Laravel (tidak ada server), React Router (dua halaman), T
 ```
 src/
   main.tsx, App.tsx         mount; pilih halaman dari route
+  links.ts                  MODEL_HUB: URL model di Hugging Face per model (kosong = tanpa tautan)
   styles.css                token + @font-face + gaya komponen
   fonts/                    woff2 self-host + licenses/ (SIL OFL)
   data/                     docs.json, types.ts, results.ts (sumber angka)
@@ -98,7 +99,7 @@ Angka di UI Indonesia memakai koma desimal dan titik ribuan (`0,7976`, `+61,8%`,
 
 ### Hasil putaran 2 (kode akhir)
 
-- Route: `replaceState` dihapus karena tidak memicu `hashchange`. `copyLink` menyusun URL sendiri. Klik nav ke hash yang sama memanggil `goToSection` (Header), karena tidak ada `hashchange`. Skip link berupa `<button>` yang memfokus `<main id="main" tabIndex={-1}>`. `nextStoryId` murni: tanpa filter tidak memilih featured. `parseRoute` hanya membaca `story=N` bilangan bulat positif.
+- Route: `replaceState` dihapus karena tidak memicu `hashchange`. `copyLink` menyusun URL sendiri. Klik nav ke hash yang sama memanggil `goToSection` (Header), karena tidak ada `hashchange`. Skip link berupa `<button>` yang memfokus `<main id="main" tabIndex={-1}>`. `nextStoryId` murni: tanpa filter tidak memilih featured. `parseRoute` hanya membaca `story=N` bilangan bulat positif tanpa nol di depan dan dalam rentang aman.
 - Aturan hash: diubah hanya lewat `location.hash`, dijaga `security.test.ts`.
 - CI dan deploy: CI menjalankan audit (`--audit-level=high`, `audit signatures`), `dist.test.ts` setelah build, `npm run size`, dan E2E Playwright. Deploy menjalankan audit dan `dist.test.ts`, tetapi tidak menjalankan E2E atau `size`. Actions dipin ke SHA commit. Node 22 lewat `.nvmrc`.
 - Sengaja ditunda: prerender dan hydrate, pecah `docs.json`, subset font, memo, kompres `og.png`, Lighthouse CI (alasan di atas).
