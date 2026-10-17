@@ -117,7 +117,7 @@ Jalankan `npm run build && npm run preview` lalu:
 
 ## CI di GitHub
 
-`.github/workflows/ci.yml` berjalan pada setiap pull request dan push ke `develop`, tanpa deploy. Urutannya: `npm ci`, `npm audit --omit=dev --audit-level=high`, `npm audit signatures`, lint, tes, build dengan `BASE_PATH` nama repo, `npx vitest run dist.test.ts`, `npm run size`, lalu `npm run test:e2e` dengan cache browser Playwright. Status merah berarti jangan di-merge. `npm ci` ikut menangkap konflik dependensi (`ERESOLVE`) yang tidak terlihat di `npm install`. Laporan Playwright diunggah saat gagal.
+`.github/workflows/ci.yml` berjalan pada setiap pull request dan push ke `develop` atau `main`, tanpa deploy. Urutannya: `npm ci`, `npm audit --omit=dev --audit-level=high`, `npm audit signatures`, lint, tes, build dengan `BASE_PATH` nama repo, `npx vitest run dist.test.ts`, `npm run size`, lalu `npm run test:e2e` dengan cache browser Playwright. Status merah berarti jangan di-merge. `npm ci` ikut menangkap konflik dependensi (`ERESOLVE`) yang tidak terlihat di `npm install`. Laporan Playwright diunggah saat gagal.
 
 `deploy.yml` (push ke `main`) menjalankan audit (dua langkah), lint, tes, build, `dist.test.ts`, lalu deploy. E2E dan `npm run size` tidak ikut di sana.
 
