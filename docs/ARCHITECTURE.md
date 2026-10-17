@@ -20,7 +20,6 @@ Tidak dipilih: Next.js/Laravel (tidak ada server), React Router (dua halaman), T
 ```
 src/
   main.tsx, App.tsx         mount; pilih halaman dari route
-  links.ts                  MODEL_HUB: URL model di Hugging Face per model (kosong = tanpa tautan)
   styles.css                token + @font-face + gaya komponen
   fonts/                    woff2 self-host + licenses/ (SIL OFL)
   data/                     docs.json, types.ts, results.ts (sumber angka)

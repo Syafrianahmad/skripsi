@@ -29,6 +29,7 @@ Prioritas utama: **portofolio**. Penguji tetap harus terlayani karena halaman Ha
 
 ### Tidak dibuat (sengaja)
 - **Model live / input teks bebas.** Bobot belum dihosting; demo memakai keluaran asli yang sudah tersimpan.
+- **Rilis bobot ke Hugging Face (model card dan tautan model).** Bobot tidak tersimpan (file di Drive sudah tidak ada); situs hanya menampilkan keluaran dan skor.
 - Akun, login, database, backend, analitik pelacak, komentar.
 - NIM, tahun lulus, atau data pribadi lain di situs.
 - Testimoni, statistik pengunjung, atau klaim tanpa sumber.
