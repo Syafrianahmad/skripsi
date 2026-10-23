@@ -26,12 +26,19 @@
     <meta property="og:locale" content="id_ID" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#13294b" />
+    <link rel="canonical" href="%VITE_SITE_ORIGIN%%BASE_URL%" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- applies a stored theme before first paint (no flash); its hash goes into the CSP at build -->
     <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
   </head>
   <body>
     <div id="root"></div>
+    <!-- static Indonesian only: without JavaScript the React page is not rendered, so this text cannot come from src/i18n -->
+    <noscript>
+      <p>Ringkas Jawa: demo dan hasil skripsi peringkasan cerita bahasa Jawa dengan mT5-small.</p>
+      <p>Hasil jujurnya: model terbaik (Hybrid) mendapat ROUGE-L 0,7976. Baseline lead-2, yaitu dua kalimat pertama cerita, mendapat 0,867 dan masih menang.</p>
+      <p>Aktifkan JavaScript untuk melihat demo.</p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
