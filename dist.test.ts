@@ -6,6 +6,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
+import { BASELINE, SCENARIOS } from './src/data/results.ts'
 
 const DIST = process.env.DIST_DIR ?? fileURLToPath(new URL('./dist', import.meta.url))
 const INDEX = join(DIST, 'index.html')
@@ -59,6 +60,21 @@ describe.skipIf(!existsSync(INDEX))('dist/index.html', () => {
     expect(styles.length).toBeGreaterThan(0)
     expect(directive('script-src')).toBe(`script-src 'self' ${scripts.map(sha256).join(' ')}`)
     expect(directive('style-src')).toBe(`style-src 'self' ${styles.map(sha256).join(' ')}`)
+  })
+
+  it('has a canonical link equal to og:url, and a noscript fallback', () => {
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1]
+    expect(canonical).toMatch(/^https:\/\//)
+    expect(canonical).toBe(html.match(/<meta property="og:url" content="([^"]+)"/)?.[1])
+    expect(html).toContain('<noscript>')
+  })
+
+  it('states the Indonesian noscript numbers from src/data/results.ts', () => {
+    const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] ?? ''
+    const idDecimal = (n: number) => String(n).replace('.', ',')
+    const hybrid = SCENARIOS.find((s) => s.id === 'hybrid')!
+    expect(noscript).toContain(idDecimal(hybrid.rougeL))
+    expect(noscript).toContain(idDecimal(BASELINE.rougeL))
   })
 
   it('ships no source maps', () => {

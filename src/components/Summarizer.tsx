@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { DATASET, DOCS, FEATURED_IDS } from '../data/results.ts'
+import { CONFIG, DATASET, DOCS, FEATURED_IDS } from '../data/results.ts'
 import type { Doc, Lang, ModelId, Part } from '../data/types.ts'
 import { useLang } from '../i18n/useLang.ts'
 import { markAgainst, outputText, wordSet } from '../lib/compare.ts'
@@ -104,7 +104,7 @@ export function Summarizer({ id, filter, onPick, onFilter, onShuffle }: Props) {
       <div className="picker">
         <div className="picker-chips" role="radiogroup" aria-labelledby="picker-label">
           <span id="picker-label" className="picker-label">
-            {t.demo.pickStory}
+            {t.demo.pickStory(CONFIG.testDocs)}
           </span>
           {FEATURED_IDS.map((fid) => {
             const d = DOCS.find((x) => x.id === fid)!

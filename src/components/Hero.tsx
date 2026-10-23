@@ -71,7 +71,7 @@ export function Hero() {
 
       <figure className="hero-card rv" style={{ animationDelay: '300ms' }} aria-labelledby="hero-caption">
         <div className="hero-card-head">
-          <span id="hero-caption">{t.hero.caption(HERO_DOC.id, SENTENCES.length)}</span>
+          <span id="hero-caption">{t.hero.caption(HERO_DOC.id, SENTENCES.length, CONFIG.testDocs)}</span>
           <button type="button" className="btn-ghost" onClick={() => setRound((r) => r + 1)}>
             <ReplayIcon />
             {t.hero.replay}
