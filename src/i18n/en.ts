@@ -21,7 +21,6 @@ export const en: Dict = {
     aksaraLabel: 'Summary (Javanese script)',
     h1: 'Can mT5 summarize Javanese stories?',
     sub: 'I trained mT5-small on three data sources. The best model learned to copy the first two sentences, and a no-model baseline still wins. Here is the data.',
-    stack: 'React + TypeScript + Vite; mT5-small fine-tuned; data bundled at build.',
     statBest: 'best model ROUGE-L (Hybrid)',
     statBaseline: 'no-model baseline, higher',
     statCopied: 'of summary words copied from the story',

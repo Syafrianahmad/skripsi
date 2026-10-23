@@ -571,15 +571,6 @@ h1[tabindex='-1']:focus-visible {
   font-size: 18px;
 }
 
-/* stack line: #cbd5e1 on --hero is about 9.9:1 */
-.hero-stack {
-  margin: 8px 0 0;
-  max-width: 52ch;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: #cbd5e1;
-}
-
 .hero-stats {
   max-width: 600px;
   margin: 32px 0 0;

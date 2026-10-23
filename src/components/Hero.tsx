@@ -56,9 +56,6 @@ export function Hero() {
         <p className="hero-sub rv" style={{ animationDelay: '100ms' }}>
           {t.hero.sub}
         </p>
-        <p className="hero-stack rv" style={{ animationDelay: '150ms' }}>
-          {t.hero.stack}
-        </p>
         <dl className="hero-stats">
           {stats.map((s, i) => (
             <div key={s.label} className="rv" style={{ animationDelay: `${200 + i * 60}ms` }}>

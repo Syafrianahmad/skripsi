@@ -19,7 +19,6 @@ export const id = {
     aksaraLabel: 'Ringkesan (aksara Jawa)',
     h1: 'Bisakah mT5 meringkas cerita Jawa?',
     sub: 'Saya melatih mT5-small dengan tiga sumber data. Model terbaik belajar menyalin dua kalimat pertama, dan baseline tanpa model masih menang. Ini datanya.',
-    stack: 'React + TypeScript + Vite; mT5-small fine-tune; data dibundel saat build.',
     statBest: 'ROUGE-L model terbaik (Hybrid)',
     statBaseline: 'baseline tanpa model, lebih tinggi',
     statCopied: 'kata ringkasan disalin dari cerita',
