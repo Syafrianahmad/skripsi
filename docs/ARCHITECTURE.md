@@ -64,7 +64,7 @@ notebook (Colab) --salin verbatim--> src/data/{docs.json,results.ts}
 | Hero menghitung jumlah kata dari teks | desain menulis 30, hitungan benar 29 | angka tidak pernah basi |
 | `base` Vite dari `BASE_PATH` | nama repo bisa berubah (`ringkas-jawa`) | workflow mengisi `BASE_PATH` dari `GITHUB_REPOSITORY` |
 | Teks keluaran model dirender sebagai teks | berisi `<extra_id_0>`; React meng-escape | tidak pernah `dangerouslySetInnerHTML` |
-| Font di-host sendiri (`src/fonts/`) | tanpa pihak ketiga, CSS tidak lagi diblokir origin lain, CSP bisa ketat | subset latin saja; Noto Sans Javanese di-subset (pyftsubset) ke glyph yang dipakai, 67 KB → 2,7 KB; lisensi OFL ikut di repo |
+| Font di-host sendiri (`src/fonts/`) | tanpa pihak ketiga, CSS tidak lagi diblokir origin lain, CSP bisa ketat | subset latin saja; Noto Sans Javanese di-subset (pyftsubset) ke glyph yang dipakai, 67 KB → 2,1 KB; lisensi OFL ikut di repo |
 | CSP lewat `<meta>` saat build (`csp.ts`) | GitHub Pages tidak bisa mengirim header | skrip dan gaya inline di-hash (otomatis), `assetsInlineLimit: 0` |
 | CSS di-inline ke HTML saat build (`inlineCss`) | menghapus permintaan CSS yang memblokir render (PageSpeed mobile) | CSS tidak lagi di-cache terpisah; ukuran gzip `index.html` (termasuk CSS) tercetak sebagai info di `npm run size` |
 | Fokus pindah ke `<h1>`/bagian tujuan saat navigasi | pembaca layar tahu halamannya berganti | target diberi `tabIndex={-1}` |
@@ -94,11 +94,11 @@ Aturan route: hash hanya diubah lewat `location.hash` (tautan `<a href>` atau as
 
 ## Keputusan audit 2026-10-14
 
-Angka di UI Indonesia memakai koma desimal dan titik ribuan (`0,7976`, `+61,8%`, `1.633`); UI Inggris memakai titik desimal. Node 22 dipakai untuk kerja dan CI (`.nvmrc`, `engines` >= 22.12). Playwright dan `@axe-core/playwright` disetujui sebagai dev dependency dengan versi persis (1.64.0 dan 4.13.0), tanpa jsdom atau Testing Library. Butir performa yang ditunda: prerender dan hydrate (LCP lab 2,28 dan 2,42 s, sudah di bawah 2,5 s); pecah `docs.json` per dokumen (menambah request dan kompleksitas); subset font (hemat sekitar 10 KB); memo (klik terukur 48 ms); kompres `og.png` (ditunda, belum ada alasan tertulis); Lighthouse CI (anggaran ukuran `npm run size` sudah cukup). TypeScript 7 dan `@types/node` 26 tetap ditahan. Angka LCP dan klik berasal dari audit, bukan dari kode.
+Angka di UI Indonesia memakai koma desimal dan titik ribuan (`0,7976`, `+61,8%`, `1.633`); UI Inggris memakai titik desimal. Node 22 dipakai untuk kerja dan CI (`.nvmrc`, `engines` >= 22.12). Playwright dan `@axe-core/playwright` disetujui sebagai dev dependency dengan versi persis (1.64.0 dan 4.13.0), tanpa jsdom atau Testing Library. Butir performa yang ditunda: prerender dan hydrate (LCP lab 2,28 dan 2,42 s, sudah di bawah 2,5 s); pecah `docs.json` per dokumen (menambah request dan kompleksitas); subset font (hemat sekitar 10 KB); memo (klik terukur 48 ms); Lighthouse CI (anggaran ukuran `npm run size` sudah cukup). `og.png` dirender ulang dan kini 47 KB, jadi kompresi tidak perlu. TypeScript 7 dan `@types/node` 26 tetap ditahan. Angka LCP dan klik berasal dari audit, bukan dari kode.
 
 ### Hasil putaran 2 (kode akhir)
 
 - Route: `replaceState` dihapus karena tidak memicu `hashchange`. `copyLink` menyusun URL sendiri. Klik nav ke hash yang sama memanggil `goToSection` (Header), karena tidak ada `hashchange`. Skip link berupa `<button>` yang memfokus `<main id="main" tabIndex={-1}>`. `nextStoryId` murni: tanpa filter tidak memilih featured. `parseRoute` hanya membaca `story=N` bilangan bulat positif tanpa nol di depan dan dalam rentang aman.
 - Aturan hash: diubah hanya lewat `location.hash`, dijaga `security.test.ts`.
 - CI dan deploy: CI menjalankan audit (`--audit-level=high`, `audit signatures`), `dist.test.ts` setelah build, `npm run size`, dan E2E Playwright. Deploy menjalankan audit dan `dist.test.ts`, tetapi tidak menjalankan E2E atau `size`. Actions dipin ke SHA commit. Node 22 lewat `.nvmrc`.
-- Sengaja ditunda: prerender dan hydrate, pecah `docs.json`, subset font, memo, kompres `og.png`, Lighthouse CI (alasan di atas).
+- Sengaja ditunda: prerender dan hydrate, pecah `docs.json`, subset font, memo, Lighthouse CI (alasan di atas).

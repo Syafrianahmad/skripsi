@@ -69,7 +69,7 @@ Sumber visual final: `docs/design/{Main,Hasil,Mobile}.dc.html`. Angka di wirefra
 ```
 DEMO (desktop 1440)
 +----------------------------------------------------------+
-| [ꦫ] Ringkas Jawa      Demo  Hasil  Temuan   [ID|EN] [☾]  |  pita biru kawung
+| [ra] Ringkas Jawa     Demo  Hasil  Temuan   [ID|EN] [☾]  |  pita biru kawung
 |  ꦫꦶꦁꦏꦼꦱꦤ꧀                                                |
 |  Judul H1                       +-------------------+     |
 |  subjudul                       | sebelum -> sesudah|     |

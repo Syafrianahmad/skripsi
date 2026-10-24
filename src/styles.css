@@ -1,7 +1,7 @@
 /* Tokens: see docs/DESIGN-SYSTEM.md. */
 /* ponytail: light-dark() keeps one definition per token; needs 2024+ browsers (Baseline), add a media-query fallback if older ones matter */
 /* Self-hosted fonts, SIL OFL 1.1 (licenses in src/fonts/licenses). Latin subsets only;
-   Noto Sans Javanese is subset to the glyphs the page actually shows (logo + hero aksara). */
+   Noto Sans Javanese is subset to the glyphs the page actually shows (hero aksara). */
 @font-face {
   font-family: 'Atkinson Hyperlegible';
   font-weight: 400;
@@ -42,13 +42,6 @@
   font-weight: 400;
   font-display: swap;
   src: url('./fonts/noto-sans-javanese-400-subset.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Noto Sans Javanese';
-  font-weight: 700;
-  font-display: swap;
-  src: url('./fonts/noto-sans-javanese-700-subset.woff2') format('woff2');
 }
 
 :root {
@@ -250,14 +243,6 @@ h1[tabindex='-1']:focus-visible {
 .brand-mark {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: var(--accent);
-  color: var(--hero);
-  font-family: var(--font-javanese);
-  font-size: 18px;
-  font-weight: 700;
 }
 
 .nav-links {
@@ -376,7 +361,6 @@ h1[tabindex='-1']:focus-visible {
   .brand-mark {
     width: 28px;
     height: 28px;
-    font-size: 15px;
   }
 
   .nav-links {
@@ -446,7 +430,6 @@ h1[tabindex='-1']:focus-visible {
   .brand-mark {
     width: 26px;
     height: 26px;
-    font-size: 14px;
   }
 }
 
