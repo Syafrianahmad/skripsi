@@ -3,7 +3,9 @@
 Sumber kebenaran visual: `docs/design/*.dc.html`. Dokumen ini merangkum token dan aturan supaya kode tidak menebak.
 
 **Dial (antislop):** ENERGY 2 / RHYTHM 3 / MOTION 2.
-**Motif identitas:** pola kawung halus (titik emas dan elips tipis) di pita biru atas, aksara Jawa "ꦫ" pada logo dan "ꦫꦶꦁꦏꦼꦱꦤ꧀" (ringkesan) di hero. Satu aksen: amber.
+**Motif identitas:** pola kawung halus (titik emas dan elips tipis) di pita biru atas, logo berupa ubin amber dengan huruf Ra navy, dan aksara Jawa "ꦫꦶꦁꦏꦼꦱꦤ꧀" (ringkesan) di hero. Satu aksen: amber.
+
+**Logo (`.brand-mark`):** SVG inline di `src/components/Header.tsx`, `viewBox` 0 0 256 256. Ubin `#F59E0B` dengan radius 56 (sekitar 22%), huruf Ra `#13294B` sebagai path (bukan teks font). Ukuran 34 px; 28 px di bawah 768 px; 26 px di bawah 360 px. Berkas `public/favicon.svg` dan `public/apple-touch-icon.png` memakai gambar yang sama.
 
 ## Alasan keputusan (satu baris tiap)
 
@@ -48,7 +50,7 @@ Aturan: maksimal 2-3 warna inti + 1 aksen. Warna tidak pernah menjadi satu-satun
 | H2 bagian | Schibsted Grotesk 800 | 34 (bagian), 22 (kartu grafik), 18 (panel) | `-0.02em` |
 | Isi | Atkinson Hyperlegible 400/700 | 16/1.55, teks Jawa 16/1.75-1.8 | `lang="jv"` pada teks Jawa |
 | Angka, token, skor | IBM Plex Mono 400/500 | 14-40 | |
-| Aksara Jawa | Noto Sans Javanese 400/700 | 48 (hero), 18 (logo) | hiasan, `aria-hidden` bila tidak bermakna |
+| Aksara Jawa | Noto Sans Javanese 400 | 48 (hero) | hiasan, `aria-hidden` bila tidak bermakna. Logo tidak memakai font (lihat Motif) |
 
 Panjang baris isi maksimal 70 karakter. Minimum teks 13px untuk keterangan; label sumbu grafik dan tag 12px (E2E memeriksa font SVG efektif >= 12px).
 
@@ -68,7 +70,7 @@ Variabel CSS tidak bisa dipakai di kondisi `@media`, jadi nilainya ditulis liter
 |---|---|
 | `(max-width: 767.98px)` | header jadi dua baris di bawah 768px: baris 1 merek, bahasa, dan tema; baris 2 tiga tautan berbagi satu baris penuh (`.nav-links` menjadi `display: contents`). `.tool-body` satu kolom; `.tool-col-out` pindah ke bawah |
 | `(max-width: 479.98px)` | padding `.chart-card`, `.side-card`, `.tool-col` 20px; `.picker` 16px 20px |
-| `(max-width: 359.98px)` | header di 320px: padding samping 16px, merek 15px, logo 26px |
+| `(max-width: 359.98px)` | header di 320px: padding samping 16px, merek 14px, logo 26px |
 | `(min-width: 480px)` | `.score-cards` 2 kolom |
 | `(min-width: 768px)` | `.hero-stats` 4 kolom (di bawah itu 2x2) |
 | `(min-width: 1280px)` | `.score-cards` 4 kolom |

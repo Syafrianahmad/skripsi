@@ -69,6 +69,11 @@ describe.skipIf(!existsSync(INDEX))('dist/index.html', () => {
     expect(html).toContain('<noscript>')
   })
 
+  it('links an apple-touch-icon whose file is in dist/', () => {
+    expect(html.match(/<link rel="apple-touch-icon" href="([^"]+)"/)?.[1]).toMatch(/\/apple-touch-icon\.png$/)
+    expect(existsSync(join(DIST, 'apple-touch-icon.png'))).toBe(true)
+  })
+
   it('states the Indonesian noscript numbers from src/data/results.ts', () => {
     const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] ?? ''
     const idDecimal = (n: number) => String(n).replace('.', ',')
